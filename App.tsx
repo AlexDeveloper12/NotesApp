@@ -29,9 +29,9 @@ function App(): JSX.Element {
           <SearchNotesBar value={searchQuery.value} handleChange={searchQuery.handleChange} />
         </View>
         <View style={{ marginTop: 20, justifyContent: 'center', alignItems: 'center' }}>
-          <Button icon="plus" mode="contained" buttonColor='#5acc83' style={{ width: '50%' }} >Add Note</Button>
+          <Button icon="plus" mode="contained" buttonColor='#5acc83' labelStyle={{fontSize:20}} style={{padding:5,borderRadius:30 }}> Add Note</Button>
 
-          <IconButton icon="camera" size={20} />
+          {/* <IconButton icon="plus" size={20} mode="contained" iconColor='white' containerColor='#5acc83' /> */}
 
         </View>
       </View>

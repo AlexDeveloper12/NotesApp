@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Searchbar } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 function SearchNotesBar({value,handleChange}){
 
@@ -9,8 +8,10 @@ function SearchNotesBar({value,handleChange}){
             placeholder='Search...'
             value={value}
             onChangeText={handleChange}
-            icon={<Icon name="heart" />}
+            icon={"magnify"}
+            iconColor={"#fff"}
             style={{backgroundColor:'#71909a'}}
+            inputStyle={{color:'#fff'}}
             placeholderTextColor={'white'}
             />
     )
