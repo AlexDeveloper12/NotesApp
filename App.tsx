@@ -5,13 +5,13 @@
  * @format
  */
 
-import React from 'react';
-import type { PropsWithChildren } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
   useColorScheme,
   View,
+  FlatList
 } from 'react-native';
 
 import { Button, PaperProvider, useTheme, IconButton } from 'react-native-paper';
@@ -25,14 +25,57 @@ function App(): JSX.Element {
 
   const searchQuery = useInput('');
   const [itemModalOpen, setItemModalOpen, toggleModal] = useModal();
-  const addNoteQuery = useInput('');
+  const [notes, setNotes] = useState([]);
+
+  const testArray = [{
+    id:1,
+    name:'Alex'
+  },
+{
+  id:2,
+  name:"David"
+}]
 
   const addNoteToStorage = async (data) => {
 
-    let randomNumber = Math.floor((Math.random() * 10000) + 1);
+    try{
+      await AsyncStorage.setItem(`note`, JSON.stringify(data));
+    }
+    catch(error){
+      console.log(error);
+    }
+    
+    toggleModal();
+    getNotes();
 
-    console.log(data);
+  }
 
+  const getNotes = async () => {
+    try{
+      let currentNotes = await AsyncStorage.getItem("note");
+
+      if(currentNotes){
+        setNotes(JSON.parse(currentNotes));
+      }
+
+      // return currentNotes ? JSON.parse(currentNotes) : [];
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getNotes();
+  }, []);
+
+  const renderNotes = ({ item, index }) => {
+    console.log(item.dateCreated)
+    return (
+      <View>
+        <Text>Hello</Text>
+      </View>
+    )
   }
 
   return (
@@ -45,19 +88,35 @@ function App(): JSX.Element {
           <Button icon="plus" mode="contained" buttonColor='#5acc83'
             labelStyle={{ fontSize: 20 }} style={{ padding: 5, borderRadius: 30 }}
             onPress={toggleModal} > Add Note</Button>
-
-          {/* <IconButton icon="plus" size={20} mode="contained" iconColor='white' containerColor='#5acc83' /> */}
-
         </View>
+
+        {
+          notes !== undefined ?
+            <View style={{ borderWidth: 1, borderColor: 'red', flex: 1 }}>
+              <FlatList
+                data={testArray}
+                renderItem={renderNotes}
+              />
+            </View>
+            : null
+        }
+
+
       </View>
 
-      <AddNoteModal
-        isVisible={itemModalOpen}
-        value={addNoteQuery.value}
-        handleNote={addNoteQuery.handleChange}
-        toggleModal={toggleModal}
-        addNote={addNoteToStorage}
-      />
+
+
+      {
+        itemModalOpen ?
+          <AddNoteModal
+            isVisible={itemModalOpen}
+            toggleModal={toggleModal}
+            addNote={addNoteToStorage}
+          />
+          : null
+      }
+
+
 
 
     </PaperProvider>
