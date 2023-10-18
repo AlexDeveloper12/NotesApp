@@ -20,6 +20,7 @@ import useInput from './src/hooks/useInput';
 import useModal from './src/hooks/useModal';
 import AddNoteModal from './src/components/AddNoteModal/AddNoteModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Note from './src/components/Note/Note';
 
 function App(): JSX.Element {
 
@@ -28,54 +29,48 @@ function App(): JSX.Element {
   const [notes, setNotes] = useState([]);
 
   const testArray = [{
-    id:1,
-    name:'Alex'
+    id: 1,
+    name: 'Alex'
   },
-{
-  id:2,
-  name:"David"
-}]
+  {
+    id: 2,
+    name: "David"
+  }]
 
   const addNoteToStorage = async (data) => {
 
-    try{
+    try {
       await AsyncStorage.setItem(`note`, JSON.stringify(data));
     }
-    catch(error){
+    catch (error) {
       console.log(error);
     }
-    
+
     toggleModal();
     getNotes();
 
   }
 
-  const getNotes = async () => {
-    try{
-      let currentNotes = await AsyncStorage.getItem("note");
-
-      if(currentNotes){
-        setNotes(JSON.parse(currentNotes));
-      }
-
-      // return currentNotes ? JSON.parse(currentNotes) : [];
-    }
-    catch(error){
-      console.log(error);
-    }
+  const getNotes = () => {
+    AsyncStorage.getItem('note').then(data => setNotes(data));
   }
 
   useEffect(() => {
     getNotes();
+
   }, []);
 
   const renderNotes = ({ item, index }) => {
     console.log(item.dateCreated)
     return (
       <View>
-        <Text>Hello</Text>
+        <Note text="hello" dateCreated="goodbye" />
       </View>
     )
+  };
+
+  const removeNote = () => {
+    AsyncStorage.removeItem()
   }
 
   return (
@@ -92,19 +87,17 @@ function App(): JSX.Element {
 
         {
           notes !== undefined ?
-            <View style={{ borderWidth: 1, borderColor: 'red', flex: 1 }}>
+            <View style={{ flex: 1 }}>
               <FlatList
-                data={testArray}
+                data={notes}
                 renderItem={renderNotes}
+                numColumns={2}
+                columnWrapperStyle={{ justifyContent: 'space-evenly' }}
               />
             </View>
             : null
         }
-
-
       </View>
-
-
 
       {
         itemModalOpen ?
@@ -115,10 +108,6 @@ function App(): JSX.Element {
           />
           : null
       }
-
-
-
-
     </PaperProvider>
   );
 }

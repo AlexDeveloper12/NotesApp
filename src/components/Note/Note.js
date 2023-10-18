@@ -1,21 +1,21 @@
 import React from 'react';
-import { Button, Card } from 'react-native-paper';
+import { Text } from 'react-native';
+import { Card, IconButton } from 'react-native-paper';
 
-function Note(){
-    return(
-        <Card>
+function Note({ text, dateCreated }) {
+    return (
+        <Card style={{ marginTop: 20, width: '100%' }}>
             <Card.Title title="Test title" />
             <Card.Content>
-                <Text>Card title</Text>
-                <Text variant="bodyMedium">Card content</Text>
+                <Text>{text}</Text>
+                <Text variant="bodyMedium">{dateCreated}</Text>
             </Card.Content>
             <Card.Actions>
-                <Button>Cancel</Button>
-                <Button>Ok</Button>
+                <IconButton icon="lead-pencil" size={20} animated />
+                <IconButton icon="trash-can" size={20} animated />
             </Card.Actions>
         </Card>
     )
-
 }
 
 export default Note;
