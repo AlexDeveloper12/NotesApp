@@ -28,15 +28,6 @@ function App(): JSX.Element {
   const [itemModalOpen, setItemModalOpen, toggleModal] = useModal();
   const [notes, setNotes] = useState([]);
 
-  const testArray = [{
-    id: 1,
-    name: 'Alex'
-  },
-  {
-    id: 2,
-    name: "David"
-  }]
-
   const addNoteToStorage = async (data) => {
 
     try {
@@ -48,7 +39,6 @@ function App(): JSX.Element {
 
     toggleModal();
     getNotes();
-
   }
 
   const getNotes = () => {
@@ -61,28 +51,30 @@ function App(): JSX.Element {
   }, []);
 
   const renderNotes = ({ item, index }) => {
-    console.log(item.dateCreated)
     return (
       <View>
-        <Note text="hello" dateCreated="goodbye" />
+        <Note item={item} />
       </View>
     )
   };
 
-  const removeNote = () => {
+  const removeNote = (id) => {
     AsyncStorage.removeItem()
   }
 
   return (
     <PaperProvider>
       <View style={{ backgroundColor: '#1f454d', flex: 1 }}>
-        <View style={{ marginTop: 30 }}>
+        <View style={{ marginTop: 40, marginLeft: 10, marginRight: 10 }}>
           <SearchNotesBar value={searchQuery.value} handleChange={searchQuery.handleChange} />
         </View>
         <View style={{ marginTop: 20, justifyContent: 'center', alignItems: 'center' }}>
-          <Button icon="plus" mode="contained" buttonColor='#5acc83'
-            labelStyle={{ fontSize: 20 }} style={{ padding: 5, borderRadius: 30 }}
-            onPress={toggleModal} > Add Note</Button>
+          <IconButton icon="plus" mode="contained"
+            style={{backgroundColor:'#5acc83'}}
+            onPressIn={toggleModal}
+            size={25}
+            iconColor='white' >
+          </IconButton>
         </View>
 
         {
