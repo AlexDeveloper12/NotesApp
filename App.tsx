@@ -86,7 +86,7 @@ function App(): JSX.Element {
     <PaperProvider>
       <View style={{ backgroundColor: '#1f454d', flex: 1 }}>
         <View style={{marginTop:30}}>
-          <Text variant='headlineMedium' style={{color:'white', textAlign:'center'}}>My Notes</Text>
+          <Text style={{color:'white', textAlign:'center', fontFamily:'Roboto-Bold', fontSize:40}}>My Notes</Text>
         </View>
         <View style={{ marginTop: 40, marginLeft: 10, marginRight: 10 }}>
           <SearchNotesBar value={searchQuery.value} handleChange={searchQuery.handleChange} />

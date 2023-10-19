@@ -10,7 +10,7 @@ function SearchNotesBar({value,handleChange}){
             onChangeText={handleChange}
             icon={"magnify"}
             iconColor={"#fff"}
-            style={{backgroundColor:'#71909a'}}
+            style={{backgroundColor:'#71909a', fontFamily:'Roboto-Light'}}
             inputStyle={{color:'#fff'}}
             placeholderTextColor={'white'}
             />
