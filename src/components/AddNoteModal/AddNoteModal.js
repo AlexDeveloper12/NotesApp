@@ -28,8 +28,6 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
         else {
             Alert.alert("Validation error", "Please ensure you enter a note value");
         }
-        //close modal
-        //toggleModal();
     }
 
     return (

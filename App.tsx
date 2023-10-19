@@ -8,13 +8,12 @@
 import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
-  Text,
   useColorScheme,
   View,
   FlatList
 } from 'react-native';
 
-import { Button, PaperProvider, useTheme, IconButton } from 'react-native-paper';
+import { Button, PaperProvider, useTheme, IconButton, Text } from 'react-native-paper';
 import SearchNotesBar from './src/components/SearchNotesBar';
 import useInput from './src/hooks/useInput';
 import useModal from './src/hooks/useModal';
@@ -28,10 +27,22 @@ function App(): JSX.Element {
   const [itemModalOpen, setItemModalOpen, toggleModal] = useModal();
   const [notes, setNotes] = useState([]);
 
+  var testArray = [{
+    ID: 1,
+    name: "Alex"
+  },
+  {
+    ID: 2,
+    name: "James"
+  }]
+
   const addNoteToStorage = async (data) => {
+    // console.log(data);
+    // console.log(JSON.stringify(data));
+    let randomNumber = String(Math.floor((Math.random() * 10000) + 1));
 
     try {
-      await AsyncStorage.setItem(`note`, JSON.stringify(data));
+      await AsyncStorage.setItem(`note-${randomNumber}`, JSON.stringify(data));
     }
     catch (error) {
       console.log(error);
@@ -41,8 +52,16 @@ function App(): JSX.Element {
     getNotes();
   }
 
-  const getNotes = () => {
-    AsyncStorage.getItem('note').then(data => setNotes(data));
+  const getNotes = async () => {
+
+    try {
+      await AsyncStorage.getItem('note').then(data => {
+        setNotes(JSON.parse(data));
+      })
+    }
+    catch (error) {
+      console.log(error)
+    };
   }
 
   useEffect(() => {
@@ -54,23 +73,27 @@ function App(): JSX.Element {
     return (
       <View>
         <Note item={item} />
+        {/* <Text>Hello</Text> */}
       </View>
     )
   };
 
   const removeNote = (id) => {
-    AsyncStorage.removeItem()
+
   }
 
   return (
     <PaperProvider>
       <View style={{ backgroundColor: '#1f454d', flex: 1 }}>
+        <View style={{marginTop:30}}>
+          <Text variant='headlineMedium' style={{color:'white', textAlign:'center'}}>My Notes</Text>
+        </View>
         <View style={{ marginTop: 40, marginLeft: 10, marginRight: 10 }}>
           <SearchNotesBar value={searchQuery.value} handleChange={searchQuery.handleChange} />
         </View>
         <View style={{ marginTop: 20, justifyContent: 'center', alignItems: 'center' }}>
           <IconButton icon="plus" mode="contained"
-            style={{backgroundColor:'#5acc83'}}
+            style={{ backgroundColor: '#5acc83' }}
             onPressIn={toggleModal}
             size={25}
             iconColor='white' >
@@ -78,16 +101,18 @@ function App(): JSX.Element {
         </View>
 
         {
-          notes !== undefined ?
-            <View style={{ flex: 1 }}>
+          notes?.length === 0 ?
+            <Text variant='headlineSmall' style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>There are currently no notes.</Text>
+            : <View style={{ flex: 1 }}>
               <FlatList
-                data={notes}
+                keyExtractor={(item) => item.ID}
+                data={testArray}
                 renderItem={renderNotes}
                 numColumns={2}
-                columnWrapperStyle={{ justifyContent: 'space-evenly' }}
+                columnWrapperStyle={{ justifyContent: 'space-around' }}
+                style={{ borderWidth: 1, borderColor: 'red' }}
               />
             </View>
-            : null
         }
       </View>
 
