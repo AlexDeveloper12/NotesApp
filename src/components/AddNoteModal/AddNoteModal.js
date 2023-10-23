@@ -23,13 +23,11 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
 
         if(addNoteQuery.value.trim().length > 0){
             console.log(addNoteQuery.value.trim());
-            addNote(myData);
+            addNote(addNoteQuery.value);
         }
         else {
             Alert.alert("Validation error", "Please ensure you enter a note value");
         }
-        //close modal
-        //toggleModal();
     }
 
     return (
