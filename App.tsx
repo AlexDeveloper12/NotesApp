@@ -31,15 +31,7 @@ function App(): JSX.Element {
   const [deleteModalOpen, setDeleteModalOpen, toggleDeleteModal] = useModal();
   const notes = useArray([]);
   const [filteredNotes, setFilteredNotes] = useState([]);
-
-  var testArray = [{
-    ID: 1,
-    name: "Alex"
-  },
-  {
-    ID: 2,
-    name: "James"
-  }]
+  const [chosenNoteID,setChosenNoteID] = useState(0);
 
   const addNoteToStorage = async (data) => {
     // console.log(data);
@@ -69,7 +61,7 @@ function App(): JSX.Element {
       const savedNotes = await AsyncStorage.getItem('note');
       
       //notes.setValue(JSON.parse(savedNotes));
-      setFilteredNotes(JSON.parse(await AsyncStorage.getItem('note')));
+      notes.setValue(JSON.parse(await AsyncStorage.getItem('note')));
     }
     catch (error) {
       console.log(error)
@@ -78,13 +70,19 @@ function App(): JSX.Element {
 
   useEffect(() => {
     getNotes();
-  }, [filteredNotes]);
+  }, [notes.value]);
+
+  const toggleDelete = (noteID) => {
+    setDeleteModalOpen(true);
+    setChosenNoteID(noteID);
+    console.log(noteID)
+
+  }
 
   const renderNotes = ({ item, index }) => {
     return (
       <View>
-        <Note item={item} />
-        {/* <Text>Hello</Text> */}
+        <Note item={item} togDel={toggleDelete} />
       </View>
     )
   };
@@ -125,18 +123,16 @@ function App(): JSX.Element {
         </View>
 
         {
-          filteredNotes.length === 0  ?
+          notes.value.length === 0  ?
             <Text variant='headlineSmall' style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>There are currently no notes.</Text>
             : <View style={{ flex: 1 }}>
               <FlatList
-                keyExtractor={(item) => item.noteID}
-                // data={searchQuery.value > 0 && notes.value.length > 0 ? filteredNotes : notes}
-                data={filteredNotes}
+                keyExtractor={(item) => item.id}
+                data={searchQuery.value > 0 && notes.value.length > 0 ? filteredNotes : notes.value}
                 renderItem={renderNotes}
                 numColumns={2}
                 columnWrapperStyle={{ justifyContent: 'space-around' }}
                 contentContainerStyle={{ width: '100%' }}
-                style={{ borderWidth: 1, borderColor: 'red' }}
               />
             </View>
         }
