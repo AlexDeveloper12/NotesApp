@@ -20,12 +20,17 @@ import useModal from './src/hooks/useModal';
 import AddNoteModal from './src/components/AddNoteModal/AddNoteModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Note from './src/components/Note/Note';
+import useArray from './src/hooks/useArray';
+import DeleteNoteModal from './src/components/DeleteNoteModal/DeleteNoteModal';
+import { UUID } from 'bson';
 
 function App(): JSX.Element {
 
   const searchQuery = useInput('');
   const [itemModalOpen, setItemModalOpen, toggleModal] = useModal();
-  const [notes, setNotes] = useState([]);
+  const [deleteModalOpen, setDeleteModalOpen, toggleDeleteModal] = useModal();
+  const notes = useArray([]);
+  const [filteredNotes, setFilteredNotes] = useState([]);
 
   var testArray = [{
     ID: 1,
@@ -42,7 +47,13 @@ function App(): JSX.Element {
     let randomNumber = String(Math.floor((Math.random() * 10000) + 1));
 
     try {
-      await AsyncStorage.setItem(`note-${randomNumber}`, JSON.stringify(data));
+
+      const newNotes = [...notes.value, { id: randomNumber, noteText: data }];
+
+      await AsyncStorage.setItem('note', JSON.stringify(newNotes));
+
+      notes.setValue(newNotes);
+
     }
     catch (error) {
       console.log(error);
@@ -55,9 +66,10 @@ function App(): JSX.Element {
   const getNotes = async () => {
 
     try {
-      await AsyncStorage.getItem('note').then(data => {
-        setNotes(JSON.parse(data));
-      })
+      const savedNotes = await AsyncStorage.getItem('note');
+      
+      //notes.setValue(JSON.parse(savedNotes));
+      setFilteredNotes(JSON.parse(await AsyncStorage.getItem('note')));
     }
     catch (error) {
       console.log(error)
@@ -66,8 +78,7 @@ function App(): JSX.Element {
 
   useEffect(() => {
     getNotes();
-
-  }, []);
+  }, [filteredNotes]);
 
   const renderNotes = ({ item, index }) => {
     return (
@@ -78,18 +89,31 @@ function App(): JSX.Element {
     )
   };
 
-  const removeNote = (id) => {
+  const removeNote = async (id) => {
+    const newNotes = notes.value.filter(note => note.noteID != id);
+    await AsyncStorage.setItem('note', JSON.stringify(newNotes));
+    setFilteredNotes(newNotes);
+    notes.setValue(newNotes)
+  }
 
+  const searchNotesFilter = (e) => {
+    searchQuery.handleChange(e);
+
+    setFilteredNotes(
+      filteredNotes.filter(note => note.noteText.includes(e))
+    );
+
+    // console.log(e);
   }
 
   return (
     <PaperProvider>
       <View style={{ backgroundColor: '#1f454d', flex: 1 }}>
-        <View style={{marginTop:30}}>
-          <Text style={{color:'white', textAlign:'center', fontFamily:'Roboto-Bold', fontSize:40}}>My Notes</Text>
+        <View style={{ marginTop: 30 }}>
+          <Text style={{ color: 'white', textAlign: 'center', fontFamily: 'Roboto-Bold', fontSize: 40 }}>My Notes</Text>
         </View>
         <View style={{ marginTop: 40, marginLeft: 10, marginRight: 10 }}>
-          <SearchNotesBar value={searchQuery.value} handleChange={searchQuery.handleChange} />
+          <SearchNotesBar value={searchQuery.value} handleChange={searchNotesFilter} />
         </View>
         <View style={{ marginTop: 20, justifyContent: 'center', alignItems: 'center' }}>
           <IconButton icon="plus" mode="contained"
@@ -101,15 +125,17 @@ function App(): JSX.Element {
         </View>
 
         {
-          notes?.length === 0 ?
+          filteredNotes.length === 0  ?
             <Text variant='headlineSmall' style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>There are currently no notes.</Text>
             : <View style={{ flex: 1 }}>
               <FlatList
-                keyExtractor={(item) => item.ID}
-                data={testArray}
+                keyExtractor={(item) => item.noteID}
+                // data={searchQuery.value > 0 && notes.value.length > 0 ? filteredNotes : notes}
+                data={filteredNotes}
                 renderItem={renderNotes}
                 numColumns={2}
                 columnWrapperStyle={{ justifyContent: 'space-around' }}
+                contentContainerStyle={{ width: '100%' }}
                 style={{ borderWidth: 1, borderColor: 'red' }}
               />
             </View>
@@ -125,6 +151,16 @@ function App(): JSX.Element {
           />
           : null
       }
+
+      {
+        deleteModalOpen ?
+          <DeleteNoteModal
+            isVisible={deleteModalOpen}
+            toggleModal={toggleDeleteModal}
+          />
+          : null
+      }
+
     </PaperProvider>
   );
 }
