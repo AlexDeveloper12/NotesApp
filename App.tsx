@@ -73,10 +73,9 @@ function App(): JSX.Element {
   }, [notes.value]);
 
   const toggleDelete = (noteID) => {
-    setDeleteModalOpen(true);
+    toggleDeleteModal();
     setChosenNoteID(noteID);
-    console.log(noteID)
-
+    console.log(deleteModalOpen)
   }
 
   const renderNotes = ({ item, index }) => {
@@ -89,9 +88,10 @@ function App(): JSX.Element {
 
   const removeNote = async (id) => {
     const newNotes = notes.value.filter(note => note.noteID != id);
-    await AsyncStorage.setItem('note', JSON.stringify(newNotes));
-    setFilteredNotes(newNotes);
-    notes.setValue(newNotes)
+    console.log(newNotes);
+    // await AsyncStorage.setItem('note', JSON.stringify(newNotes));
+    // setFilteredNotes(newNotes);
+    // notes.setValue(newNotes)
   }
 
   const searchNotesFilter = (e) => {
@@ -153,6 +153,8 @@ function App(): JSX.Element {
           <DeleteNoteModal
             isVisible={deleteModalOpen}
             toggleModal={toggleDeleteModal}
+            noteID={chosenNoteID}
+            deleteNote={removeNote}
           />
           : null
       }

@@ -3,7 +3,6 @@ import { Alert, View } from 'react-native';
 import { Button, Modal, Portal, Text, TextInput } from "react-native-paper";
 import moment from 'moment';
 import useInput from "../../hooks/useInput";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function AddNoteModal({ isVisible, toggleModal, addNote }) {
 
