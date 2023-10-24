@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Alert, View } from 'react-native';
 import { Button, Modal, Portal, Text, TextInput } from "react-native-paper";
 import moment from 'moment';
 import useInput from "../../hooks/useInput";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function AddNoteModal({ isVisible, toggleModal, addNote }) {
 
     const addNoteQuery = useInput('');
+    const maxCharacters = useState(200);
 
     const add = () => {
 
@@ -37,7 +37,9 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
                     style={{ height: 200, flex: 2, verticalAlign: 'top' }}
                     autoFocus
                     value={addNoteQuery.value}
-                    onChangeText={addNoteQuery.handleChange} />
+                    onChangeText={addNoteQuery.handleChange}
+                    maxLength={200}
+                    />
                 <View style={{
                     flex: 1, justifyContent: 'center',
                     alignItems: 'center'
@@ -47,6 +49,12 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
                         onPress={add} >
                         Add
                     </Button>
+                </View>
+                <View
+                    style={{flex:1, justifyContent:'center', alignItems:'center'}}
+                >
+                    <Text>{addNoteQuery.value.length}/{maxCharacters} characters</Text>
+                    
                 </View>
             </View>
         </Modal>

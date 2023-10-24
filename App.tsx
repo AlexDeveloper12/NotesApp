@@ -8,12 +8,11 @@
 import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
-  useColorScheme,
   View,
   FlatList
 } from 'react-native';
 
-import { Button, PaperProvider, useTheme, IconButton, Text } from 'react-native-paper';
+import { Button, PaperProvider, IconButton, Text, ActivityIndicator, MD2Colors } from 'react-native-paper';
 import SearchNotesBar from './src/components/SearchNotesBar';
 import useInput from './src/hooks/useInput';
 import useModal from './src/hooks/useModal';
@@ -22,16 +21,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Note from './src/components/Note/Note';
 import useArray from './src/hooks/useArray';
 import DeleteNoteModal from './src/components/DeleteNoteModal/DeleteNoteModal';
-import { UUID } from 'bson';
+import UpdateNoteModal from './src/components/UpdateNoteModal.js/UpdateNoteModal';
 
 function App(): JSX.Element {
 
   const searchQuery = useInput('');
   const [itemModalOpen, setItemModalOpen, toggleModal] = useModal();
   const [deleteModalOpen, setDeleteModalOpen, toggleDeleteModal] = useModal();
+  const [updateModalOpen, setUpdateModalOpen, toggleUpdateModal] = useModal();
   const notes = useArray([]);
   const [filteredNotes, setFilteredNotes] = useState([]);
-  const [chosenNoteID,setChosenNoteID] = useState(0);
+  const [chosenNoteID, setChosenNoteID] = useState(0);
+  const [collapsedNoteID, setCollapsedNoteID] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const addNoteToStorage = async (data) => {
     // console.log(data);
@@ -58,8 +60,7 @@ function App(): JSX.Element {
   const getNotes = async () => {
 
     try {
-      const savedNotes = await AsyncStorage.getItem('note');
-      
+
       //notes.setValue(JSON.parse(savedNotes));
       notes.setValue(JSON.parse(await AsyncStorage.getItem('note')));
     }
@@ -73,25 +74,44 @@ function App(): JSX.Element {
   }, [notes.value]);
 
   const toggleDelete = (noteID) => {
-    setDeleteModalOpen(true);
+    console.log(itemModalOpen);
+    console.log(deleteModalOpen);
+    // setDeleteModalOpen(true);
+    toggleDeleteModal();
     setChosenNoteID(noteID);
-    console.log(noteID)
+  }
+
+  const showDeleteIndicator = () => {
+    return (
+      <View style={{marginTop:20}}>
+        <ActivityIndicator animating={isDeleting} color={MD2Colors.green400} size={40} />
+        <Text style={{color:'#fff', textAlign:'center', justifyContent:'center', marginTop:20, fontSize:15, fontFamily:'Roboto-Medium'}}>Deleting note...</Text>
+      </View>
+      
+    )
 
   }
 
   const renderNotes = ({ item, index }) => {
     return (
       <View>
-        <Note item={item} togDel={toggleDelete} />
+        <Note item={item} deleteNote={deleteNote} togUpd={toggleUpdateModal} />
       </View>
     )
   };
 
-  const removeNote = async (id) => {
-    const newNotes = notes.value.filter(note => note.noteID != id);
+  const deleteNote = async (id) => {
+    setIsDeleting(true);
+    //we are filtering the list and only returing the values in the notes where the id is not equal to the 
+    //one passed in parameter, ie we are only returning the ones that don't have the id of the note we clicked
+    const newNotes = notes.value.filter(note => note.id != id);
+    console.log(newNotes);
+    //we then set the async storage value of the key note equal to the new array
     await AsyncStorage.setItem('note', JSON.stringify(newNotes));
     setFilteredNotes(newNotes);
-    notes.setValue(newNotes)
+    notes.setValue(newNotes);
+
+    setIsDeleting(false);
   }
 
   const searchNotesFilter = (e) => {
@@ -116,26 +136,35 @@ function App(): JSX.Element {
         <View style={{ marginTop: 20, justifyContent: 'center', alignItems: 'center' }}>
           <IconButton icon="plus" mode="contained"
             style={{ backgroundColor: '#5acc83' }}
-            onPressIn={toggleModal}
+            onPress={toggleModal}
             size={25}
             iconColor='white' >
           </IconButton>
         </View>
 
         {
-          notes.value.length === 0  ?
-            <Text variant='headlineSmall' style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>There are currently no notes.</Text>
+          isDeleting ?
+            (
+              showDeleteIndicator()
+            )
+            : null
+        }
+
+        {
+          notes.value.length === 0 ?
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Text variant='headlineSmall' style={{ color: '#fff', marginTop: 10 }}>There are currently no notes.</Text>
+            </View>
             : <View style={{ flex: 1 }}>
               <FlatList
                 keyExtractor={(item) => item.id}
                 data={searchQuery.value > 0 && notes.value.length > 0 ? filteredNotes : notes.value}
                 renderItem={renderNotes}
-                numColumns={2}
-                columnWrapperStyle={{ justifyContent: 'space-around' }}
                 contentContainerStyle={{ width: '100%' }}
               />
             </View>
         }
+
       </View>
 
       {
@@ -153,7 +182,19 @@ function App(): JSX.Element {
           <DeleteNoteModal
             isVisible={deleteModalOpen}
             toggleModal={toggleDeleteModal}
+            noteID={chosenNoteID}
+            deleteNote={deleteNote}
           />
+          : null
+      }
+
+      {
+        updateModalOpen ?
+          <UpdateNoteModal
+            isVisible={updateModalOpen}
+            toggleModal={toggleUpdateModal}
+          />
+
           : null
       }
 

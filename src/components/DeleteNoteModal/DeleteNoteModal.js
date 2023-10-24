@@ -5,7 +5,7 @@ import { Button, Modal, Text } from "react-native-paper";
 function DeleteNoteModal({ isVisible, toggleModal, deleteNote, noteID }) {
     return (
         <Modal
-            isVisible={isVisible} onDismiss={toggleModal}>
+            isVisible={isVisible} onDismiss={toggleModal} contentContainerStyle={{ backgroundColor: '#fff', height: '80%' }}>
             <View style={{ flex: 1 }}>
                 <Text>
                     Are you sure you want to delete this note?
