@@ -22,6 +22,8 @@ import Note from './src/components/Note/Note';
 import useArray from './src/hooks/useArray';
 import DeleteNoteModal from './src/components/DeleteNoteModal/DeleteNoteModal';
 import UpdateNoteModal from './src/components/UpdateNoteModal.js/UpdateNoteModal';
+import Header from './src/components/Header/Header';
+import AddNoteButton from './src/components/AddNoteButton/AddNoteButton';
 
 function App(): JSX.Element {
 
@@ -83,11 +85,11 @@ function App(): JSX.Element {
 
   const showDeleteIndicator = () => {
     return (
-      <View style={{marginTop:20}}>
+      <View style={{ marginTop: 20 }}>
         <ActivityIndicator animating={isDeleting} color={MD2Colors.green400} size={40} />
-        <Text style={{color:'#fff', textAlign:'center', justifyContent:'center', marginTop:20, fontSize:15, fontFamily:'Roboto-Medium'}}>Deleting note...</Text>
+        <Text style={{ color: '#fff', textAlign: 'center', justifyContent: 'center', marginTop: 20, fontSize: 15, fontFamily: 'Roboto-Medium' }}>Deleting note...</Text>
       </View>
-      
+
     )
 
   }
@@ -127,20 +129,12 @@ function App(): JSX.Element {
   return (
     <PaperProvider>
       <View style={{ backgroundColor: '#1f454d', flex: 1 }}>
-        <View style={{ marginTop: 30 }}>
-          <Text style={{ color: 'white', textAlign: 'center', fontFamily: 'Roboto-Bold', fontSize: 40 }}>My Notes</Text>
-        </View>
-        <View style={{ marginTop: 40, marginLeft: 10, marginRight: 10 }}>
-          <SearchNotesBar value={searchQuery.value} handleChange={searchNotesFilter} />
-        </View>
-        <View style={{ marginTop: 20, justifyContent: 'center', alignItems: 'center' }}>
-          <IconButton icon="plus" mode="contained"
-            style={{ backgroundColor: '#5acc83' }}
-            onPress={toggleModal}
-            size={25}
-            iconColor='white' >
-          </IconButton>
-        </View>
+        <Header />
+
+        <SearchNotesBar value={searchQuery.value} handleChange={searchNotesFilter} />
+
+        <AddNoteButton
+          toggleModal={toggleModal} />
 
         {
           isDeleting ?
