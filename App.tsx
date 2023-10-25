@@ -12,7 +12,7 @@ import {
   FlatList
 } from 'react-native';
 
-import { Button, PaperProvider, IconButton, Text, ActivityIndicator, MD2Colors } from 'react-native-paper';
+import { Button, PaperProvider, IconButton, Text, ActivityIndicator, MD2Colors, Modal, Portal, TextInput } from 'react-native-paper';
 import SearchNotesBar from './src/components/SearchNotesBar';
 import useInput from './src/hooks/useInput';
 import useModal from './src/hooks/useModal';
@@ -34,8 +34,8 @@ function App(): JSX.Element {
   const notes = useArray([]);
   const [filteredNotes, setFilteredNotes] = useState([]);
   const [chosenNoteID, setChosenNoteID] = useState(0);
-  const [collapsedNoteID, setCollapsedNoteID] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [chosenNoteData, setChosenNoteData] = useState({});
 
   const addNoteToStorage = async (data) => {
     // console.log(data);
@@ -62,8 +62,6 @@ function App(): JSX.Element {
   const getNotes = async () => {
 
     try {
-
-      //notes.setValue(JSON.parse(savedNotes));
       notes.setValue(JSON.parse(await AsyncStorage.getItem('note')));
     }
     catch (error) {
@@ -75,13 +73,6 @@ function App(): JSX.Element {
     getNotes();
   }, [notes.value]);
 
-  const toggleDelete = (noteID) => {
-    console.log(itemModalOpen);
-    console.log(deleteModalOpen);
-    // setDeleteModalOpen(true);
-    toggleDeleteModal();
-    setChosenNoteID(noteID);
-  }
 
   const showDeleteIndicator = () => {
     return (
@@ -97,23 +88,32 @@ function App(): JSX.Element {
   const renderNotes = ({ item, index }) => {
     return (
       <View>
-        <Note item={item} deleteNote={deleteNote} togUpd={toggleUpdateModal} />
+        <Note item={item} deleteNote={deleteNote} togUpd={toggleUpdate} togDel={toggleDelete} />
       </View>
     )
   };
 
+  const toggleUpdate = (updateData) => {
+    console.log(updateData);
+    setChosenNoteData(updateData);
+    toggleUpdateModal();
+  }
+
+  const toggleDelete = (id) => {
+    setChosenNoteID(id);
+    toggleDeleteModal();
+  }
+
   const deleteNote = async (id) => {
-    setIsDeleting(true);
+    toggleDeleteModal();
     //we are filtering the list and only returing the values in the notes where the id is not equal to the 
     //one passed in parameter, ie we are only returning the ones that don't have the id of the note we clicked
     const newNotes = notes.value.filter(note => note.id != id);
-    console.log(newNotes);
+    
     //we then set the async storage value of the key note equal to the new array
     await AsyncStorage.setItem('note', JSON.stringify(newNotes));
     setFilteredNotes(newNotes);
     notes.setValue(newNotes);
-
-    setIsDeleting(false);
   }
 
   const searchNotesFilter = (e) => {
@@ -131,7 +131,10 @@ function App(): JSX.Element {
       <View style={{ backgroundColor: '#1f454d', flex: 1 }}>
         <Header />
 
-        <SearchNotesBar value={searchQuery.value} handleChange={searchNotesFilter} />
+        <SearchNotesBar
+          value={searchQuery.value}
+          handleChange={searchNotesFilter}
+        />
 
         <AddNoteButton
           toggleModal={toggleModal} />
@@ -145,7 +148,7 @@ function App(): JSX.Element {
         }
 
         {
-          notes.value.length === 0 ?
+          notes.value === null || notes.value.length === 0 ?
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Text variant='headlineSmall' style={{ color: '#fff', marginTop: 10 }}>There are currently no notes.</Text>
             </View>
@@ -187,6 +190,7 @@ function App(): JSX.Element {
           <UpdateNoteModal
             isVisible={updateModalOpen}
             toggleModal={toggleUpdateModal}
+            noteData={chosenNoteData}
           />
 
           : null
