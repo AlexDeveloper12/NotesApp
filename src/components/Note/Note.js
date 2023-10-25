@@ -1,14 +1,15 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { Card, IconButton } from 'react-native-paper';
+import styles from '../../styles/NoteStyles/NoteStyles';
 
 function Note({ item, togDel, togUpd }) {
 
     return (
-        <Card style={{ marginTop: 20,padding:20, marginLeft:10, marginRight:10 }}>
+        <Card style={styles.container}>
             <Card.Title title={`ID: ${item.id}`} titleStyle={{fontFamily:'Roboto-Bold', fontSize:18}} />
             <Card.Content>
-                <Text variant="bodyMedium" style={{fontFamily:'Roboto-Light', fontSize:15}}>{item.noteText}</Text>
+                <Text variant="bodyMedium" style={styles.text}>{item.noteText}</Text>
             </Card.Content>
             <Card.Actions>
                 <IconButton icon="lead-pencil" size={22} animated onPress={()=>togUpd(item)} />

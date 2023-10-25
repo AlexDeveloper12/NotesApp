@@ -1,12 +1,13 @@
 import React from "react";
 import { View } from 'react-native';
 import { IconButton } from "react-native-paper";
+import styles from "../../styles/AddNoteButtonStyles/AddNoteButtonStyles";
 
 function AddNoteButton({toggleModal}) {
     return (
-        <View style={{ marginTop: 20, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={styles.AddNoteButtonContainer}>
             <IconButton icon="plus" mode="contained"
-                style={{ backgroundColor: '#5acc83' }}
+                style={styles.btnBackgroundColour}
                 onPress={toggleModal}
                 size={25}
                 iconColor='white' >

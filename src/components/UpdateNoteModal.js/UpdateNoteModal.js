@@ -3,8 +3,9 @@ import React from "react";
 import { View } from 'react-native';
 import { TextInput, Button } from "react-native-paper";
 import Modal from 'react-native-modal';
-
 import useInput from "../../hooks/useInput";
+import styles from "../../styles/UpdateNoteModalStyles/UpdateNoteModalStyles";
+import commonStyles from "../../styles/CommonStyles/CommonStyles";
 
 function UpdateNoteModal({ isVisible, toggleModal, noteData }) {
 
@@ -20,27 +21,23 @@ function UpdateNoteModal({ isVisible, toggleModal, noteData }) {
         <Modal
             isVisible={isVisible}
             onDismiss={toggleModal}
-            style={{height:'80%', backgroundColor:'#fff'}}
+            style={styles.modalContainer}
         >
-            <View style={{ flex: 1 }}>
+            <View style={styles.innerContainer}>
                 <TextInput
-                    style={{ verticalAlign: 'top', flex:3 }}
+                    style={styles.input}
                     autoFocus
                     value={updateNoteQuery.value}
                     onChangeText={updateNoteQuery.handleChange} />
-                <View style={{
-                    flex: 1, justifyContent: 'center',
-                    alignItems: 'center',
-                    flexDirection:'row'
-                }}>
+                <View style={commonStyles.btnActionContainer}>
                     <Button mode="contained"
-                        style={{ padding: 5, borderRadius: 30, width: '40%', marginRight:5 }}
+                        style={commonStyles.btnLeft}
                         onPress={update} labelStyle={{fontFamily:'Roboto-Light', fontSize:15}} >
                         Update
                     </Button>
                     <Button mode="contained"
                         buttonColor="red"
-                        style={{padding:5, borderRadius:30, width:'40%', marginLeft:5}}
+                        style={commonStyles.btnRight}
                         onPress={toggleModal} labelStyle={{fontFamily:'Roboto-Light', fontSize:15}}>
                             Cancel
                         </Button>

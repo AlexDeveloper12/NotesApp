@@ -4,6 +4,8 @@ import { Button, Portal, Text, TextInput } from "react-native-paper";
 import Modal from 'react-native-modal';
 import moment from 'moment';
 import useInput from "../../hooks/useInput";
+import styles from "../../styles/AddNoteModalStyles/AddNoteModalStyles";
+import commonStyles from "../../styles/CommonStyles/CommonStyles";
 
 function AddNoteModal({ isVisible, toggleModal, addNote }) {
 
@@ -36,31 +38,27 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
             <Modal
                 visible={isVisible}
                 onDismiss={toggleModal}
-                style={{ height: '80%', backgroundColor: '#fff' }}
+                style={styles.modalContainer}
                 animationIn={"bounce"}
                 animationOut={"slideInDown"}
                 >
                 <View style={{ flex: 1 }}>
                     <TextInput multiline
-                        style={{ height: 200, flex: 5, verticalAlign: 'top' }}
+                        style={styles.input}
                         autoFocus
                         value={addNoteQuery.value}
                         onChangeText={addNoteQuery.handleChange}
                         maxLength={200}
                     />
-                    <View style={{
-                        flex: 1, justifyContent: 'center',
-                        alignItems: 'center',
-                        flexDirection:'row'
-                    }}>
+                    <View style={commonStyles.actionButtonContainer}>
                         <Button mode="contained"
-                            style={{ padding: 5, borderRadius: 30, width: '40%', marginRight:5 }}
+                            style={commonStyles.btnLeft}
                             onPress={add} >
                             Add
                         </Button>
                         <Button mode="contained"
                             buttonColor="red"
-                            style={{ padding: 5, borderRadius: 30, width: '40%', marginLeft:5 }}
+                            style={commonStyles.btnRight}
                             onPress={toggleModal}
                         >
                             Close
