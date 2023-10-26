@@ -17,6 +17,9 @@ const commonStyles = StyleSheet.create({
         flex: 1, justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row'
+    },
+    btnLabel:{
+        fontFamily:'Roboto-Light', fontSize:15
     }
 });
 

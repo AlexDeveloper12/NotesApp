@@ -34,56 +34,53 @@ function App(): JSX.Element {
   const notes = useArray([]);
   const [filteredNotes, setFilteredNotes] = useState([]);
   const [chosenNoteID, setChosenNoteID] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
   const [chosenNoteData, setChosenNoteData] = useState({});
 
   const addNoteToStorage = async (data) => {
-    // console.log(data);
-    // console.log(JSON.stringify(data));
-    let randomNumber = String(Math.floor((Math.random() * 10000) + 1));
+    //let randomNumber = String(Math.floor((Math.random() * 10000) + 1));
 
-    try {
+    let nextID = Math.max(...notes.value.map(o => o.id), 1) + 1;
 
-      const newNotes = [...notes.value, { id: randomNumber, noteText: data }];
+    console.log(nextID);
 
-      await AsyncStorage.setItem('note', JSON.stringify(newNotes));
+    let noteItems = await getNotes();
 
-      notes.setValue(newNotes);
+    const noteToBeSaved = { id: nextID, noteText: data };
 
-    }
-    catch (error) {
-      console.log(error);
-    }
+    noteItems.push(noteToBeSaved);
+
+    await AsyncStorage.setItem(
+      "note",
+      JSON.stringify(noteItems)
+    )
 
     toggleModal();
-    getNotes();
+    getNotes()
+    .then((note)=>{
+      notes.setValue(note);
+    })
   }
 
   const getNotes = async () => {
 
-    try {
-      notes.setValue(JSON.parse(await AsyncStorage.getItem('note')));
-    }
-    catch (error) {
-      console.log(error)
-    };
+    let currentNotes = await AsyncStorage.getItem('note');
+    return currentNotes ? JSON.parse(currentNotes) : [];
+
   }
 
   useEffect(() => {
-    getNotes();
-  }, [notes.value]);
+
+    getNotes()
+      .then((note) => {
+        notes.setValue(note);
+      });
+
+    const largestID = Math.max(...notes.value.map(o => o.id), 1);
+
+    console.log(largestID);
 
 
-  const showDeleteIndicator = () => {
-    return (
-      <View style={{ marginTop: 20 }}>
-        <ActivityIndicator animating={isDeleting} color={MD2Colors.green400} size={40} />
-        <Text style={{ color: '#fff', textAlign: 'center', justifyContent: 'center', marginTop: 20, fontSize: 15, fontFamily: 'Roboto-Medium' }}>Deleting note...</Text>
-      </View>
-
-    )
-
-  }
+  }, []);
 
   const renderNotes = ({ item, index }) => {
     return (
@@ -109,10 +106,9 @@ function App(): JSX.Element {
     //we are filtering the list and only returing the values in the notes where the id is not equal to the 
     //one passed in parameter, ie we are only returning the ones that don't have the id of the note we clicked
     const newNotes = notes.value.filter(note => note.id != id);
-    
+
     //we then set the async storage value of the key note equal to the new array
     await AsyncStorage.setItem('note', JSON.stringify(newNotes));
-    setFilteredNotes(newNotes);
     notes.setValue(newNotes);
   }
 
@@ -124,6 +120,21 @@ function App(): JSX.Element {
     );
 
     // console.log(e);
+  }
+
+  const updateNote = async (id, text) => {
+
+    try {
+
+      const myNotes = notes.value;
+      const noteToUpdate = notes.value.filter((note) => note.id === id);
+
+      //await AsyncStorage.setItem('note', JSON.stringify(noteData));
+      toggleUpdateModal();
+    }
+    catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -140,15 +151,7 @@ function App(): JSX.Element {
           toggleModal={toggleModal} />
 
         {
-          isDeleting ?
-            (
-              showDeleteIndicator()
-            )
-            : null
-        }
-
-        {
-          notes.value === null || notes.value.length === 0 ?
+          notes.value === null || notes.value === undefined || notes.value.length === 0 ?
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Text variant='headlineSmall' style={{ color: '#fff', marginTop: 10 }}>There are currently no notes.</Text>
             </View>
@@ -156,6 +159,7 @@ function App(): JSX.Element {
               <FlatList
                 keyExtractor={(item) => item.id}
                 data={searchQuery.value > 0 && notes.value.length > 0 ? filteredNotes : notes.value}
+                // data={notes.value}
                 renderItem={renderNotes}
                 contentContainerStyle={{ width: '100%' }}
               />
@@ -191,6 +195,7 @@ function App(): JSX.Element {
             isVisible={updateModalOpen}
             toggleModal={toggleUpdateModal}
             noteData={chosenNoteData}
+            update={updateNote}
           />
 
           : null

@@ -7,15 +7,9 @@ import useInput from "../../hooks/useInput";
 import styles from "../../styles/UpdateNoteModalStyles/UpdateNoteModalStyles";
 import commonStyles from "../../styles/CommonStyles/CommonStyles";
 
-function UpdateNoteModal({ isVisible, toggleModal, noteData }) {
+function UpdateNoteModal({ isVisible, toggleModal, noteData, update }) {
 
     const updateNoteQuery = useInput(noteData.noteText);
-
-    const update = async () => {
-        noteData.noteText = updateNoteQuery.value;
-
-        await AsyncStorage.setItem('note', JSON.stringify(noteData));
-    }
 
     return (
         <Modal
@@ -29,16 +23,16 @@ function UpdateNoteModal({ isVisible, toggleModal, noteData }) {
                     autoFocus
                     value={updateNoteQuery.value}
                     onChangeText={updateNoteQuery.handleChange} />
-                <View style={commonStyles.btnActionContainer}>
+                <View style={commonStyles.actionButtonContainer}>
                     <Button mode="contained"
                         style={commonStyles.btnLeft}
-                        onPress={update} labelStyle={{fontFamily:'Roboto-Light', fontSize:15}} >
+                        onPress={()=>update(noteData.id,updateNoteQuery.value)} labelStyle={commonStyles.btnLabel} >
                         Update
                     </Button>
                     <Button mode="contained"
                         buttonColor="red"
                         style={commonStyles.btnRight}
-                        onPress={toggleModal} labelStyle={{fontFamily:'Roboto-Light', fontSize:15}}>
+                        onPress={toggleModal} labelStyle={commonStyles.btnLabel}>
                             Cancel
                         </Button>
                 </View>
