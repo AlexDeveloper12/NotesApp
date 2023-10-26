@@ -37,7 +37,6 @@ function App(): JSX.Element {
   const [chosenNoteData, setChosenNoteData] = useState({});
 
   const addNoteToStorage = async (data) => {
-    //let randomNumber = String(Math.floor((Math.random() * 10000) + 1));
 
     let nextID = Math.max(...notes.value.map(o => o.id), 1) + 1;
 
@@ -55,6 +54,7 @@ function App(): JSX.Element {
     )
 
     toggleModal();
+
     getNotes()
     .then((note)=>{
       notes.setValue(note);
@@ -118,8 +118,9 @@ function App(): JSX.Element {
     setFilteredNotes(
       filteredNotes.filter(note => note.noteText.includes(e))
     );
+    console.log(filteredNotes);
 
-    // console.log(e);
+    console.log(e);
   }
 
   const updateNote = async (id, text) => {
@@ -129,7 +130,7 @@ function App(): JSX.Element {
       const myNotes = notes.value;
       const noteToUpdate = notes.value.filter((note) => note.id === id);
 
-      //await AsyncStorage.setItem('note', JSON.stringify(noteData));
+      await AsyncStorage.setItem('note', JSON.stringify(noteData));
       toggleUpdateModal();
     }
     catch (error) {
@@ -159,7 +160,6 @@ function App(): JSX.Element {
               <FlatList
                 keyExtractor={(item) => item.id}
                 data={searchQuery.value > 0 && notes.value.length > 0 ? filteredNotes : notes.value}
-                // data={notes.value}
                 renderItem={renderNotes}
                 contentContainerStyle={{ width: '100%' }}
               />
@@ -204,24 +204,5 @@ function App(): JSX.Element {
     </PaperProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;

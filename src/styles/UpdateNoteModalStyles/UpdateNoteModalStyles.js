@@ -9,7 +9,9 @@ const styles = StyleSheet.create({
         flex: 1
     },
     input: {
-        verticalAlign: 'top', flex: 3
+        verticalAlign: 'top', 
+        flex: 3,
+        textAlign:'center'
     },
 
 });

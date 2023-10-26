@@ -8,7 +8,8 @@ import commonStyles from "../../styles/CommonStyles/CommonStyles";
 function DeleteNoteModal({ isVisible, toggleModal, deleteNote, noteID }) {
     return (
         <Modal
-            isVisible={isVisible} onDismiss={toggleModal}
+            isVisible={isVisible} 
+            onDismiss={toggleModal}
             style={styles.modalContainer}
         >
             <View style={styles.innerContainer}>
