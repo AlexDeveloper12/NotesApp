@@ -12,21 +12,24 @@ import {
   FlatList
 } from 'react-native';
 
-import { Button, PaperProvider, IconButton, Text, ActivityIndicator, MD2Colors, Modal, Portal, TextInput } from 'react-native-paper';
+import { Button, PaperProvider, BottomNavigation, IconButton, Text, ActivityIndicator, MD2Colors, Modal, Portal, TextInput } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationContainer } from '@react-navigation/native';
 import SearchNotesBar from './src/components/SearchNotesBar';
 import useInput from './src/hooks/useInput';
 import useModal from './src/hooks/useModal';
 import AddNoteModal from './src/components/AddNoteModal/AddNoteModal';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Note from './src/components/Note/Note';
 import useArray from './src/hooks/useArray';
 import DeleteNoteModal from './src/components/DeleteNoteModal/DeleteNoteModal';
 import UpdateNoteModal from './src/components/UpdateNoteModal.js/UpdateNoteModal';
 import Header from './src/components/Header/Header';
 import AddNoteButton from './src/components/AddNoteButton/AddNoteButton';
+import Favourites from './src/components/Favourites/Favourites';
+
+
 
 function App(): JSX.Element {
-
   const searchQuery = useInput('');
   const [itemModalOpen, setItemModalOpen, toggleModal] = useModal();
   const [deleteModalOpen, setDeleteModalOpen, toggleDeleteModal] = useModal();
@@ -44,7 +47,7 @@ function App(): JSX.Element {
 
     let noteItems = await getNotes();
 
-    const noteToBeSaved = { id: nextID, noteText: data };
+    const noteToBeSaved = { id: nextID, noteText: data, isFavourite: false };
 
     noteItems.push(noteToBeSaved);
 
@@ -56,9 +59,9 @@ function App(): JSX.Element {
     toggleModal();
 
     getNotes()
-    .then((note)=>{
-      notes.setValue(note);
-    })
+      .then((note) => {
+        notes.setValue(note);
+      })
   }
 
   const getNotes = async () => {
@@ -73,6 +76,7 @@ function App(): JSX.Element {
     getNotes()
       .then((note) => {
         notes.setValue(note);
+        setFilteredNotes(note);
       });
 
     const largestID = Math.max(...notes.value.map(o => o.id), 1);
@@ -85,7 +89,13 @@ function App(): JSX.Element {
   const renderNotes = ({ item, index }) => {
     return (
       <View>
-        <Note item={item} deleteNote={deleteNote} togUpd={toggleUpdate} togDel={toggleDelete} />
+        <Note
+          item={item}
+          deleteNote={deleteNote}
+          togUpd={toggleUpdate}
+          togDel={toggleDelete}
+          togFav={toggleFavourite}
+        />
       </View>
     )
   };
@@ -118,9 +128,7 @@ function App(): JSX.Element {
     setFilteredNotes(
       filteredNotes.filter(note => note.noteText.includes(e))
     );
-    console.log(filteredNotes);
 
-    console.log(e);
   }
 
   const updateNote = async (id, text) => {
@@ -128,7 +136,7 @@ function App(): JSX.Element {
     try {
 
       const myNotes = notes.value;
-      const noteToUpdate = notes.value.filter((note) => note.id === id);
+      const noteToUpdate = await AsyncStorage.getItem('note');
 
       await AsyncStorage.setItem('note', JSON.stringify(noteData));
       toggleUpdateModal();
@@ -136,6 +144,47 @@ function App(): JSX.Element {
     catch (error) {
       console.log(error)
     }
+  }
+
+  const toggleFavourite = async (id) => {
+
+    let noteArray = [];
+
+    try {
+
+
+      let noteToToggleFavourite = await AsyncStorage.getItem('note');
+
+      if (noteToToggleFavourite !== null) {
+        noteArray = JSON.parse(noteToToggleFavourite);
+      }
+      noteArray.push(noteToToggleFavourite);
+
+      const parsedData = JSON.parse(noteToToggleFavourite);
+
+      const getSelectedNote = parsedData.filter((note) => note.id === id)[0];
+
+      let isFavouriteTrueFalse = false;
+
+
+      // console.log(parsedData);
+      console.log(getSelectedNote);
+      if (getSelectedNote.isFavourite === false) {
+        getSelectedNote.isFavourite = true;
+      }
+      else {
+        getSelectedNote.isFavourite = false;
+      }
+
+      const updatedNoteString = JSON.stringify(getSelectedNote);
+
+      AsyncStorage.mergeItem('note', updatedNoteString);
+
+    }
+    catch (error) {
+      console.log(error);
+    }
+
   }
 
   return (
@@ -159,7 +208,7 @@ function App(): JSX.Element {
             : <View style={{ flex: 1 }}>
               <FlatList
                 keyExtractor={(item) => item.id}
-                data={searchQuery.value > 0 && notes.value.length > 0 ? filteredNotes : notes.value}
+                data={searchQuery.value.length > 0 && notes.value.length > 0 ? filteredNotes : notes.value}
                 renderItem={renderNotes}
                 contentContainerStyle={{ width: '100%' }}
               />
@@ -202,7 +251,30 @@ function App(): JSX.Element {
       }
 
     </PaperProvider>
-  );
+  )
+}
+
+function BottomTabs() {
+
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([{
+    key: 'Home', title: 'Home', icon: 'Home'
+  }, {
+    key: 'Favourites', title: 'Favourites', icon: 'star'
+  }])
+
+  const renderScene = BottomNavigation.SceneMap({
+    Home: App
+  });
+
+  return (
+
+    <BottomNavigation
+      navigationState={{ index, routes }}
+      onIndexChange={setIndex}
+      renderScene={renderScene}
+    />
+  )
 }
 
 export default App;

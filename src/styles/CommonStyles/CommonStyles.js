@@ -19,7 +19,7 @@ const commonStyles = StyleSheet.create({
         flexDirection: 'row'
     },
     btnLabel:{
-        fontFamily:'Roboto-Light', fontSize:15
+        fontFamily:'Roboto-Light', fontSize:17
     }
 });
 

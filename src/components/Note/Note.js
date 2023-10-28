@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 import { Card, IconButton } from 'react-native-paper';
 import styles from '../../styles/NoteStyles/NoteStyles';
 
-function Note({ item, togDel, togUpd }) {
+function Note({ item, togDel, togUpd, togFav }) {
 
     return (
         <Card style={styles.container}>
@@ -12,6 +12,7 @@ function Note({ item, togDel, togUpd }) {
                 <Text variant="bodyMedium" style={styles.text}>{item.noteText}</Text>
             </Card.Content>
             <Card.Actions>
+                <IconButton icon="star" iconColor={item.isFavourite ? 'yellow' : 'red'} size={22} onPress={()=>togFav(item.id)} />
                 <IconButton icon="lead-pencil" size={22} animated onPress={()=>togUpd(item)} />
                 <IconButton icon="trash-can" size={22} animated onPress={()=>togDel(item.id)} />
             </Card.Actions>

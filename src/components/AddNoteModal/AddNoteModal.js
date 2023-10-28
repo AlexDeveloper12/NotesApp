@@ -41,12 +41,14 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
                 <View style={commonStyles.actionButtonContainer}>
                     <Button mode="contained"
                         style={commonStyles.btnLeft}
+                        labelStyle={commonStyles.btnLabel}
                         onPress={add} >
                         Add
                     </Button>
                     <Button mode="contained"
                         buttonColor="red"
                         style={commonStyles.btnRight}
+                        labelStyle={commonStyles.btnLabel}
                         onPress={toggleModal}
                     >
                         Close

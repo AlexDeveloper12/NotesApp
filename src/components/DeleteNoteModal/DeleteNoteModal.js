@@ -12,7 +12,7 @@ function DeleteNoteModal({ isVisible, toggleModal, deleteNote, noteID }) {
             onDismiss={toggleModal}
             style={styles.modalContainer}
         >
-            <View style={styles.innerContainer}>
+            <View style={{height:300, backgroundColor:'white'}}>
                 <Text style={styles.headerText}>
                     Are you sure you want to delete this note?
                 </Text>
