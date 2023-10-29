@@ -39,6 +39,8 @@ function App(): JSX.Element {
   const [filteredNotes, setFilteredNotes] = useState([]);
   const [chosenNoteID, setChosenNoteID] = useState(0);
   const [chosenNoteData, setChosenNoteData] = useState({});
+  const [isAscendFilterActive,setIsAscendFilterActive]  = useState(false);
+  const [isDescendFilterActive, setIsDescenFilterActive] = useState(false);
 
   const addNoteToStorage = async (data) => {
 
@@ -191,15 +193,27 @@ function App(): JSX.Element {
   }
 
   const sortNotesAscending = () => {
+
+    if(isDescendFilterActive){
+      setIsDescenFilterActive(false);
+    }
+
+    setIsAscendFilterActive(!isAscendFilterActive);
     var sortMe = notes.value.sort(({dateCreated:a}, {dateCreated:b}) => a < b ? -1 : a > b ? 1 : 0);
 
-    console.log(sortMe);
     notes.setValue(sortMe);
   }
 
   const sortNotesDescending = () => {
-    notes.setValue(notes.value.sort().reverse());
-    getNotes();
+
+    if(isAscendFilterActive){
+      setIsAscendFilterActive(false);
+    }
+
+    setIsDescenFilterActive(!isDescendFilterActive);
+    var sortDescending = notes.value.sort(({dateCreated:a}, {dateCreated:b}) => a < b ? -1 : a > b ? 1 : 0).reverse();
+
+    notes.setValue(sortDescending);
   }
 
   return (
@@ -225,6 +239,8 @@ function App(): JSX.Element {
               <Sort 
                 ascending={sortNotesAscending}
                 descending={sortNotesDescending}
+                ascActive={isAscendFilterActive}
+                descActive={isDescendFilterActive}
               />
               <FlatList
                 keyExtractor={(item) => item.id}
