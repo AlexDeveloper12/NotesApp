@@ -18,21 +18,34 @@ const commonStyles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row'
     },
-    btnLabel:{
-        fontFamily:'Roboto-Light', fontSize:17
+    btnLabel: {
+        fontFamily: 'Roboto-Light', fontSize: 17
     },
-    white:{
-        color:'white'
+    white: {
+        color: 'white'
     },
-    robotoLight:{
-        fontFamily:'Roboto-Light'
+    robotoLight: {
+        fontFamily: 'Roboto-Light'
     },
-    robotoMedium:{
-        fontFamily:'Roboto-Medium'
+    robotoMedium: {
+        fontFamily: 'Roboto-Medium'
     },
 
-    commonSize:{
-        fontSize:16
+    commonSize: {
+        fontSize: 16
+    },
+    commonContainer: {
+        backgroundColor: '#1f454d',
+        flex: 1
+    },
+
+    centerElement: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    noDataExistsText:{
+        color: '#fff', 
+        marginTop: 10
     }
 
 

@@ -8,7 +8,8 @@ import {
 import { Button, PaperProvider, IconButton, Text, ActivityIndicator, MD2Colors, Modal, Portal, TextInput } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
-import { SearchNotesBar, useInput, useArray, useModal, AddNoteModal, Note, DeleteNoteModal, UpdateNoteModal, Header, AddNoteButton, Favourites, NotesCount, Sort,a } from '../Index/Index';
+import { SearchNotesBar, useInput, useArray, useModal, AddNoteModal, Note, DeleteNoteModal, UpdateNoteModal, AddNoteButton, Favourites, NotesCount, Sort,a } from '../Index/Index';
+import commonStyles from '../../styles/CommonStyles/CommonStyles';
 
 function Home() {
     const searchQuery = useInput('');
@@ -148,8 +149,6 @@ function Home() {
 
       let isFavouriteTrueFalse = false;
 
-
-      // console.log(parsedData);
       console.log(getSelectedNote);
       if (getSelectedNote.isFavourite === false) {
         getSelectedNote.isFavourite = true;
@@ -195,8 +194,7 @@ function Home() {
 
   return (
     <PaperProvider>
-      <View style={{ backgroundColor: '#1f454d', flex: 1 }}>
-        <Header />
+      <View style={commonStyles.commonContainer}>
 
         <SearchNotesBar
           value={searchQuery.value}
@@ -208,8 +206,8 @@ function Home() {
 
         {
           notes.value === null || notes.value === undefined || notes.value.length === 0 ?
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Text variant='headlineSmall' style={{ color: '#fff', marginTop: 10 }}>There are currently no notes.</Text>
+            <View style={commonStyles.centerElement}>
+              <Text variant='headlineSmall' style={commonStyles.noDataExistsText}>There are currently no notes.</Text>
             </View>
             : <View style={{ flex: 1 }}>
               <NotesCount count={notes.value.length} />

@@ -7,7 +7,6 @@ import AddNoteModal from '../AddNoteModal/AddNoteModal';
 import Note from '../Note/Note';
 import DeleteNoteModal from '../DeleteNoteModal/DeleteNoteModal';
 import UpdateNoteModal from '../UpdateNoteModal.js/UpdateNoteModal';
-import Header from '../Header/Header';
 import AddNoteButton from '../AddNoteButton/AddNoteButton';
 import Favourites from '../Favourites/Favourites';
 import NotesCount from '../NotesCount/NotesCount';
@@ -22,7 +21,6 @@ export {
     Note,
     DeleteNoteModal,
     UpdateNoteModal,
-    Header,
     AddNoteButton,
     Favourites,
     NotesCount,
