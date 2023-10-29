@@ -6,7 +6,9 @@ import {
 import { PaperProvider, BottomNavigation, IconButton, Text, ActivityIndicator, MD2Colors, Modal, Portal, TextInput } from 'react-native-paper';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// import 'react-native-gesture-handler';
 import { SearchNotesBar, useInput, useArray, useModal, AddNoteModal, Note, DeleteNoteModal, UpdateNoteModal, Header, AddNoteButton, Favourites, NotesCount, Sort,a } from './src/components/Index/Index';
+import NavigationTabs from './navigation/NavigationTabs';
 
 function App(): JSX.Element {
   const searchQuery = useInput('');
@@ -24,12 +26,9 @@ function App(): JSX.Element {
 
     let nextID = Math.max(...notes.value.map(o => o.id), 1) + 1;
 
-    console.log(nextID);
-
     let noteItems = await getNotes();
 
     const noteToBeSaved = { id: nextID, noteText: data, isFavourite: false, dateCreated: moment().format("DD-MM-YYYY HH:mm:ss") };
-    console.log(noteToBeSaved);
 
     noteItems.push(noteToBeSaved);
 
@@ -55,15 +54,15 @@ function App(): JSX.Element {
 
   useEffect(() => {
 
-    getNotes()
-      .then((note) => {
-        notes.setValue(note);
-        setFilteredNotes(note);
-      });
+    // getNotes()
+    //   .then((note) => {
+    //     notes.setValue(note);
+    //     setFilteredNotes(note);
+    //   });
 
-    const largestID = Math.max(...notes.value.map(o => o.id), 1);
+    // const largestID = Math.max(...notes.value.map(o => o.id), 1);
 
-    console.log(largestID);
+    // console.log(largestID);
 
 
   }, []);
@@ -197,98 +196,10 @@ function App(): JSX.Element {
   return (
     <PaperProvider>
       <View style={{ backgroundColor: '#1f454d', flex: 1 }}>
-        <Header />
-
-        <SearchNotesBar
-          value={searchQuery.value}
-          handleChange={searchNotesFilter}
-        />
-
-        <AddNoteButton
-          toggleModal={toggleModal} />
-
-        {
-          notes.value === null || notes.value === undefined || notes.value.length === 0 ?
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Text variant='headlineSmall' style={{ color: '#fff', marginTop: 10 }}>There are currently no notes.</Text>
-            </View>
-            : <View style={{ flex: 1 }}>
-              <NotesCount count={notes.value.length} />
-              <Sort
-                ascending={sortNotesAscending}
-                descending={sortNotesDescending}
-                ascActive={isAscendFilterActive}
-                descActive={isDescendFilterActive}
-              />
-              <FlatList
-                keyExtractor={(item) => item.id}
-                data={searchQuery.value.length > 0 && notes.value.length > 0 ? filteredNotes : notes.value}
-                renderItem={renderNotes}
-                contentContainerStyle={{ width: '100%' }}
-              />
-            </View>
-        }
-
-      </View>
-
-      {
-        itemModalOpen ?
-          <AddNoteModal
-            isVisible={itemModalOpen}
-            toggleModal={toggleModal}
-            addNote={addNoteToStorage}
-          />
-          : null
-      }
-
-      {
-        deleteModalOpen ?
-          <DeleteNoteModal
-            isVisible={deleteModalOpen}
-            toggleModal={toggleDeleteModal}
-            noteID={chosenNoteID}
-            deleteNote={deleteNote}
-          />
-          : null
-      }
-
-      {
-        updateModalOpen ?
-          <UpdateNoteModal
-            isVisible={updateModalOpen}
-            toggleModal={toggleUpdateModal}
-            noteData={chosenNoteData}
-            update={updateNote}
-          />
-
-          : null
-      }
+        <NavigationTabs/>
+        </View>
 
     </PaperProvider>
-  )
-}
-
-function BottomTabs() {
-
-  const [index, setIndex] = useState(0);
-  const [routes] = useState([{
-    key: 'home', title: 'Home', icon: 'Home'
-  }, {
-    key: 'Favourites', title: 'Favourites', icon: 'star'
-  }])
-
-  const renderScene = BottomNavigation.SceneMap({
-    home: App
-  });
-
-  return (
-
-    <BottomNavigation
-      navigationState={{ index, routes }}
-      onIndexChange={setIndex}
-      renderScene={renderScene}
-      theme={{ colors: { secondaryContainer: 'yellow' } }}
-    />
   )
 }
 

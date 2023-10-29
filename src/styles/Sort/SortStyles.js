@@ -2,7 +2,8 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     sortContainer:{
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginTop:10
     }
 })
 
