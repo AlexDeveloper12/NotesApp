@@ -20,7 +20,22 @@ const commonStyles = StyleSheet.create({
     },
     btnLabel:{
         fontFamily:'Roboto-Light', fontSize:17
+    },
+    white:{
+        color:'white'
+    },
+    robotoLight:{
+        fontFamily:'Roboto-Light'
+    },
+    robotoMedium:{
+        fontFamily:'Roboto-Medium'
+    },
+
+    commonSize:{
+        fontSize:16
     }
+
+
 });
 
 export default commonStyles;

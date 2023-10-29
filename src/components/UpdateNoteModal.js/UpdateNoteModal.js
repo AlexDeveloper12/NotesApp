@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
 import { View } from 'react-native';
 import { TextInput, Button } from "react-native-paper";

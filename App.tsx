@@ -26,8 +26,9 @@ import UpdateNoteModal from './src/components/UpdateNoteModal.js/UpdateNoteModal
 import Header from './src/components/Header/Header';
 import AddNoteButton from './src/components/AddNoteButton/AddNoteButton';
 import Favourites from './src/components/Favourites/Favourites';
-
-
+import NotesCount from './src/components/NotesCount/NotesCount';
+import moment from 'moment';
+import Sort from './src/components/Sort/Sort';
 
 function App(): JSX.Element {
   const searchQuery = useInput('');
@@ -47,7 +48,8 @@ function App(): JSX.Element {
 
     let noteItems = await getNotes();
 
-    const noteToBeSaved = { id: nextID, noteText: data, isFavourite: false };
+    const noteToBeSaved = { id: nextID, noteText: data, isFavourite: false, dateCreated: moment().format("DD-MM-YYYY HH:mm:ss") };
+    console.log(noteToBeSaved);
 
     noteItems.push(noteToBeSaved);
 
@@ -104,6 +106,7 @@ function App(): JSX.Element {
     console.log(updateData);
     setChosenNoteData(updateData);
     toggleUpdateModal();
+    sortNotesAscending();
   }
 
   const toggleDelete = (id) => {
@@ -187,6 +190,18 @@ function App(): JSX.Element {
 
   }
 
+  const sortNotesAscending = () => {
+    var sortMe = notes.value.sort(({dateCreated:a}, {dateCreated:b}) => a < b ? -1 : a > b ? 1 : 0);
+
+    console.log(sortMe);
+    notes.setValue(sortMe);
+  }
+
+  const sortNotesDescending = () => {
+    notes.setValue(notes.value.sort().reverse());
+    getNotes();
+  }
+
   return (
     <PaperProvider>
       <View style={{ backgroundColor: '#1f454d', flex: 1 }}>
@@ -206,6 +221,11 @@ function App(): JSX.Element {
               <Text variant='headlineSmall' style={{ color: '#fff', marginTop: 10 }}>There are currently no notes.</Text>
             </View>
             : <View style={{ flex: 1 }}>
+              <NotesCount count={notes.value.length} />
+              <Sort 
+                ascending={sortNotesAscending}
+                descending={sortNotesDescending}
+              />
               <FlatList
                 keyExtractor={(item) => item.id}
                 data={searchQuery.value.length > 0 && notes.value.length > 0 ? filteredNotes : notes.value}

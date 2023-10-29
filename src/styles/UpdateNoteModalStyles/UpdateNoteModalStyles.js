@@ -10,8 +10,7 @@ const styles = StyleSheet.create({
     },
     input: {
         verticalAlign: 'top', 
-        flex: 3,
-        textAlign:'center'
+        flex: 3
     },
 
 });

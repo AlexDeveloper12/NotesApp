@@ -9,7 +9,7 @@ import commonStyles from "../../styles/CommonStyles/CommonStyles";
 function AddNoteModal({ isVisible, toggleModal, addNote }) {
 
     const addNoteQuery = useInput('');
-    const maxCharacters = useState(200);
+    const maxCharacters = useState(500);
 
     const add = () => {
 
@@ -30,13 +30,13 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
             animationIn={"bounce"}
             animationOut={"slideInDown"}
         >
-            <View style={{ flex: 1 }}>
+            <View style={{flex:1}}>
                 <TextInput multiline
                     style={styles.input}
                     autoFocus
                     value={addNoteQuery.value}
                     onChangeText={addNoteQuery.handleChange}
-                    maxLength={200}
+                    maxLength={500}
                 />
                 <View style={commonStyles.actionButtonContainer}>
                     <Button mode="contained"

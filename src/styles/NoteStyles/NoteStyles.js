@@ -10,6 +10,10 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: 'Roboto-Light',
         fontSize: 15
+    },
+    noteTitle: {
+        fontFamily: 'Roboto-Bold',
+        fontSize: 18
     }
 
 });
