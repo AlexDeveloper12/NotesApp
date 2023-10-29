@@ -1,34 +1,12 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React, { useEffect, useState } from 'react';
 import {
-  StyleSheet,
   View,
   FlatList
 } from 'react-native';
-
-import { Button, PaperProvider, BottomNavigation, IconButton, Text, ActivityIndicator, MD2Colors, Modal, Portal, TextInput } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationContainer } from '@react-navigation/native';
-import SearchNotesBar from './src/components/SearchNotesBar';
-import useInput from './src/hooks/useInput';
-import useModal from './src/hooks/useModal';
-import AddNoteModal from './src/components/AddNoteModal/AddNoteModal';
-import Note from './src/components/Note/Note';
-import useArray from './src/hooks/useArray';
-import DeleteNoteModal from './src/components/DeleteNoteModal/DeleteNoteModal';
-import UpdateNoteModal from './src/components/UpdateNoteModal.js/UpdateNoteModal';
-import Header from './src/components/Header/Header';
-import AddNoteButton from './src/components/AddNoteButton/AddNoteButton';
-import Favourites from './src/components/Favourites/Favourites';
-import NotesCount from './src/components/NotesCount/NotesCount';
+import { PaperProvider, BottomNavigation, IconButton, Text, ActivityIndicator, MD2Colors, Modal, Portal, TextInput } from 'react-native-paper';
 import moment from 'moment';
-import Sort from './src/components/Sort/Sort';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SearchNotesBar, useInput, useArray, useModal, AddNoteModal, Note, DeleteNoteModal, UpdateNoteModal, Header, AddNoteButton, Favourites, NotesCount, Sort,a } from './src/components/Index/Index';
 
 function App(): JSX.Element {
   const searchQuery = useInput('');
@@ -39,7 +17,7 @@ function App(): JSX.Element {
   const [filteredNotes, setFilteredNotes] = useState([]);
   const [chosenNoteID, setChosenNoteID] = useState(0);
   const [chosenNoteData, setChosenNoteData] = useState({});
-  const [isAscendFilterActive,setIsAscendFilterActive]  = useState(false);
+  const [isAscendFilterActive, setIsAscendFilterActive] = useState(false);
   const [isDescendFilterActive, setIsDescenFilterActive] = useState(false);
 
   const addNoteToStorage = async (data) => {
@@ -194,24 +172,24 @@ function App(): JSX.Element {
 
   const sortNotesAscending = () => {
 
-    if(isDescendFilterActive){
+    if (isDescendFilterActive) {
       setIsDescenFilterActive(false);
     }
 
     setIsAscendFilterActive(!isAscendFilterActive);
-    var sortMe = notes.value.sort(({dateCreated:a}, {dateCreated:b}) => a < b ? -1 : a > b ? 1 : 0);
+    var sortMe = notes.value.sort(({ dateCreated: a }, { dateCreated: b }) => a < b ? -1 : a > b ? 1 : 0);
 
     notes.setValue(sortMe);
   }
 
   const sortNotesDescending = () => {
 
-    if(isAscendFilterActive){
+    if (isAscendFilterActive) {
       setIsAscendFilterActive(false);
     }
 
     setIsDescenFilterActive(!isDescendFilterActive);
-    var sortDescending = notes.value.sort(({dateCreated:a}, {dateCreated:b}) => a < b ? -1 : a > b ? 1 : 0).reverse();
+    var sortDescending = notes.value.sort(({ dateCreated: a }, { dateCreated: b }) => a < b ? -1 : a > b ? 1 : 0).reverse();
 
     notes.setValue(sortDescending);
   }
@@ -236,7 +214,7 @@ function App(): JSX.Element {
             </View>
             : <View style={{ flex: 1 }}>
               <NotesCount count={notes.value.length} />
-              <Sort 
+              <Sort
                 ascending={sortNotesAscending}
                 descending={sortNotesDescending}
                 ascActive={isAscendFilterActive}
@@ -294,13 +272,13 @@ function BottomTabs() {
 
   const [index, setIndex] = useState(0);
   const [routes] = useState([{
-    key: 'Home', title: 'Home', icon: 'Home'
+    key: 'home', title: 'Home', icon: 'Home'
   }, {
     key: 'Favourites', title: 'Favourites', icon: 'star'
   }])
 
   const renderScene = BottomNavigation.SceneMap({
-    Home: App
+    home: App
   });
 
   return (
@@ -309,6 +287,7 @@ function BottomTabs() {
       navigationState={{ index, routes }}
       onIndexChange={setIndex}
       renderScene={renderScene}
+      theme={{ colors: { secondaryContainer: 'yellow' } }}
     />
   )
 }
