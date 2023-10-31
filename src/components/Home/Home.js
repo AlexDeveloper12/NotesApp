@@ -10,6 +10,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { SearchNotesBar, useInput, useArray, useModal, AddNoteModal, Note, DeleteNoteModal, UpdateNoteModal, AddNoteButton, Favourites, NotesCount, Sort,a } from '../Index/Index';
 import commonStyles from '../../styles/CommonStyles/CommonStyles';
+import SortAscending from '../../Helpers/SortAscending';
+import SortDescending from '../../Helpers/SortDescending';
 
 function Home() {
     const searchQuery = useInput('');
@@ -175,9 +177,9 @@ function Home() {
     }
 
     setIsAscendFilterActive(!isAscendFilterActive);
-    var sortMe = notes.value.sort(({ dateCreated: a }, { dateCreated: b }) => a < b ? -1 : a > b ? 1 : 0);
+    var sortedAscArray = SortAscending(notes.value);
 
-    notes.setValue(sortMe);
+    notes.setValue(sortedAscArray);
   }
 
   const sortNotesDescending = () => {
@@ -187,9 +189,9 @@ function Home() {
     }
 
     setIsDescenFilterActive(!isDescendFilterActive);
-    var sortDescending = notes.value.sort(({ dateCreated: a }, { dateCreated: b }) => a < b ? -1 : a > b ? 1 : 0).reverse();
+    var sortedDescArray = SortDescending(notes.value);
 
-    notes.setValue(sortDescending);
+    notes.setValue(sortedDescArray);
   }
 
   return (
