@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import {
-  StyleSheet,
   View,
-  FlatList
 } from 'react-native';
 
-import { Button, PaperProvider, IconButton, Text, ActivityIndicator, MD2Colors, Modal, Portal, TextInput } from 'react-native-paper';
+import { PaperProvider, Text } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SearchNotesBar, useInput, useArray, useModal, AddNoteModal, Note, DeleteNoteModal, UpdateNoteModal, AddNoteButton, Favourites, NotesCount, Sort, a } from '../Index/Index';
 import moment from 'moment';
+import {
+  SearchNotesBar, useInput, useArray, useModal, AddNoteModal, Note, DeleteNoteModal, UpdateNoteModal,
+  AddNoteButton, Favourites, NotesCount, Sort,
+} from '../Index/Index';
+
 import commonStyles from '../../styles/CommonStyles/CommonStyles';
 import SortAscending from '../../Helpers/SortAscending';
 import SortDescending from '../../Helpers/SortDescending';
 import GetLargestID from '../../Helpers/GetLargestID';
 import NotesList from '../NotesList/NotesList';
+import FindAndUpdateNote from '../../Helpers/FindAndUpdateNote';
 
 function Home() {
   const searchQuery = useInput('');
@@ -115,29 +118,16 @@ function Home() {
     setFilteredNotes(
       filteredNotes.filter(note => note.noteText.includes(e))
     );
-
   }
 
   const updateNote = async (id, text) => {
 
     try {
-
       const myNotes = notes.value;
-      //const noteToUpdate = await AsyncStorage.getItem('note');
 
-      let chosenNote = myNotes.filter(note => note.id === id);
-      let newNotesArray = myNotes.filter(note => note.id !== id);
-
-      chosenNote[0].noteText = text;
-
-      newNotesArray.push(chosenNote[0]);
-
-      console.log(newNotesArray);
-
-      await AsyncStorage.setItem('note', JSON.stringify(newNotesArray));
+      await FindAndUpdateNote(myNotes, id, text);
 
       toggleUpdateModal();
-
     }
     catch (error) {
       console.log(error)
@@ -149,8 +139,6 @@ function Home() {
     let noteArray = [];
 
     try {
-
-
       let noteToToggleFavourite = await AsyncStorage.getItem('note');
 
       if (noteToToggleFavourite !== null) {
@@ -161,20 +149,18 @@ function Home() {
       const parsedData = JSON.parse(noteToToggleFavourite);
 
       const getSelectedNote = parsedData.filter((note) => note.id === id)[0];
+      const allNotesButSelected = parsedData.filter((note) => note.id !== id);
 
-      let isFavouriteTrueFalse = false;
-
-      console.log(getSelectedNote);
       if (getSelectedNote.isFavourite === false) {
         getSelectedNote.isFavourite = true;
       }
-      else {
+      else if (getSelectedNote.isFavourite === true) {
         getSelectedNote.isFavourite = false;
       }
 
-      const updatedNoteString = JSON.stringify(getSelectedNote);
+      //allNotesButSelected.push(getSelectedNote);
 
-      AsyncStorage.mergeItem('note', updatedNoteString);
+      console.log(getSelectedNote.isFavourite);
 
     }
     catch (error) {

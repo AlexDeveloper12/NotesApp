@@ -1,5 +1,5 @@
 
-import SearchNotesBar from '../SearchNotesBar';
+import SearchNotesBar from '../SearchNotesBar/SearchNotesBar';
 import useInput from '../../hooks/useInput';
 import useModal from '../../hooks/useModal';
 import useArray from '../../hooks/useArray';
