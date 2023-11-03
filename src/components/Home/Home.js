@@ -154,13 +154,13 @@ function Home() {
       if (getSelectedNote.isFavourite === false) {
         getSelectedNote.isFavourite = true;
       }
-      else if (getSelectedNote.isFavourite === true) {
+      else if (getSelectedNote) {
         getSelectedNote.isFavourite = false;
       }
 
-      //allNotesButSelected.push(getSelectedNote);
-
-      console.log(getSelectedNote.isFavourite);
+      allNotesButSelected.push(getSelectedNote);
+      AsyncStorage.setItem('note', JSON.stringify(allNotesButSelected));
+      getNotes();
 
     }
     catch (error) {
