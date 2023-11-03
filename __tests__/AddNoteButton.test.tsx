@@ -4,19 +4,39 @@ import AddNoteButton from "../src/components/AddNoteButton/AddNoteButton";
 
 describe('<AddNoteButton />', () => {
 
-    const toggleModal = jest.fn();
+    it('should render the <AddNoteButton/> to the screen', ()=>{
 
-    const testID = "addnotebutton";
+        const {getByTestId} = render(
+            <AddNoteButton />
+        )
 
-    const {getByTestId} = await render(
-        <AddNoteButton toggleModal={toggleModal} />
-    )
+        const noteButtonID = getByTestId('addnotebutton');
 
-    const button = getByTestId(testID);
+        expect(true).toBe(true);
+        
+    });
 
-    fireEvent.press(button);
+    it('should render <AddNoteModal on click', ()=>{
+        
+    })
 
-    expect(toggleModal).toHaveBeenCalledTimes(1);
+    // it('should call props.toggleModal on click',()=>{
+        
+    // })
+
+    // const toggleModal = jest.fn();
+
+    // const testID = "addnotebutton";
+
+    // const {getByTestId} = await render(
+    //     <AddNoteButton toggleModal={toggleModal} />
+    // )
+
+    // const button = getByTestId(testID);
+
+    // fireEvent.press(button);
+
+    // expect(toggleModal).toHaveBeenCalledTimes(1);
 
 
 

@@ -8,6 +8,7 @@ import {
 import { Button, PaperProvider, IconButton, Text, ActivityIndicator, MD2Colors, Modal, Portal, TextInput } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SearchNotesBar, useInput, useArray, useModal, AddNoteModal, Note, DeleteNoteModal, UpdateNoteModal, AddNoteButton, Favourites, NotesCount, Sort, a } from '../Index/Index';
+import moment from 'moment';
 import commonStyles from '../../styles/CommonStyles/CommonStyles';
 import SortAscending from '../../Helpers/SortAscending';
 import SortDescending from '../../Helpers/SortDescending';
@@ -122,10 +123,21 @@ function Home() {
     try {
 
       const myNotes = notes.value;
-      const noteToUpdate = await AsyncStorage.getItem('note');
+      //const noteToUpdate = await AsyncStorage.getItem('note');
 
-      await AsyncStorage.setItem('note', JSON.stringify(noteData));
+      let chosenNote = myNotes.filter(note => note.id === id);
+      let newNotesArray = myNotes.filter(note => note.id !== id);
+
+      chosenNote[0].noteText = text;
+
+      newNotesArray.push(chosenNote[0]);
+
+      console.log(newNotesArray);
+
+      await AsyncStorage.setItem('note', JSON.stringify(newNotesArray));
+
       toggleUpdateModal();
+
     }
     catch (error) {
       console.log(error)
