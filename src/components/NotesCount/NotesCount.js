@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native-paper';
 import { View } from 'react-native';
+import PropTypes from 'prop-types';
 import commonStyles from '../../styles/CommonStyles/CommonStyles';
 
 function NotesCount({count}) {
@@ -11,7 +12,11 @@ function NotesCount({count}) {
             </Text>
         </View>
     )
-
 }
 
 export default NotesCount;
+
+NotesCount.propTypes = {
+    count:PropTypes.number
+}
+

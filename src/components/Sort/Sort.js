@@ -1,6 +1,7 @@
 import React from "react";
 import { IconButton } from "react-native-paper";
 import { View } from 'react-native';
+import PropTypes from 'prop-types';
 import styles from "../../styles/Sort/SortStyles";
 
 function Sort({ ascending, descending, ascActive, descActive }) {
@@ -24,10 +25,15 @@ function Sort({ ascending, descending, ascActive, descActive }) {
             </View>
 
         </View>
-
-
     )
 
 }
 
 export default Sort;
+
+Sort.propTypes = {
+    ascending:PropTypes.func,
+    descending:PropTypes.func,
+    ascActive:PropTypes.bool,
+    descActive:PropTypes.bool
+}

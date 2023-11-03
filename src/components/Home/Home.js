@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import {
-    StyleSheet,
-    View,
-    FlatList
+  StyleSheet,
+  View,
+  FlatList
 } from 'react-native';
 
 import { Button, PaperProvider, IconButton, Text, ActivityIndicator, MD2Colors, Modal, Portal, TextInput } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationContainer } from '@react-navigation/native';
-import { SearchNotesBar, useInput, useArray, useModal, AddNoteModal, Note, DeleteNoteModal, UpdateNoteModal, AddNoteButton, Favourites, NotesCount, Sort,a } from '../Index/Index';
+import { SearchNotesBar, useInput, useArray, useModal, AddNoteModal, Note, DeleteNoteModal, UpdateNoteModal, AddNoteButton, Favourites, NotesCount, Sort, a } from '../Index/Index';
 import commonStyles from '../../styles/CommonStyles/CommonStyles';
 import SortAscending from '../../Helpers/SortAscending';
 import SortDescending from '../../Helpers/SortDescending';
+import GetLargestID from '../../Helpers/GetLargestID';
+import NotesList from '../NotesList/NotesList';
 
 function Home() {
-    const searchQuery = useInput('');
+  const searchQuery = useInput('');
   const [itemModalOpen, setItemModalOpen, toggleModal] = useModal();
   const [deleteModalOpen, setDeleteModalOpen, toggleDeleteModal] = useModal();
   const [updateModalOpen, setUpdateModalOpen, toggleUpdateModal] = useModal();
@@ -63,7 +64,7 @@ function Home() {
         setFilteredNotes(note);
       });
 
-    const largestID = Math.max(...notes.value.map(o => o.id), 1);
+    const largestID = GetLargestID(notes.value);
 
     console.log(largestID);
 
@@ -219,11 +220,9 @@ function Home() {
                 ascActive={isAscendFilterActive}
                 descActive={isDescendFilterActive}
               />
-              <FlatList
-                keyExtractor={(item) => item.id}
-                data={searchQuery.value.length > 0 && notes.value.length > 0 ? filteredNotes : notes.value}
-                renderItem={renderNotes}
-                contentContainerStyle={{ width: '100%' }}
+              <NotesList
+                noteData={searchQuery.value.length > 0 && notes.value.length > 0 ? filteredNotes : notes.value}
+                renderNotes={renderNotes}
               />
             </View>
         }

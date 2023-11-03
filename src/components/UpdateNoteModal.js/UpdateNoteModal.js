@@ -2,6 +2,7 @@ import React from "react";
 import { View } from 'react-native';
 import { TextInput, Button } from "react-native-paper";
 import Modal from 'react-native-modal';
+import PropTypes from 'prop-types';
 import useInput from "../../hooks/useInput";
 import styles from "../../styles/UpdateNoteModalStyles/UpdateNoteModalStyles";
 import commonStyles from "../../styles/CommonStyles/CommonStyles";
@@ -41,4 +42,11 @@ function UpdateNoteModal({ isVisible, toggleModal, noteData, update }) {
     )
 }
 
-export default UpdateNoteModal
+export default UpdateNoteModal;
+
+UpdateNoteModal.propTypes = {
+    isVisible:PropTypes.bool,
+    toggleModal:PropTypes.func,
+    noteData:PropTypes.object,
+    update:PropTypes.func
+}

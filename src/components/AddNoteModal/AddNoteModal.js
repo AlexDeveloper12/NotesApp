@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Alert, View } from 'react-native';
 import { Button, Text, TextInput } from "react-native-paper";
 import Modal from 'react-native-modal';
+import PropTypes from 'prop-types';
 import useInput from "../../hooks/useInput";
 import styles from "../../styles/AddNoteModalStyles/AddNoteModalStyles";
 import commonStyles from "../../styles/CommonStyles/CommonStyles";
@@ -29,6 +30,8 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
             style={styles.modalContainer}
             animationIn={"bounce"}
             animationOut={"slideInDown"}
+            testID="addNoteModal"
+            accessibilityLabel="add-note-modal"
         >
             <View style={{flex:1}}>
                 <TextInput multiline
@@ -54,9 +57,6 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
                         Close
                     </Button>
                 </View>
-                {/* <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text>{addNoteQuery.value.length} / {maxCharacters} characters</Text>
-                </View> */}
             </View>
         </Modal>
     )
@@ -64,3 +64,9 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
 }
 
 export default AddNoteModal;
+
+AddNoteModal.propTypes = {
+    isVisible:PropTypes.bool,
+    toggleModal:PropTypes.func,
+    addNote:PropTypes.func
+}

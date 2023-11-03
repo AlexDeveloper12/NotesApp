@@ -2,6 +2,7 @@ import React from "react";
 import { Alert, View } from 'react-native';
 import { Button, Text } from "react-native-paper";
 import Modal from 'react-native-modal';
+import PropTypes from 'prop-types';
 import styles from "../../styles/DeleteNoteModalStyles/DeleteNoteModalStyles";
 import commonStyles from "../../styles/CommonStyles/CommonStyles";
 
@@ -33,7 +34,13 @@ function DeleteNoteModal({ isVisible, toggleModal, deleteNote, noteID }) {
             </View>
         </Modal>
     )
-
 }
 
 export default DeleteNoteModal;
+
+DeleteNoteModal.propTypes = {
+    isVisible:PropTypes.bool,
+    toggleModal:PropTypes.func,
+    deleteNote:PropTypes.func,
+    noteID:PropTypes.number
+}

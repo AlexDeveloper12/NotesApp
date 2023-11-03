@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {View} from 'react-native';
 import { Searchbar } from 'react-native-paper';
+import PropTypes from 'prop-types';
 
 function SearchNotesBar({ value, handleChange }) {
 
@@ -18,7 +19,11 @@ function SearchNotesBar({ value, handleChange }) {
             />
         </View>
     )
-
 }
 
 export default SearchNotesBar;
+
+SearchNotesBar.propTypes = {
+    value:PropTypes.string,
+    handleChange:PropTypes.func
+}

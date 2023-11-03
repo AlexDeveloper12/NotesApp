@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`loads and displays note count 1`] = `
+<View>
+  <Text
+    style={
+      [
+        {
+          "textAlign": "left",
+        },
+        {
+          "color": "rgba(28, 27, 31, 1)",
+          "fontFamily": "System",
+          "fontWeight": "400",
+          "letterSpacing": 0,
+        },
+        {
+          "writingDirection": "ltr",
+        },
+        [
+          {
+            "color": "white",
+          },
+          {
+            "fontFamily": "Roboto-Light",
+          },
+          {
+            "fontSize": 16,
+          },
+          {
+            "marginLeft": 12,
+          },
+        ],
+      ]
+    }
+  >
+    Notes count: 
+    5
+  </Text>
+</View>
+`;

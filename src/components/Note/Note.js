@@ -1,6 +1,7 @@
 import React from 'react';
 import { InteractionManager, Text } from 'react-native';
 import { Card, IconButton } from 'react-native-paper';
+import PropTypes from 'prop-types';
 import styles from '../../styles/NoteStyles/NoteStyles';
 
 function Note({ item, togDel, togUpd, togFav }) {
@@ -22,3 +23,10 @@ function Note({ item, togDel, togUpd, togFav }) {
 }
 
 export default Note;
+
+Note.propTypes = {
+    item:PropTypes.object,
+    togDel:PropTypes.func,
+    togUpd:PropTypes.func,
+    togFav:PropTypes.func
+}

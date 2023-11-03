@@ -1,6 +1,7 @@
 import React from "react";
 import { View } from 'react-native';
 import { IconButton } from "react-native-paper";
+import PropTypes from 'prop-types';
 import styles from "../../styles/AddNoteButtonStyles/AddNoteButtonStyles";
 
 function AddNoteButton({toggleModal}) {
@@ -10,7 +11,9 @@ function AddNoteButton({toggleModal}) {
                 style={styles.btnBackgroundColour}
                 onPress={toggleModal}
                 size={25}
-                iconColor='white' >
+                iconColor='white'
+                testID="addnotebutton"
+                >
             </IconButton>
         </View>
     )
@@ -18,3 +21,7 @@ function AddNoteButton({toggleModal}) {
 }
 
 export default AddNoteButton;
+
+AddNoteButton.propTypes = {
+    toggleModal:PropTypes.func
+}
