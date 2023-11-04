@@ -18,6 +18,7 @@ import GetLargestID from '../../Helpers/GetLargestID';
 import NotesList from '../NotesList/NotesList';
 import FindAndUpdateNote from '../../Helpers/FindAndUpdateNote';
 import UpdateNoteFavourite from '../../Helpers/UpdateNoteFavourite';
+import SortDateCreatedAscending from '../../Helpers/SortDateCreatedAscending';
 
 function Home() {
   const searchQuery = useInput('');
@@ -30,6 +31,7 @@ function Home() {
   const [chosenNoteData, setChosenNoteData] = useState({});
   const [isAscendFilterActive, setIsAscendFilterActive] = useState(false);
   const [isDescendFilterActive, setIsDescenFilterActive] = useState(false);
+  const [isAscendDateCreFilterActive, setIsAscendDateCreFilterActive] = useState(false);
 
   const addNoteToStorage = async (data) => {
 
@@ -154,6 +156,10 @@ function Home() {
       setIsDescenFilterActive(false);
     }
 
+    if(isAscendDateCreFilterActive){
+      setIsAscendDateCreFilterActive(false);
+    }
+
     setIsAscendFilterActive(!isAscendFilterActive);
     var sortedAscArray = SortAscending(notes.value);
 
@@ -166,10 +172,30 @@ function Home() {
       setIsAscendFilterActive(false);
     }
 
+    if(isAscendDateCreFilterActive){
+      setIsAscendDateCreFilterActive(false);
+    }
+
     setIsDescenFilterActive(!isDescendFilterActive);
     var sortedDescArray = SortDescending(notes.value);
 
     notes.setValue(sortedDescArray);
+  }
+
+  const sortNotesDateCreAscending = () => {
+    if(isDescendFilterActive){
+      setIsDescenFilterActive(false);
+    }
+
+    if(isAscendFilterActive){
+      setIsAscendFilterActive(false);
+    }
+
+    setIsAscendDateCreFilterActive(!isAscendDateCreFilterActive);
+
+    var sortedDateCreArray = SortDateCreatedAscending(notes.value);
+
+    notes.setValue(sortedDateCreArray);
   }
 
   return (
@@ -196,6 +222,8 @@ function Home() {
                 descending={sortNotesDescending}
                 ascActive={isAscendFilterActive}
                 descActive={isDescendFilterActive}
+                ascDateCreated={sortNotesDateCreAscending}
+                ascDateCreatedActive={isAscendDateCreFilterActive}
               />
               <NotesList
                 noteData={searchQuery.value.length > 0 && notes.value.length > 0 ? filteredNotes : notes.value}
