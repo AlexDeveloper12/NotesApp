@@ -33,6 +33,15 @@ function Sort({ ascending, descending, ascActive, descActive, ascDateCreated, as
                 />
             </View>
 
+            <View>
+                <IconButton
+                    icon={'trash-can'}
+                    size={25}
+                    iconColor='white'
+                />
+
+            </View>
+
 
         </View>
     )
