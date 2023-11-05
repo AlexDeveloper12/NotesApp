@@ -74,11 +74,6 @@ function Home() {
         setFilteredNotes(note);
       });
 
-    const largestID = GetLargestID(notes.value);
-
-    console.log(largestID);
-
-
   }, []);
 
   const renderNotes = ({ item, index }) => {
@@ -127,8 +122,17 @@ function Home() {
   }
 
   const deleteAllNotes = async () => {
-    await DeleteAllNotes();
-    toggleDeleteAllNotesModal();
+    try {
+      await DeleteAllNotes();
+      toggleDeleteAllNotesModal();
+      getNotes()
+      .then((note)=>{
+        notes.setValue(note);
+      })
+    }
+    catch (error) {
+      console.log(error);
+    }
 
   }
 
@@ -149,8 +153,11 @@ function Home() {
   const toggleFavourite = async (id) => {
 
     try {
-      UpdateNoteFavourite(id);
-      getNotes();
+      await UpdateNoteFavourite(id);
+      getNotes()
+      .then((note)=>{
+        notes.setValue(note)
+      })
 
     }
     catch (error) {

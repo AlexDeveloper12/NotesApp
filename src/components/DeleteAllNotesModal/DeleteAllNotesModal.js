@@ -20,7 +20,7 @@ function DeleteAllNotesModal({ toggleModal, deleteAll, isVisible }) {
             <View style={commonStyles.actionButtonContainer}>
                 <Button mode="contained"
                     style={commonStyles.btnLeft} 
-                    onPress={deleteAll}
+                    onPress={()=>deleteAll()}
                     >
                     Delete All Notes
                 </Button>
