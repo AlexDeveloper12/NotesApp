@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import styles from "../../styles/Sort/SortStyles";
 
-function Sort({ ascending, descending, ascActive, descActive, ascDateCreated, ascDateCreatedActive }) {
+function Sort({ ascending, descending, ascActive, descActive, ascDateCreated, ascDateCreatedActive, toggleDeleteAll }) {
     return (
         <View style={styles.sortContainer}>
             <View style={descActive ? { borderBottomColor: 'white', borderBottomWidth: 1 } : null}>
@@ -38,6 +38,7 @@ function Sort({ ascending, descending, ascActive, descActive, ascDateCreated, as
                     icon={'trash-can'}
                     size={25}
                     iconColor='white'
+                    onPress={toggleDeleteAll}
                 />
 
             </View>

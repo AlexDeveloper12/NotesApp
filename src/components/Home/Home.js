@@ -19,12 +19,15 @@ import NotesList from '../NotesList/NotesList';
 import FindAndUpdateNote from '../../Helpers/FindAndUpdateNote';
 import UpdateNoteFavourite from '../../Helpers/UpdateNoteFavourite';
 import SortDateCreatedAscending from '../../Helpers/SortDateCreatedAscending';
+import DeleteAllNotesModal from '../DeleteAllNotesModal/DeleteAllNotesModal';
+import DeleteAllNotes from '../../Helpers/DeleteAllNotes';
 
 function Home() {
   const searchQuery = useInput('');
   const [itemModalOpen, setItemModalOpen, toggleModal] = useModal();
   const [deleteModalOpen, setDeleteModalOpen, toggleDeleteModal] = useModal();
   const [updateModalOpen, setUpdateModalOpen, toggleUpdateModal] = useModal();
+  const [deleteAllNotesOpen, setDeleteAllNotesOpen, toggleDeleteAllNotesModal] = useModal();
   const notes = useArray([]);
   const [filteredNotes, setFilteredNotes] = useState([]);
   const [chosenNoteID, setChosenNoteID] = useState(0);
@@ -123,6 +126,12 @@ function Home() {
     );
   }
 
+  const deleteAllNotes = async () => {
+    await DeleteAllNotes();
+    toggleDeleteAllNotesModal();
+
+  }
+
   const updateNote = async (id, text) => {
 
     try {
@@ -156,7 +165,7 @@ function Home() {
       setIsDescenFilterActive(false);
     }
 
-    if(isAscendDateCreFilterActive){
+    if (isAscendDateCreFilterActive) {
       setIsAscendDateCreFilterActive(false);
     }
 
@@ -172,7 +181,7 @@ function Home() {
       setIsAscendFilterActive(false);
     }
 
-    if(isAscendDateCreFilterActive){
+    if (isAscendDateCreFilterActive) {
       setIsAscendDateCreFilterActive(false);
     }
 
@@ -183,11 +192,11 @@ function Home() {
   }
 
   const sortNotesDateCreAscending = () => {
-    if(isDescendFilterActive){
+    if (isDescendFilterActive) {
       setIsDescenFilterActive(false);
     }
 
-    if(isAscendFilterActive){
+    if (isAscendFilterActive) {
       setIsAscendFilterActive(false);
     }
 
@@ -224,6 +233,7 @@ function Home() {
                 descActive={isDescendFilterActive}
                 ascDateCreated={sortNotesDateCreAscending}
                 ascDateCreatedActive={isAscendDateCreFilterActive}
+                toggleDeleteAll={toggleDeleteAllNotesModal}
               />
               <NotesList
                 noteData={searchQuery.value.length > 0 && notes.value.length > 0 ? filteredNotes : notes.value}
@@ -263,7 +273,16 @@ function Home() {
             noteData={chosenNoteData}
             update={updateNote}
           />
+          : null
+      }
 
+      {
+        deleteAllNotesOpen ?
+          <DeleteAllNotesModal
+            isVisible={deleteAllNotesOpen}
+            toggleModal={toggleDeleteAllNotesModal}
+            deleteAll={deleteAllNotes}
+          />
           : null
       }
 

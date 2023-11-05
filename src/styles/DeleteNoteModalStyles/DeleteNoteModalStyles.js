@@ -2,7 +2,8 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     modalContainer: {
-        height:'80%'
+        height:'80%',
+        backgroundColor:'white'
     },
     innerContainer: {
         height:400
