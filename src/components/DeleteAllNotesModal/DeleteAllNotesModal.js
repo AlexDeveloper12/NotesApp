@@ -10,11 +10,11 @@ function DeleteAllNotesModal({ toggleModal, deleteAll, isVisible }) {
         <Modal
             isVisible={isVisible}
             onDismiss={toggleModal}
-            style={styles.modalContainer}
+            style={commonStyles.modalContainer}
         >
-            <View style={{ height: 300, backgroundColor: 'white' }}>
+            <View style={{ height: 250, backgroundColor: 'white' }}>
                 <Text
-                    style={styles.headerText}
+                    style={commonStyles.headerText}
                 >Are you sure you want to delete all of your notes?</Text>
             </View>
             <View style={commonStyles.actionButtonContainer}>

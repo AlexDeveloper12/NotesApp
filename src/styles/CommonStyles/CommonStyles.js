@@ -46,7 +46,27 @@ const commonStyles = StyleSheet.create({
     noDataExistsText:{
         color: '#fff', 
         marginTop: 10
-    }
+    },
+
+    /**
+     * common modal styles
+     */
+
+     modalContainer: {
+        height:'80%',
+        backgroundColor:'white',
+        flex:0
+    },
+    innerContainer: {
+        height:400
+    },
+    headerText:{
+        textAlign:'center', 
+        fontFamily:'Roboto-Light',
+        verticalAlign:'middle',
+        fontSize:16,
+        marginTop:100
+    },
 
 
 });
