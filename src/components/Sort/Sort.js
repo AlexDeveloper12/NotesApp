@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { IconButton } from "react-native-paper";
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import styles from "../../styles/Sort/SortStyles";
+import { SortContext } from "../../Context/SortContext";
 
 function Sort({ ascending, descending, ascActive, descActive, ascDateCreated, ascDateCreatedActive, toggleDeleteAll }) {
+
     return (
         <View style={styles.sortContainer}>
             <View style={descActive ? { borderBottomColor: 'white', borderBottomWidth: 1 } : null}>

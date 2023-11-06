@@ -21,6 +21,7 @@ import UpdateNoteFavourite from '../../Helpers/UpdateNoteFavourite';
 import SortDateCreatedAscending from '../../Helpers/SortDateCreatedAscending';
 import DeleteAllNotesModal from '../DeleteAllNotesModal/DeleteAllNotesModal';
 import DeleteAllNotes from '../../Helpers/DeleteAllNotes';
+import { SortContext } from '../../Context/SortContext';
 
 function Home() {
   const searchQuery = useInput('');
@@ -35,6 +36,16 @@ function Home() {
   const [isAscendFilterActive, setIsAscendFilterActive] = useState(false);
   const [isDescendFilterActive, setIsDescenFilterActive] = useState(false);
   const [isAscendDateCreFilterActive, setIsAscendDateCreFilterActive] = useState(false);
+
+  const sortProviderValue = {
+    sortNotesAscending,
+    sortNotesDescending,
+    sortNotesDateCreAscending,
+    toggleDeleteAllNotesModal,
+    isAscendFilterActive,
+    isDescendFilterActive,
+    isAscendDateCreFilterActive
+  }
 
   const addNoteToStorage = async (data) => {
 
@@ -126,9 +137,9 @@ function Home() {
       await DeleteAllNotes();
       toggleDeleteAllNotesModal();
       getNotes()
-      .then((note)=>{
-        notes.setValue(note);
-      })
+        .then((note) => {
+          notes.setValue(note);
+        })
     }
     catch (error) {
       console.log(error);
@@ -155,9 +166,9 @@ function Home() {
     try {
       await UpdateNoteFavourite(id);
       getNotes()
-      .then((note)=>{
-        notes.setValue(note)
-      })
+        .then((note) => {
+          notes.setValue(note)
+        })
 
     }
     catch (error) {
@@ -233,6 +244,7 @@ function Home() {
             </View>
             : <View style={{ flex: 1 }}>
               <NotesCount count={notes.value.length} />
+              
               <Sort
                 ascending={sortNotesAscending}
                 descending={sortNotesDescending}
@@ -242,6 +254,7 @@ function Home() {
                 ascDateCreatedActive={isAscendDateCreFilterActive}
                 toggleDeleteAll={toggleDeleteAllNotesModal}
               />
+
               <NotesList
                 noteData={searchQuery.value.length > 0 && notes.value.length > 0 ? filteredNotes : notes.value}
                 renderNotes={renderNotes}
