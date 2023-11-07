@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 const SortDateCreatedAscending = (notesArray = []) => {
-    const sortedArrayByDateCreatedAsc = notesArray.sort((a, b) => moment(a.dateCreated, 'DD-MM-YYYY HH:ss').diff(moment(b.dateCreated, 'DD-MM-YYYY HH:ss')));
+    const sortedArrayByDateCreatedAsc = notesArray.sort((a, b) => new Date(a.dateCreated) -  new Date(b.dateCreated));
 
     return sortedArrayByDateCreatedAsc;
 }

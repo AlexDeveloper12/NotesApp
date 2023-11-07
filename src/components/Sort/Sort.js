@@ -42,13 +42,9 @@ function Sort({ ascending, descending, ascActive, descActive, ascDateCreated, as
                     iconColor='white'
                     onPress={toggleDeleteAll}
                 />
-
             </View>
-
-
         </View>
     )
-
 }
 
 export default Sort;
