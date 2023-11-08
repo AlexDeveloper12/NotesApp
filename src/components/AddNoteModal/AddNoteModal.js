@@ -6,17 +6,19 @@ import PropTypes from 'prop-types';
 import useInput from "../../hooks/useInput";
 import styles from "../../styles/AddNoteModalStyles/AddNoteModalStyles";
 import commonStyles from "../../styles/CommonStyles/CommonStyles";
+import FavouriteRadioGroup from "../../FavouriteRadioGroup/FavouriteRadioGroup";
 
 function AddNoteModal({ isVisible, toggleModal, addNote }) {
 
     const addNoteQuery = useInput('');
     const maxCharacters = useState(500);
+    const [selectedFavouriteValue, setSelectedFavouriteValue] = useState('False');
 
     const add = () => {
 
         if (addNoteQuery.value.trim().length > 0) {
             console.log(addNoteQuery.value.trim());
-            addNote(addNoteQuery.value);
+            addNote(addNoteQuery.value,selectedFavouriteValue);
         }
         else {
             Alert.alert("Validation error", "Please ensure you enter a note value");
@@ -33,13 +35,17 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
             testID="addNoteModal"
             accessibilityLabel="add-note-modal"
         >
-            <View style={{flex:1}}>
+            <View style={{ flex: 1 }}>
                 <TextInput multiline
                     style={styles.input}
                     autoFocus
                     value={addNoteQuery.value}
                     onChangeText={addNoteQuery.handleChange}
                     maxLength={500}
+                />
+                <FavouriteRadioGroup 
+                    radioValue={selectedFavouriteValue}
+                    setRadioValue={setSelectedFavouriteValue}
                 />
                 <View style={commonStyles.actionButtonContainer}>
                     <Button mode="contained"
@@ -66,7 +72,7 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
 export default AddNoteModal;
 
 AddNoteModal.propTypes = {
-    isVisible:PropTypes.bool,
-    toggleModal:PropTypes.func,
-    addNote:PropTypes.func
+    isVisible: PropTypes.bool,
+    toggleModal: PropTypes.func,
+    addNote: PropTypes.func
 }

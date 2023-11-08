@@ -21,7 +21,8 @@ import UpdateNoteFavourite from '../../Helpers/UpdateNoteFavourite';
 import SortDateCreatedAscending from '../../Helpers/SortDateCreatedAscending';
 import DeleteAllNotesModal from '../DeleteAllNotesModal/DeleteAllNotesModal';
 import DeleteAllNotes from '../../Helpers/DeleteAllNotes';
-import { SortContext } from '../../Context/SortContext';
+import { RadioGroup } from 'react-native-radio-buttons-group';
+import FavouriteRadioGroup from '../../FavouriteRadioGroup/FavouriteRadioGroup';
 
 function Home() {
   const searchQuery = useInput('');
@@ -37,23 +38,17 @@ function Home() {
   const [isDescendFilterActive, setIsDescenFilterActive] = useState(false);
   const [isAscendDateCreFilterActive, setIsAscendDateCreFilterActive] = useState(false);
 
-  const sortProviderValue = {
-    sortNotesAscending,
-    sortNotesDescending,
-    sortNotesDateCreAscending,
-    toggleDeleteAllNotesModal,
-    isAscendFilterActive,
-    isDescendFilterActive,
-    isAscendDateCreFilterActive
-  }
-
-  const addNoteToStorage = async (data) => {
+  const addNoteToStorage = async (data,favouriteValue) => {
 
     let nextID = Math.max(...notes.value.map(o => o.id), 1) + 1;
 
     let noteItems = await getNotes();
 
-    const noteToBeSaved = { id: nextID, noteText: data, isFavourite: false, dateCreated: moment().format("DD-MM-YYYY HH:mm:ss") };
+    const noteToBeSaved = { id: nextID, noteText: data, isFavourite: favouriteValue, dateCreated: moment().format("DD-MM-YYYY HH:mm:ss") };
+
+    console.log('noteToBeSaved')
+
+    console.log(noteToBeSaved);
 
     noteItems.push(noteToBeSaved);
 
@@ -67,7 +62,7 @@ function Home() {
     getNotes()
       .then((note) => {
         notes.setValue(note);
-      })
+      });
   }
 
   const getNotes = async () => {
@@ -244,7 +239,7 @@ function Home() {
             </View>
             : <View style={{ flex: 1 }}>
               <NotesCount count={notes.value.length} />
-              
+
               <Sort
                 ascending={sortNotesAscending}
                 descending={sortNotesDescending}

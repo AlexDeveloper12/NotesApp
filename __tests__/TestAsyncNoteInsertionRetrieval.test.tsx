@@ -20,7 +20,7 @@ describe('Test Async Notes', () => {
         const testObject = {
             id: 1,
             noteText: 'text content',
-            isFavourite: true,
+            isFavourite: "true",
             dateCreated: "2023-10-31T00:09:48.523Z"
         }
 
@@ -36,13 +36,13 @@ describe('Test Async Notes', () => {
         const testObjectArray = [{
             id: 1,
             noteText: 'text content one',
-            isFavourite: true,
+            isFavourite: "true",
             dateCreated: "2023-10-31T00:09:48.523Z"
         },
         {
             id: 1,
             noteText: 'text content two',
-            isFavourite: true,
+            isFavourite: "true",
             dateCreated: "2023-10-31T00:09:58.523Z"
         }
         ];
