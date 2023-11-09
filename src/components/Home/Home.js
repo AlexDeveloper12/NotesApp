@@ -158,6 +158,10 @@ function Home() {
       setIsAscendDateCreFilterActive(false);
     }
 
+    if(sortNotesFavourite){
+      setIsFavouriteFilterActive(false);
+    }
+
     if (isAscendFilterActive) {
       setIsAscendFilterActive(!isAscendFilterActive);
       GetNotesList()
@@ -242,21 +246,11 @@ function Home() {
 
       var sortedFavouriteArray = GetFavourites(notes.value);
 
-      notes.setValue(sortedFavouriteArray);
+      if (sortedFavouriteArray.length > 0) {
+        notes.setValue(sortedFavouriteArray);
+      }
 
     }
-
-  }
-
-  const DetermineSortToRun = () => {
-    const notesStateCopy = [...notes];
-
-    if (isAscendFilterActive) {
-      //if is ascend filter is active on click it means it's already filtering
-      //so we need to get the notes again and set them
-    }
-
-
 
   }
 

@@ -14,7 +14,7 @@ function Note({ item, togDel, togUpd, togFav }) {
                 <Text variant="bodyMedium" style={styles.text}>{item.noteText}</Text>
             </Card.Content>
             <Card.Actions>
-                <IconButton icon="star" iconColor={item.isFavourite ? 'red' : 'gold'} size={24} onPress={()=>togFav(item.id)} />
+                <IconButton icon="star" iconColor={item.isFavourite ? 'gold' : 'grey'} size={24} onPress={()=>togFav(item.id)} />
                 <IconButton icon="lead-pencil" size={22} animated onPress={()=>togUpd(item)} />
                 <IconButton icon="trash-can" size={22} animated onPress={()=>togDel(item.id)} />
             </Card.Actions>
