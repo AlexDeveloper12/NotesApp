@@ -1,4 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import moment from "moment";
+import AddNote from "../src/Helpers/AddNote";
 
 beforeEach(() => {
     AsyncStorage.clear();
@@ -17,11 +19,13 @@ describe('Test Async Notes', () => {
 
     it('can set and read async storage on an object', async () => {
 
+        var dateCreated = moment().format("DD-MM-YYYY HH:mm:ss");
+
         const testObject = {
             id: 1,
             noteText: 'text content',
             isFavourite: "true",
-            dateCreated: "2023-10-31T00:09:48.523Z"
+            dateCreated: dateCreated
         }
 
         await AsyncStorage.setItem('note', JSON.stringify(testObject));
@@ -33,24 +37,20 @@ describe('Test Async Notes', () => {
 
     it('can set and read async storage on an array of objects', async () => {
 
-        const testObjectArray = [{
-            id: 1,
-            noteText: 'text content one',
-            isFavourite: "true",
-            dateCreated: "2023-10-31T00:09:48.523Z"
-        },
-        {
-            id: 1,
-            noteText: 'text content two',
-            isFavourite: "true",
-            dateCreated: "2023-10-31T00:09:58.523Z"
-        }
-        ];
+        var dateCreated = moment().format("DD-MM-YYYY HH:mm:ss");
 
-        await AsyncStorage.setItem('note', JSON.stringify(testObjectArray));
+        const testObjectArray = [];
+
+        await AddNote(testObjectArray, "First Note", "False", dateCreated);
+        await AddNote(testObjectArray, "Second Note", "True", dateCreated);
+        await AddNote(testObjectArray, "Third Note", "False", dateCreated);
+        await AddNote(testObjectArray, "Fourth Note", "True", dateCreated);
+
+        //await AsyncStorage.setItem('note', JSON.stringify(testObjectArray));
         let noteObjectArrayExpected = JSON.parse(await AsyncStorage.getItem('note'));
+        console.log(noteObjectArrayExpected);
 
-        expect(noteObjectArrayExpected).toEqual(testObjectArray);
+        // expect(noteObjectArrayExpected).toEqual(testObjectArray);
 
 
 

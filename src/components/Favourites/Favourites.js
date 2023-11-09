@@ -1,28 +1,38 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import { FlatList, View } from 'react-native';
-import { Text } from "react-native-paper";
+import { Card, Text } from "react-native-paper";
+import GetFavourites from "../../Helpers/GetFavourites";
 import commonStyles from "../../styles/CommonStyles/CommonStyles";
 
 function Favourites() {
 
     const [favourites, setFavourites] = useState([]);
 
-    const getFavourites = async () => {
+    const getFavouriteNotes = async () => {
         const getNotes = await AsyncStorage.getItem('note');
 
         let parsed = JSON.parse(getNotes);
 
-        const filterFavourites = parsed.filter((e) => {
-            return e.isFavourite === true
-        });
+        const favouriteNotes = GetFavourites(parsed);
 
-        setFavourites(filterFavourites)
+        setFavourites(favouriteNotes)
+    }
 
+    const renderFavourites = ({item,index}) => {
+        return(
+            <Card disabled >
+                <Card.Title title={`ID: ${item.id}`} />
+                <Card.Content>
+                    <Text variant="bodyMedium">{item.noteText}</Text>
+                </Card.Content>
+                
+            </Card>
+        )
     }
 
     useEffect(() => {
-        getFavourites();
+        getFavouriteNotes();
     }, []);
 
     return (
@@ -36,6 +46,7 @@ function Favourites() {
 
                 <FlatList
                     data={favourites}
+                    renderItem={renderFavourites}
                 />
             }
 

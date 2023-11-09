@@ -1,28 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-} from 'react-native';
+import { View } from 'react-native';
 
 import { PaperProvider, Text } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 import {
   SearchNotesBar, useInput, useArray, useModal, AddNoteModal, Note, DeleteNoteModal, UpdateNoteModal,
-  AddNoteButton, Favourites, NotesCount, Sort,
+  AddNoteButton, NotesCount, Sort,
 } from '../Index/Index';
 
+import {
+  FindAndUpdateNote, UpdateNoteFavourite, SortDateCreatedAscending, DeleteAllNotes,
+  GetFavourites, AddNote, GetNotesList, SortAscending, SortDescending
+} from '../IndexHelpers/IndexHelpers';
+
 import commonStyles from '../../styles/CommonStyles/CommonStyles';
-import SortAscending from '../../Helpers/SortAscending';
-import SortDescending from '../../Helpers/SortDescending';
-import GetLargestID from '../../Helpers/GetLargestID';
-import NotesList from '../NotesList/NotesList';
-import FindAndUpdateNote from '../../Helpers/FindAndUpdateNote';
-import UpdateNoteFavourite from '../../Helpers/UpdateNoteFavourite';
-import SortDateCreatedAscending from '../../Helpers/SortDateCreatedAscending';
+import NotesList from '../NotesList/NotesList';;
 import DeleteAllNotesModal from '../DeleteAllNotesModal/DeleteAllNotesModal';
-import DeleteAllNotes from '../../Helpers/DeleteAllNotes';
-import { RadioGroup } from 'react-native-radio-buttons-group';
-import FavouriteRadioGroup from '../../FavouriteRadioGroup/FavouriteRadioGroup';
+import SortIcon from '../SortIcon/SortIcon';
 
 function Home() {
   const searchQuery = useInput('');
@@ -37,44 +32,25 @@ function Home() {
   const [isAscendFilterActive, setIsAscendFilterActive] = useState(false);
   const [isDescendFilterActive, setIsDescenFilterActive] = useState(false);
   const [isAscendDateCreFilterActive, setIsAscendDateCreFilterActive] = useState(false);
+  const [isFavouriteFilterActive, setIsFavouriteFilterActive] = useState(false);
 
-  const addNoteToStorage = async (data,favouriteValue) => {
+  const addNoteToStorage = async (data, favouriteValue) => {
 
-    let nextID = Math.max(...notes.value.map(o => o.id), 1) + 1;
+    var dateCreated = moment().format("DD-MM-YYYY HH:mm:ss");
 
-    let noteItems = await getNotes();
-
-    const noteToBeSaved = { id: nextID, noteText: data, isFavourite: favouriteValue, dateCreated: moment().format("DD-MM-YYYY HH:mm:ss") };
-
-    console.log('noteToBeSaved')
-
-    console.log(noteToBeSaved);
-
-    noteItems.push(noteToBeSaved);
-
-    await AsyncStorage.setItem(
-      "note",
-      JSON.stringify(noteItems)
-    )
+    await AddNote(notes.value, data, favouriteValue, dateCreated);
 
     toggleModal();
 
-    getNotes()
+    GetNotesList()
       .then((note) => {
         notes.setValue(note);
       });
   }
 
-  const getNotes = async () => {
-
-    let currentNotes = await AsyncStorage.getItem('note');
-    return currentNotes ? JSON.parse(currentNotes) : [];
-
-  }
-
   useEffect(() => {
 
-    getNotes()
+    GetNotesList()
       .then((note) => {
         notes.setValue(note);
         setFilteredNotes(note);
@@ -131,7 +107,7 @@ function Home() {
     try {
       await DeleteAllNotes();
       toggleDeleteAllNotesModal();
-      getNotes()
+      GetNotesList()
         .then((note) => {
           notes.setValue(note);
         })
@@ -160,7 +136,7 @@ function Home() {
 
     try {
       await UpdateNoteFavourite(id);
-      getNotes()
+      GetNotesList()
         .then((note) => {
           notes.setValue(note)
         })
@@ -182,10 +158,19 @@ function Home() {
       setIsAscendDateCreFilterActive(false);
     }
 
-    setIsAscendFilterActive(!isAscendFilterActive);
-    var sortedAscArray = SortAscending(notes.value);
+    if (isAscendFilterActive) {
+      setIsAscendFilterActive(!isAscendFilterActive);
+      GetNotesList()
+        .then(note => {
+          notes.setValue(note);
+        });
 
-    notes.setValue(sortedAscArray);
+    }
+    else {
+      setIsAscendFilterActive(!isAscendFilterActive);
+      var sortedAscArray = SortAscending(notes.value);
+      notes.setValue(sortedAscArray);
+    }
   }
 
   const sortNotesDescending = () => {
@@ -198,10 +183,18 @@ function Home() {
       setIsAscendDateCreFilterActive(false);
     }
 
-    setIsDescenFilterActive(!isDescendFilterActive);
-    var sortedDescArray = SortDescending(notes.value);
-
-    notes.setValue(sortedDescArray);
+    if (isDescendFilterActive) {
+      setIsDescenFilterActive(!isDescendFilterActive);
+      GetNotesList()
+        .then(note => {
+          notes.setValue(note);
+        });
+    }
+    else {
+      setIsDescenFilterActive(!isDescendFilterActive);
+      var sortedDescArray = SortDescending(notes.value);
+      notes.setValue(sortedDescArray);
+    }
   }
 
   const sortNotesDateCreAscending = () => {
@@ -213,11 +206,58 @@ function Home() {
       setIsAscendFilterActive(false);
     }
 
+    if (isFavouriteFilterActive) {
+      setIsFavouriteFilterActive(false);
+    }
+
     setIsAscendDateCreFilterActive(!isAscendDateCreFilterActive);
 
     var sortedDateCreArray = SortDateCreatedAscending(notes.value);
 
     notes.setValue(sortedDateCreArray);
+  }
+
+  const sortNotesFavourite = () => {
+    if (isDescendFilterActive) {
+      setIsDescenFilterActive(false);
+    }
+
+    if (isAscendFilterActive) {
+      setIsAscendFilterActive(false);
+    }
+
+    if (isAscendDateCreFilterActive) {
+      setIsAscendDateCreFilterActive(false);
+    }
+
+    if (isFavouriteFilterActive) {
+      setIsFavouriteFilterActive(!isFavouriteFilterActive);
+      GetNotesList()
+        .then(note => {
+          notes.setValue(note);
+        })
+    }
+    else {
+      setIsFavouriteFilterActive(!isFavouriteFilterActive);
+
+      var sortedFavouriteArray = GetFavourites(notes.value);
+
+      notes.setValue(sortedFavouriteArray);
+
+    }
+
+  }
+
+  const DetermineSortToRun = () => {
+    const notesStateCopy = [...notes];
+
+    if (isAscendFilterActive) {
+      //if is ascend filter is active on click it means it's already filtering
+      //so we need to get the notes again and set them
+    }
+
+
+
   }
 
   return (
@@ -240,15 +280,38 @@ function Home() {
             : <View style={{ flex: 1 }}>
               <NotesCount count={notes.value.length} />
 
-              <Sort
-                ascending={sortNotesAscending}
-                descending={sortNotesDescending}
-                ascActive={isAscendFilterActive}
-                descActive={isDescendFilterActive}
-                ascDateCreated={sortNotesDateCreAscending}
-                ascDateCreatedActive={isAscendDateCreFilterActive}
-                toggleDeleteAll={toggleDeleteAllNotesModal}
-              />
+              <Sort>
+
+                <SortIcon
+                  sortFunction={sortNotesAscending}
+                  isActive={isAscendFilterActive}
+                  icon={'sort-ascending'}
+                />
+
+                <SortIcon
+                  sortFunction={sortNotesDescending}
+                  isActive={isDescendFilterActive}
+                  icon={'sort-descending'}
+                />
+
+                <SortIcon
+                  sortFunction={sortNotesDateCreAscending}
+                  isActive={isAscendDateCreFilterActive}
+                  icon={'sort-calendar-ascending'}
+                />
+
+                <SortIcon
+                  sortFunction={toggleDeleteAllNotesModal}
+                  icon={'trash-can'}
+                />
+
+                <SortIcon
+                  sortFunction={sortNotesFavourite}
+                  isActive={isFavouriteFilterActive}
+                  icon={'star'}
+                />
+              </Sort>
+
 
               <NotesList
                 noteData={searchQuery.value.length > 0 && notes.value.length > 0 ? filteredNotes : notes.value}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { InteractionManager, Text } from 'react-native';
+import { Text } from 'react-native';
 import { Card, IconButton } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import styles from '../../styles/NoteStyles/NoteStyles';
