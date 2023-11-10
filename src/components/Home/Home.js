@@ -98,9 +98,14 @@ function Home() {
   const searchNotesFilter = (e) => {
     searchQuery.handleChange(e);
 
-    setFilteredNotes(
-      filteredNotes.filter(note => note.noteText.includes(e))
-    );
+    if (searchQuery.value.length === 0) {
+      setFilteredNotes(notes.value);
+    } else {
+      setFilteredNotes(filteredNotes.filter((item) =>
+        item.noteText.toUpperCase().includes(e.toUpperCase())
+      ));
+    }
+
   }
 
   const deleteAllNotes = async () => {
@@ -158,7 +163,7 @@ function Home() {
       setIsAscendDateCreFilterActive(false);
     }
 
-    if(sortNotesFavourite){
+    if (sortNotesFavourite) {
       setIsFavouriteFilterActive(false);
     }
 

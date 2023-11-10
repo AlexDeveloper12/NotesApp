@@ -38,7 +38,7 @@ export default function NavigationTabs() {
                     headerTitle: 'My Notes'
 
                 }} />
-                <Drawer.Screen name="Favourites" component={Favourites} />
+                {/* <Drawer.Screen name="Favourites" component={Favourites} /> */}
             </Drawer.Navigator>
         </NavigationContainer>
     )
