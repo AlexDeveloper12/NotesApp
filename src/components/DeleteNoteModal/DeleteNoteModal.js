@@ -10,28 +10,29 @@ function DeleteNoteModal({ isVisible, toggleModal, deleteNote, noteID }) {
         <Modal
             isVisible={isVisible}
             onDismiss={toggleModal}
-            style={commonStyles.modalContainer}
+        // style={commonStyles.modalContainer}
         >
             <View style={{ height: 300, backgroundColor: 'white' }}>
                 <Text style={commonStyles.headerText}>
                     Are you sure you want to delete this note?
                 </Text>
-            </View>
-            <View style={commonStyles.actionButtonContainer}>
-                <Button mode="contained"
-                    style={commonStyles.btnLeft}
-                    onPress={() => deleteNote(noteID)}
-                    labelStyle={commonStyles.btnLabel}
-                >
-                    Delete
-                </Button>
-                <Button mode="contained" onPress={toggleModal}
-                    buttonColor="red"
-                    style={commonStyles.btnRight}
-                    labelStyle={commonStyles.btnLabel}
+
+                <View style={commonStyles.actionButtonContainer}>
+                    <Button mode="contained"
+                        style={commonStyles.btnLeft}
+                        onPress={() => deleteNote(noteID)}
+                        labelStyle={commonStyles.btnLabel}
                     >
-                    Cancel
-                </Button>
+                        Delete
+                    </Button>
+                    <Button mode="contained" onPress={toggleModal}
+                        buttonColor="red"
+                        style={commonStyles.btnRight}
+                        labelStyle={commonStyles.btnLabel}
+                    >
+                        Cancel
+                    </Button>
+                </View>
             </View>
 
 
