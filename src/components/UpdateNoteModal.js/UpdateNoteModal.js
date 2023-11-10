@@ -1,11 +1,11 @@
 import React from "react";
 import { View } from 'react-native';
-import { TextInput, Button } from "react-native-paper";
+import { TextInput } from "react-native-paper";
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import useInput from "../../hooks/useInput";
 import styles from "../../styles/UpdateNoteModalStyles/UpdateNoteModalStyles";
-import commonStyles from "../../styles/CommonStyles/CommonStyles";
+import ModalActionButtons from "../ModalActionButtons/ModalActionButtons";
 
 function UpdateNoteModal({ isVisible, toggleModal, noteData, update }) {
 
@@ -23,19 +23,13 @@ function UpdateNoteModal({ isVisible, toggleModal, noteData, update }) {
                     autoFocus
                     value={updateNoteQuery.value}
                     onChangeText={updateNoteQuery.handleChange} />
-                <View style={commonStyles.actionButtonContainer}>
-                    <Button mode="contained"
-                        style={commonStyles.btnLeft}
-                        onPress={()=>update(noteData.id,updateNoteQuery.value)} labelStyle={commonStyles.btnLabel} >
-                        Update
-                    </Button>
-                    <Button mode="contained"
-                        buttonColor="red"
-                        style={commonStyles.btnRight}
-                        onPress={toggleModal} labelStyle={commonStyles.btnLabel}>
-                            Cancel
-                        </Button>
-                </View>
+
+                <ModalActionButtons
+                    leftText={'Update'}
+                    leftAction={()=>update(noteData.id,updateNoteQuery.value)}
+                    rightText={'Close'}
+                    rightAction={toggleModal}
+                    />
             </View>
 
         </Modal>

@@ -7,6 +7,7 @@ import useInput from "../../hooks/useInput";
 import styles from "../../styles/AddNoteModalStyles/AddNoteModalStyles";
 import commonStyles from "../../styles/CommonStyles/CommonStyles";
 import FavouriteRadioGroup from "../../FavouriteRadioGroup/FavouriteRadioGroup";
+import ModalActionButtons from "../ModalActionButtons/ModalActionButtons";
 
 function AddNoteModal({ isVisible, toggleModal, addNote }) {
 
@@ -18,7 +19,7 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
 
         if (addNoteQuery.value.trim().length > 0) {
             console.log(addNoteQuery.value.trim());
-            addNote(addNoteQuery.value,selectedFavouriteValue);
+            addNote(addNoteQuery.value, selectedFavouriteValue);
         }
         else {
             Alert.alert("Validation error", "Please ensure you enter a note value");
@@ -43,26 +44,17 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
                     onChangeText={addNoteQuery.handleChange}
                     maxLength={500}
                 />
-                <FavouriteRadioGroup 
+                <FavouriteRadioGroup
                     radioValue={selectedFavouriteValue}
                     setRadioValue={setSelectedFavouriteValue}
                 />
-                <View style={commonStyles.actionButtonContainer}>
-                    <Button mode="contained"
-                        style={commonStyles.btnLeft}
-                        labelStyle={commonStyles.btnLabel}
-                        onPress={add} >
-                        Add
-                    </Button>
-                    <Button mode="contained"
-                        buttonColor="red"
-                        style={commonStyles.btnRight}
-                        labelStyle={commonStyles.btnLabel}
-                        onPress={toggleModal}
-                    >
-                        Close
-                    </Button>
-                </View>
+
+                <ModalActionButtons
+                    leftText={'Add'}
+                    leftAction={add}
+                    rightText={'Close'}
+                    rightAction={toggleModal}
+                />
             </View>
         </Modal>
     )

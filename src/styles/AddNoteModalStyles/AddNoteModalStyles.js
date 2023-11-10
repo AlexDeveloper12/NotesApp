@@ -2,14 +2,13 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     modalContainer: {
-        height: '60%', 
         backgroundColor: '#fff',
-        borderWidth:0
+        borderWidth:0,
     },
     input: {
-        flex: 2,
+        flex: 1,
         textAlignVertical: 'top',
-
+        width:'100%'
     }
 
 })

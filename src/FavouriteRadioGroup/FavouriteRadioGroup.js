@@ -6,6 +6,9 @@ function FavouriteRadioGroup({radioValue,setRadioValue}) {
 
     return (
         <View style={{ justifyContent: 'center', alignContent: 'center', flex: 1 }}>
+            <View style={{alignItems:'center'}}>
+                <Text>Is Favourite?</Text>
+            </View>
 
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <RadioButton

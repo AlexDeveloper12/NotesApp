@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 import { Button, Text } from "react-native-paper";
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
@@ -21,12 +21,15 @@ function DeleteNoteModal({ isVisible, toggleModal, deleteNote, noteID }) {
                 <Button mode="contained"
                     style={commonStyles.btnLeft}
                     onPress={() => deleteNote(noteID)}
+                    labelStyle={commonStyles.btnLabel}
                 >
                     Delete
                 </Button>
                 <Button mode="contained" onPress={toggleModal}
                     buttonColor="red"
-                    style={commonStyles.btnRight}>
+                    style={commonStyles.btnRight}
+                    labelStyle={commonStyles.btnLabel}
+                    >
                     Cancel
                 </Button>
             </View>
