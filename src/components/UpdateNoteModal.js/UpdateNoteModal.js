@@ -22,7 +22,9 @@ function UpdateNoteModal({ isVisible, toggleModal, noteData, update }) {
                     style={styles.input}
                     autoFocus
                     value={updateNoteQuery.value}
-                    onChangeText={updateNoteQuery.handleChange} />
+                    onChangeText={updateNoteQuery.handleChange}
+                    underlineStyle={{borderWidth:0.5, borderColor:'white'}}
+                    />
 
                 <ModalActionButtons
                     leftText={'Update'}

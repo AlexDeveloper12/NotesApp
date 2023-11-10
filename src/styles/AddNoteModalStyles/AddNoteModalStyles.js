@@ -5,8 +5,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderWidth:0,
     },
+    innerContainer:{
+        flex:1
+    },
     input: {
-        flex: 1,
+        flex: 3,
         textAlignVertical: 'top',
         width:'100%'
     }

@@ -36,13 +36,14 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
             testID="addNoteModal"
             accessibilityLabel="add-note-modal"
         >
-            <View style={{ flex: 1 }}>
+            <View style={styles.innerContainer}>
                 <TextInput multiline
                     style={styles.input}
                     autoFocus
                     value={addNoteQuery.value}
                     onChangeText={addNoteQuery.handleChange}
                     maxLength={500}
+                    underlineStyle={{borderWidth:0.5, borderColor:'white'}}
                 />
                 <FavouriteRadioGroup
                     radioValue={selectedFavouriteValue}
