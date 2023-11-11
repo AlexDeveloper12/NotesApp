@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
     },
     input: {
         verticalAlign: 'top', 
-        flex: 3
+        flex: 3,
+        flexWrap:'wrap'
     },
 
 });

@@ -144,6 +144,7 @@ function Home() {
       GetNotesList()
         .then((note) => {
           notes.setValue(note)
+          setFilteredNotes(note);
         })
 
     }
@@ -250,6 +251,10 @@ function Home() {
       setIsFavouriteFilterActive(!isFavouriteFilterActive);
 
       var sortedFavouriteArray = GetFavourites(notes.value);
+
+      console.log(notes.value);
+
+      console.log(sortedFavouriteArray);
 
       if (sortedFavouriteArray.length > 0) {
         notes.setValue(sortedFavouriteArray);

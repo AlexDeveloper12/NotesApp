@@ -14,17 +14,23 @@ const UpdateNoteFavourite = async (id) => {
 
         const parsedData = JSON.parse(noteToToggleFavourite);
 
-        const getSelectedNote = parsedData.filter((note) => note.id === id)[0];
+        const getSelectedNote = parsedData.filter((note) => note.id === id);
         const allNotesButSelected = parsedData.filter((note) => note.id !== id);
 
-        if (getSelectedNote.isFavourite === false) {
-            getSelectedNote.isFavourite = true;
+        // console.log(getSelectedNote[0].isFavourite);
+
+        if (getSelectedNote[0].isFavourite == "True") {
+            getSelectedNote[0]["isFavourite"] = "False";
         }
-        else if (getSelectedNote) {
-            getSelectedNote.isFavourite = false;
+        else if (getSelectedNote[0].isFavourite=="False") {
+            getSelectedNote[0]["isFavourite"] = "True";
         }
 
-        allNotesButSelected.push(getSelectedNote);
+        // console.log(getSelectedNote[0]["isFavourite"]);
+
+        allNotesButSelected.push(getSelectedNote[0]);
+        console.log(allNotesButSelected)
+
         AsyncStorage.setItem('note', JSON.stringify(allNotesButSelected));
     }
 

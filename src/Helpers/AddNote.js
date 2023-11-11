@@ -3,7 +3,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AddNote = async (notes, data, favouriteValue, dateCreated) => {
     
-    console.log(Math.max(...notes.map(o => o.id), 0));
     let nextID = Math.max(...notes.map(o => o.id), 0) + 1;
 
     let noteItems = await GetNotesList();

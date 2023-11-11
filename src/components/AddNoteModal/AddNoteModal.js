@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Alert, View } from 'react-native';
-import { Button, Text, TextInput } from "react-native-paper";
+import { TextInput } from "react-native-paper";
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import useInput from "../../hooks/useInput";
 import styles from "../../styles/AddNoteModalStyles/AddNoteModalStyles";
-import commonStyles from "../../styles/CommonStyles/CommonStyles";
 import FavouriteRadioGroup from "../../FavouriteRadioGroup/FavouriteRadioGroup";
 import ModalActionButtons from "../ModalActionButtons/ModalActionButtons";
 
@@ -37,13 +36,15 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
             accessibilityLabel="add-note-modal"
         >
             <View style={styles.innerContainer}>
-                <TextInput multiline
+                <TextInput
+                    multiline
                     style={styles.input}
                     autoFocus
                     value={addNoteQuery.value}
                     onChangeText={addNoteQuery.handleChange}
                     maxLength={500}
-                    underlineStyle={{borderWidth:0.5, borderColor:'white'}}
+                    underlineStyle={{ borderWidth: 0.5, borderColor: 'white' }}
+
                 />
                 <FavouriteRadioGroup
                     radioValue={selectedFavouriteValue}
