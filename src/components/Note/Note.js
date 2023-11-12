@@ -13,7 +13,7 @@ function Note({ item, togDel, togUpd, togFav }) {
             <Card.Title title={`ID: ${item.id}`} titleStyle={styles.noteTitle} />
             <Card.Content>
                 <Text>{item.dateCreated != null ? `Date created: ${item.dateCreated }` : 'No date available'}</Text>
-                <Text variant="bodyMedium" style={styles.text}>{item.noteText}</Text>
+                <Text variant="bodyMedium" style={styles.text} ellipsizeMode='tail' numberOfLines={10} >{item.noteText}</Text>
             </Card.Content>
             <Card.Actions>
                 <IconButton icon="star" iconColor={item.isFavourite == "True" ? 'gold' : 'grey'} size={24} onPress={()=>togFav(item.id)} />

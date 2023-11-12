@@ -143,10 +143,9 @@ function Home() {
       await UpdateNoteFavourite(id);
       GetNotesList()
         .then((note) => {
-          notes.setValue(note)
+          notes.setValue(note);
           setFilteredNotes(note);
         })
-
     }
     catch (error) {
       console.log(error);
@@ -164,7 +163,7 @@ function Home() {
       setIsAscendDateCreFilterActive(false);
     }
 
-    if (sortNotesFavourite) {
+    if (isFavouriteFilterActive) {
       setIsFavouriteFilterActive(false);
     }
 

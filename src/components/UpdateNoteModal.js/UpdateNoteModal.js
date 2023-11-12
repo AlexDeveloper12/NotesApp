@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from 'react-native';
-import { TextInput } from "react-native-paper";
+import { Text, TextInput } from "react-native-paper";
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import useInput from "../../hooks/useInput";
@@ -25,7 +25,12 @@ function UpdateNoteModal({ isVisible, toggleModal, noteData, update }) {
                     onChangeText={updateNoteQuery.handleChange}
                     underlineStyle={{borderWidth:0.5, borderColor:'white'}}
                     multiline
+                    maxLength={500}
                     />
+
+                    <View style={{justifyContent:'center', alignItems:'center'}}>
+                        <Text>{updateNoteQuery.value.length} / 500 characters. </Text> 
+                    </View>
 
                 <ModalActionButtons
                     leftText={'Update'}

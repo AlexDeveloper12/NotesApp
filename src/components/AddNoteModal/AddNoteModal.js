@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Alert, View } from 'react-native';
-import { TextInput } from "react-native-paper";
+import { TextInput, Text } from "react-native-paper";
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import useInput from "../../hooks/useInput";
@@ -44,12 +44,15 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
                     onChangeText={addNoteQuery.handleChange}
                     maxLength={500}
                     underlineStyle={{ borderWidth: 0.5, borderColor: 'white' }}
-
                 />
                 <FavouriteRadioGroup
                     radioValue={selectedFavouriteValue}
                     setRadioValue={setSelectedFavouriteValue}
                 />
+
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <Text>{addNoteQuery.value.length} / 500 characters. </Text>
+                </View>
 
                 <ModalActionButtons
                     leftText={'Add'}
