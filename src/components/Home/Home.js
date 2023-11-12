@@ -284,10 +284,16 @@ function Home() {
     <PaperProvider>
       <View style={commonStyles.commonContainer}>
 
-        <SearchNotesBar
-          value={searchQuery.value}
-          handleChange={searchNotesFilter}
-        />
+        {
+          notes.value.length > 0 ?
+
+            <SearchNotesBar
+              value={searchQuery.value}
+              handleChange={searchNotesFilter}
+            />
+            : null
+        }
+
 
         <AddNoteButton
           toggleModal={toggleModal} />
