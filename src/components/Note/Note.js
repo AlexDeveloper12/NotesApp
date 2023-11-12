@@ -5,9 +5,6 @@ import PropTypes from 'prop-types';
 import styles from '../../styles/NoteStyles/NoteStyles';
 
 function Note({ item, togDel, togUpd, togFav }) {
-    console.log('note.js');
-    console.log(typeof(item.isFavourite))
-
     return (
         <Card style={styles.container}>
             <Card.Title title={`ID: ${item.id}`} titleStyle={styles.noteTitle} />

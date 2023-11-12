@@ -5,7 +5,7 @@ import { PaperProvider, Text } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 import {
-  SearchNotesBar, useInput, useArray, useModal, AddNoteModal, Note, DeleteNoteModal, UpdateNoteModal,
+  SearchNotesBar, useInput, useArray, useModal, AddNoteModal, Note, DeleteModal, UpdateNoteModal,
   AddNoteButton, NotesCount, Sort,
 } from '../Index/Index';
 
@@ -32,11 +32,6 @@ function Home() {
   const [isDescendFilterActive, setIsDescenFilterActive] = useState(false);
   const [isAscendDateCreFilterActive, setIsAscendDateCreFilterActive] = useState(false);
   const [isFavouriteFilterActive, setIsFavouriteFilterActive] = useState(false);
-  const [filterFavouritesArray, setFilterFavouritesArray] = useState([]);
-  const [filterAscendingArray, setFilterAscendingArray] = useState([]);
-  const [filterDescendingArray, setFilterDescendingArray] = useState([]);
-  const [filterDateCreAscendingArray, setfilterDateCreAscendingArray] = useState([]);
-
 
   const addNoteToStorage = async (data, favouriteValue) => {
 
@@ -58,15 +53,6 @@ function Home() {
       .then((note) => {
         notes.setValue(note);
         setFilteredNotes(note);
-
-        // let retrieveFavourites = GetFavourites();
-        // let retrieveAscending = SortAscending();
-        // let retrieveDescending = SortDescending();
-        // setFilterFavouritesArray(retrieveFavourites);
-        // setFilterAscendingArray(retrieveAscending);
-        // setFilterDescendingArray(retrieveDescending);
-        // sortNotesAscending();
-        // setIsAscendFilterActive(true);
 
 
       });
@@ -113,6 +99,13 @@ function Home() {
 
   const searchNotesFilter = (e) => {
     searchQuery.handleChange(e);
+
+    if (isAscendFilterActive || isDescendFilterActive || isAscendDateCreFilterActive || isFavouriteFilterActive) {
+      setIsAscendFilterActive(false);
+      setIsDescenFilterActive(false);
+      setIsAscendDateCreFilterActive(false);
+      setIsFavouriteFilterActive(false);
+    }
 
     if (searchQuery.value.length === 0) {
       notes.setValue(notes.value);
@@ -172,113 +165,236 @@ function Home() {
 
   const sortNotesAscending = () => {
 
-    if (isDescendFilterActive) {
-      setIsDescenFilterActive(false);
-    }
+    filterNotes('filter-ascending');
 
-    if (isAscendDateCreFilterActive) {
-      setIsAscendDateCreFilterActive(false);
-    }
+    // let fromOtherFilter = false;
 
-    if (isFavouriteFilterActive) {
-      setIsFavouriteFilterActive(false);
-    }
+    // if (isDescendFilterActive) {
+    //   setIsDescenFilterActive(false);
+    //   fromOtherFilter = true;
+    // }
 
-    if (isAscendFilterActive) {
-      setIsAscendFilterActive(!isAscendFilterActive);
-      GetNotesList()
-        .then(note => {
-          notes.setValue(note);
-        });
+    // if (isAscendDateCreFilterActive) {
+    //   setIsAscendDateCreFilterActive(false);
+    //   fromOtherFilter = true;
+    // }
 
-    }
-    else {
-      setIsAscendFilterActive(!isAscendFilterActive);
-      var sortedAscArray = SortAscending(notes.value);
-      notes.setValue(sortedAscArray);
-    }
+    // if (isFavouriteFilterActive) {
+    //   setIsFavouriteFilterActive(false);
+    //   fromOtherFilter = true;
+    // }
+
+    // if (isAscendFilterActive) {
+    //   setIsAscendFilterActive(false);
+    //   GetNotesList()
+    //     .then(note => {
+    //       notes.setValue(note);
+    //     });
+
+    // }
+    // else {
+    //   setIsAscendFilterActive(true);
+    //   GetNotesList()
+    //     .then(note => {
+    //       notes.setValue(note);
+    //     });
+    //   //if i go from favourites where there are no values to ascending where there should be
+    //   //the fact that the notes are filtered is causing the issue
+    //   var sortedAscArray = SortAscending(notes.value);
+    //   notes.setValue(sortedAscArray);
+    // }
   }
 
   const sortNotesDescending = () => {
 
-    if (isAscendFilterActive) {
-      setIsAscendFilterActive(false);
-    }
+    filterNotes('filter-descending');
 
-    if (isAscendDateCreFilterActive) {
-      setIsAscendDateCreFilterActive(false);
-    }
+    // if (isAscendFilterActive) {
+    //   setIsAscendFilterActive(false);
+    // }
 
-    if (isDescendFilterActive) {
-      setIsDescenFilterActive(!isDescendFilterActive);
-      GetNotesList()
-        .then(note => {
-          notes.setValue(note);
-        });
-    }
-    else {
-      setIsDescenFilterActive(!isDescendFilterActive);
-      var sortedDescArray = SortDescending(notes.value);
-      notes.setValue(sortedDescArray);
-    }
+    // if (isAscendDateCreFilterActive) {
+    //   setIsAscendDateCreFilterActive(false);
+    // }
+
+    // if (isDescendFilterActive) {
+    //   setIsDescenFilterActive(false);
+    //   GetNotesList()
+    //     .then(note => {
+    //       notes.setValue(note);
+    //     });
+    // }
+    // else {
+    //   setIsDescenFilterActive(true);
+    //   GetNotesList()
+    //     .then(note => {
+    //       notes.setValue(note);
+    //     });
+    //   var sortedDescArray = SortDescending(notes.value);
+    //   notes.setValue(sortedDescArray);
+    // }
   }
 
   const sortNotesDateCreAscending = () => {
-    if (isDescendFilterActive) {
-      setIsDescenFilterActive(false);
-    }
 
-    if (isAscendFilterActive) {
-      setIsAscendFilterActive(false);
-    }
+    filterNotes('filter-date-ascending');
 
-    if (isFavouriteFilterActive) {
-      setIsFavouriteFilterActive(false);
-    }
+    // if (isAscendFilterActive) {
+    //   setIsAscendFilterActive(false);
+    // }
 
-    setIsAscendDateCreFilterActive(!isAscendDateCreFilterActive);
+    // if (isDescendFilterActive) {
+    //   setIsDescenFilterActive(false);
+    // }
 
-    var sortedDateCreArray = SortDateCreatedAscending(notes.value);
+    // if (isFavouriteFilterActive) {
+    //   setIsFavouriteFilterActive(false);
+    // }
 
-    notes.setValue(sortedDateCreArray);
+    // if (isAscendDateCreFilterActive) {
+    //   setIsAscendDateCreFilterActive(false);
+    //   GetNotesList()
+    //     .then(note => {
+    //       notes.setValue(note);
+    //     });
+    // }
+    // else {
+    //   setIsAscendDateCreFilterActive(true);
+    //   GetNotesList()
+    //     .then(note => {
+    //       notes.setValue(note);
+    //     });
+
+    //   var sortedDateCreArray = SortDateCreatedAscending(notes.value);
+
+    //   notes.setValue(sortedDateCreArray);
+    // }
   }
 
   const sortNotesFavourite = () => {
-    if (isDescendFilterActive) {
-      setIsDescenFilterActive(false);
-    }
 
-    if (isAscendFilterActive) {
-      setIsAscendFilterActive(false);
-    }
+    filterNotes('filter-favourite');
 
-    if (isAscendDateCreFilterActive) {
-      setIsAscendDateCreFilterActive(false);
-    }
+    // if (isDescendFilterActive) {
+    //   setIsDescenFilterActive(false);
+    // }
 
-    if (isFavouriteFilterActive) {
-      setIsFavouriteFilterActive(!isFavouriteFilterActive);
-      GetNotesList()
-        .then(note => {
-          notes.setValue(note);
-        })
-    }
-    else {
-      setIsFavouriteFilterActive(!isFavouriteFilterActive);
+    // if (isAscendFilterActive) {
+    //   setIsAscendFilterActive(false);
+    // }
 
-      var sortedFavouriteArray = GetFavourites(notes.value);
+    // if (isAscendDateCreFilterActive) {
+    //   setIsAscendDateCreFilterActive(false);
+    // }
 
-      console.log(notes.value);
+    // if (isFavouriteFilterActive) {
+    //   setIsFavouriteFilterActive(false);
+    //   GetNotesList()
+    //     .then(note => {
+    //       notes.setValue(note);
+    //     })
+    // }
+    // else {
+    //   setIsFavouriteFilterActive(true);
+    //   GetNotesList()
+    //     .then(note => {
+    //       notes.setValue(note);
+    //     })
 
-      console.log(sortedFavouriteArray);
+    //   var sortedFavouriteArray = GetFavourites(notes.value);
 
-      if (sortedFavouriteArray.length > 0) {
-        notes.setValue(sortedFavouriteArray);
-      }
-
-    }
-
+    //   notes.setValue(sortedFavouriteArray);
+    // }
   }
+
+  //need to pass in the active filter and then falsify all oterhs and 
+  //then determine what function to run depending on what filter selected
+
+  const filterNotes = (filterName) => {
+    //on click of the filter this will run
+
+    if (filterName === 'filter-ascending') {
+      setIsDescenFilterActive(false);
+      setIsFavouriteFilterActive(false);
+      setIsAscendDateCreFilterActive(false);
+      if (isAscendFilterActive) {
+        setIsAscendFilterActive(false);
+        //SetNotesToDefault();
+      }
+      else {
+        setIsAscendFilterActive(true);
+        // SetNotesToDefault();
+        var sortedAscArray = SortAscending(notes.value);
+        
+        notes.setValue(sortedAscArray);
+
+      }
+    }
+
+    if (filterName === 'filter-descending') {
+      setIsAscendFilterActive(false);
+      setIsFavouriteFilterActive(false);
+      setIsAscendDateCreFilterActive(false);
+      if (isDescendFilterActive) {
+        setIsDescenFilterActive(false);
+        // SetNotesToDefault();
+      }
+      else {
+        setIsDescenFilterActive(true);
+        // SetNotesToDefault();
+
+        var sortedDescArray = SortDescending(notes.value);
+
+        notes.setValue(sortedDescArray);
+      }
+    }
+
+    if (filterName === 'filter-date-ascending') {
+      setIsAscendFilterActive(false);
+      setIsDescenFilterActive(false);
+      setIsFavouriteFilterActive(false);
+      if (isAscendDateCreFilterActive) {
+        setIsAscendDateCreFilterActive(false);
+        //SetNotesToDefault();
+      }
+      else {
+        setIsAscendDateCreFilterActive(true);
+        //SetNotesToDefault();
+
+        var sortedDateCreArray = SortDateCreatedAscending(notes.value);
+
+        notes.setValue(sortedDateCreArray);
+
+      }
+    }
+
+    if (filterName === 'filter-favourite') {
+      setIsAscendFilterActive(false);
+      setIsDescenFilterActive(false);
+      setIsAscendDateCreFilterActive(false);
+      if (isFavouriteFilterActive) {
+        setIsFavouriteFilterActive(false);
+        //SetNotesToDefault();
+      } else {
+        setIsFavouriteFilterActive(true);
+        //SetNotesToDefault();
+
+        var sortedFavouriteArray = GetFavourites(notes.value);
+
+        notes.setValue(sortedFavouriteArray);
+
+      }
+    }
+  }
+
+  const SetNotesToDefault = () => {
+    GetNotesList()
+      .then(note => {
+        notes.setValue(note);
+      });
+  }
+
+
 
   return (
     <PaperProvider>
@@ -298,46 +414,53 @@ function Home() {
         <AddNoteButton
           toggleModal={toggleModal} />
 
+        <NotesCount count={notes.value.length} />
+
+        <Sort>
+
+          <SortIcon
+            sortFunction={sortNotesAscending}
+            isActive={isAscendFilterActive}
+            icon={'sort-ascending'}
+          />
+
+          <SortIcon
+            sortFunction={sortNotesDescending}
+            isActive={isDescendFilterActive}
+            icon={'sort-descending'}
+          />
+
+          <SortIcon
+            sortFunction={sortNotesDateCreAscending}
+            isActive={isAscendDateCreFilterActive}
+            icon={'sort-calendar-ascending'}
+
+          />
+
+          <SortIcon
+            sortFunction={toggleDeleteAllNotesModal}
+            icon={'trash-can'}
+
+          />
+
+          <SortIcon
+            sortFunction={sortNotesFavourite}
+            isActive={isFavouriteFilterActive}
+            icon={'star'}
+          />
+        </Sort>
+
         {
-          notes.value === null || notes.value === undefined || notes.value.length === 0 ?
+
+          notes.value === null ||
+            notes.value === undefined || notes.value.length === 0 ||
+            filteredNotes === null ||
+            filteredNotes.length === 0 ||
+            filteredNotes === undefined ?
             <View style={commonStyles.centerElement}>
               <Text variant='headlineSmall' style={commonStyles.noDataExistsText}>There are currently no notes.</Text>
             </View>
             : <View style={{ flex: 1 }}>
-              <NotesCount count={notes.value.length} />
-
-              <Sort>
-
-                <SortIcon
-                  sortFunction={sortNotesAscending}
-                  isActive={isAscendFilterActive}
-                  icon={'sort-ascending'}
-                />
-
-                <SortIcon
-                  sortFunction={sortNotesDescending}
-                  isActive={isDescendFilterActive}
-                  icon={'sort-descending'}
-                />
-
-                <SortIcon
-                  sortFunction={sortNotesDateCreAscending}
-                  isActive={isAscendDateCreFilterActive}
-                  icon={'sort-calendar-ascending'}
-                />
-
-                <SortIcon
-                  sortFunction={toggleDeleteAllNotesModal}
-                  icon={'trash-can'}
-                />
-
-                <SortIcon
-                  sortFunction={sortNotesFavourite}
-                  isActive={isFavouriteFilterActive}
-                  icon={'star'}
-                />
-              </Sort>
-
 
               <NotesList
                 noteData={searchQuery.value.length > 0 && notes.value.length > 0 ? filteredNotes : notes.value}
