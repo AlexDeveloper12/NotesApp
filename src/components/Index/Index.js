@@ -5,7 +5,7 @@ import useModal from '../../hooks/useModal';
 import useArray from '../../hooks/useArray';
 import AddNoteModal from '../AddNoteModal/AddNoteModal';
 import Note from '../Note/Note';
-import DeleteNoteModal from '../DeleteNoteModal/DeleteNoteModal';
+import DeleteModal from '../DeleteModal/DeleteModal';
 import UpdateNoteModal from '../UpdateNoteModal.js/UpdateNoteModal';
 import AddNoteButton from '../AddNoteButton/AddNoteButton';
 import Favourites from '../Favourites/Favourites';
@@ -20,7 +20,7 @@ export {
     useArray,
     AddNoteModal,
     Note,
-    DeleteNoteModal,
+    DeleteModal,
     UpdateNoteModal,
     AddNoteButton,
     Favourites,

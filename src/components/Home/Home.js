@@ -16,7 +16,6 @@ import {
 
 import commonStyles from '../../styles/CommonStyles/CommonStyles';
 import NotesList from '../NotesList/NotesList';;
-import DeleteAllNotesModal from '../DeleteAllNotesModal/DeleteAllNotesModal';
 import SortIcon from '../SortIcon/SortIcon';
 
 function Home() {
@@ -33,10 +32,10 @@ function Home() {
   const [isDescendFilterActive, setIsDescenFilterActive] = useState(false);
   const [isAscendDateCreFilterActive, setIsAscendDateCreFilterActive] = useState(false);
   const [isFavouriteFilterActive, setIsFavouriteFilterActive] = useState(false);
-  const [filterFavouritesArray,setFilterFavouritesArray] = useState([]);
-  const [filterAscendingArray,setFilterAscendingArray] = useState([]);
-  const [filterDescendingArray,setFilterDescendingArray] = useState([]);
-  const [filterDateCreAscendingArray,setfilterDateCreAscendingArray] = useState([]);
+  const [filterFavouritesArray, setFilterFavouritesArray] = useState([]);
+  const [filterAscendingArray, setFilterAscendingArray] = useState([]);
+  const [filterDescendingArray, setFilterDescendingArray] = useState([]);
+  const [filterDateCreAscendingArray, setfilterDateCreAscendingArray] = useState([]);
 
 
   const addNoteToStorage = async (data, favouriteValue) => {
@@ -60,15 +59,15 @@ function Home() {
         notes.setValue(note);
         setFilteredNotes(note);
 
-        let retrieveFavourites = GetFavourites();
-        let retrieveAscending  = SortAscending();
-        let retrieveDescending = SortDescending();
-        setFilterFavouritesArray(retrieveFavourites);
-        setFilterAscendingArray(retrieveAscending);
-        setFilterDescendingArray(retrieveDescending);
-        sortNotesAscending();
-        setIsAscendFilterActive(true);
-        
+        // let retrieveFavourites = GetFavourites();
+        // let retrieveAscending = SortAscending();
+        // let retrieveDescending = SortDescending();
+        // setFilterFavouritesArray(retrieveFavourites);
+        // setFilterAscendingArray(retrieveAscending);
+        // setFilterDescendingArray(retrieveDescending);
+        // sortNotesAscending();
+        // setIsAscendFilterActive(true);
+
 
       });
 
@@ -101,7 +100,7 @@ function Home() {
   }
 
   const deleteNote = async (id) => {
-    
+
     //we are filtering the list and only returing the values in the notes where the id is not equal to the 
     //one passed in parameter, ie we are only returning the ones that don't have the id of the note we clicked
     const newNotes = notes.value.filter(note => note.id != id);
@@ -355,12 +354,15 @@ function Home() {
 
       {
         deleteModalOpen ?
-          <DeleteNoteModal
+
+          <DeleteModal
+            headerText={'Are you sure you want to delete the note?'}
             isVisible={deleteModalOpen}
             toggleModal={toggleDeleteModal}
             noteID={chosenNoteID}
             deleteNote={deleteNote}
           />
+
           : null
       }
 
@@ -377,11 +379,15 @@ function Home() {
 
       {
         deleteAllNotesOpen ?
-          <DeleteAllNotesModal
+
+          <DeleteModal
+            headerText={'Are you sure you want to delete all notes?'}
             isVisible={deleteAllNotesOpen}
             toggleModal={toggleDeleteAllNotesModal}
-            deleteAll={deleteAllNotes}
+            deleteNote={deleteAllNotes}
           />
+
+
           : null
       }
 
