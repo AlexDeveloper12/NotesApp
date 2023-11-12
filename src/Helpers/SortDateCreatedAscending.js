@@ -1,9 +1,10 @@
 import moment from 'moment';
 
 const SortDateCreatedAscending = (notesArray = []) => {
-    const sortedArrayByDateCreatedAsc = notesArray.sort((a, b) => new Date(a.dateCreated) -  new Date(b.dateCreated));
 
-    return sortedArrayByDateCreatedAsc;
+    const newArray = [...notesArray].sort((a, b) => new Date(a.dateCreated) -  new Date(b.dateCreated));
+
+    return newArray;
 }
 
 export default SortDateCreatedAscending;

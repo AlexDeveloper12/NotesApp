@@ -25,6 +25,7 @@ function Home() {
   const [updateModalOpen, setUpdateModalOpen, toggleUpdateModal] = useModal();
   const [deleteAllNotesOpen, setDeleteAllNotesOpen, toggleDeleteAllNotesModal] = useModal();
   const notes = useArray([]);
+  const backupNotes = useArray([]);
   const [filteredNotes, setFilteredNotes] = useState([]);
   const [chosenNoteID, setChosenNoteID] = useState(0);
   const [chosenNoteData, setChosenNoteData] = useState({});
@@ -53,8 +54,7 @@ function Home() {
       .then((note) => {
         notes.setValue(note);
         setFilteredNotes(note);
-
-
+        backupNotes.setValue(note);
       });
 
   }, []);
@@ -166,166 +166,45 @@ function Home() {
   const sortNotesAscending = () => {
 
     filterNotes('filter-ascending');
-
-    // let fromOtherFilter = false;
-
-    // if (isDescendFilterActive) {
-    //   setIsDescenFilterActive(false);
-    //   fromOtherFilter = true;
-    // }
-
-    // if (isAscendDateCreFilterActive) {
-    //   setIsAscendDateCreFilterActive(false);
-    //   fromOtherFilter = true;
-    // }
-
-    // if (isFavouriteFilterActive) {
-    //   setIsFavouriteFilterActive(false);
-    //   fromOtherFilter = true;
-    // }
-
-    // if (isAscendFilterActive) {
-    //   setIsAscendFilterActive(false);
-    //   GetNotesList()
-    //     .then(note => {
-    //       notes.setValue(note);
-    //     });
-
-    // }
-    // else {
-    //   setIsAscendFilterActive(true);
-    //   GetNotesList()
-    //     .then(note => {
-    //       notes.setValue(note);
-    //     });
-    //   //if i go from favourites where there are no values to ascending where there should be
-    //   //the fact that the notes are filtered is causing the issue
-    //   var sortedAscArray = SortAscending(notes.value);
-    //   notes.setValue(sortedAscArray);
-    // }
   }
 
   const sortNotesDescending = () => {
 
     filterNotes('filter-descending');
-
-    // if (isAscendFilterActive) {
-    //   setIsAscendFilterActive(false);
-    // }
-
-    // if (isAscendDateCreFilterActive) {
-    //   setIsAscendDateCreFilterActive(false);
-    // }
-
-    // if (isDescendFilterActive) {
-    //   setIsDescenFilterActive(false);
-    //   GetNotesList()
-    //     .then(note => {
-    //       notes.setValue(note);
-    //     });
-    // }
-    // else {
-    //   setIsDescenFilterActive(true);
-    //   GetNotesList()
-    //     .then(note => {
-    //       notes.setValue(note);
-    //     });
-    //   var sortedDescArray = SortDescending(notes.value);
-    //   notes.setValue(sortedDescArray);
-    // }
   }
 
   const sortNotesDateCreAscending = () => {
 
     filterNotes('filter-date-ascending');
-
-    // if (isAscendFilterActive) {
-    //   setIsAscendFilterActive(false);
-    // }
-
-    // if (isDescendFilterActive) {
-    //   setIsDescenFilterActive(false);
-    // }
-
-    // if (isFavouriteFilterActive) {
-    //   setIsFavouriteFilterActive(false);
-    // }
-
-    // if (isAscendDateCreFilterActive) {
-    //   setIsAscendDateCreFilterActive(false);
-    //   GetNotesList()
-    //     .then(note => {
-    //       notes.setValue(note);
-    //     });
-    // }
-    // else {
-    //   setIsAscendDateCreFilterActive(true);
-    //   GetNotesList()
-    //     .then(note => {
-    //       notes.setValue(note);
-    //     });
-
-    //   var sortedDateCreArray = SortDateCreatedAscending(notes.value);
-
-    //   notes.setValue(sortedDateCreArray);
-    // }
   }
 
   const sortNotesFavourite = () => {
 
     filterNotes('filter-favourite');
 
-    // if (isDescendFilterActive) {
-    //   setIsDescenFilterActive(false);
-    // }
-
-    // if (isAscendFilterActive) {
-    //   setIsAscendFilterActive(false);
-    // }
-
-    // if (isAscendDateCreFilterActive) {
-    //   setIsAscendDateCreFilterActive(false);
-    // }
-
-    // if (isFavouriteFilterActive) {
-    //   setIsFavouriteFilterActive(false);
-    //   GetNotesList()
-    //     .then(note => {
-    //       notes.setValue(note);
-    //     })
-    // }
-    // else {
-    //   setIsFavouriteFilterActive(true);
-    //   GetNotesList()
-    //     .then(note => {
-    //       notes.setValue(note);
-    //     })
-
-    //   var sortedFavouriteArray = GetFavourites(notes.value);
-
-    //   notes.setValue(sortedFavouriteArray);
-    // }
   }
 
   //need to pass in the active filter and then falsify all oterhs and 
   //then determine what function to run depending on what filter selected
 
-  const filterNotes = (filterName) => {
+  const filterNotes = async (filterName) => {
     //on click of the filter this will run
+    console.log(notes.value);
 
     if (filterName === 'filter-ascending') {
       setIsDescenFilterActive(false);
-      setIsFavouriteFilterActive(false);
+      if (isFavouriteFilterActive) {
+        setIsFavouriteFilterActive(false);
+      }
+
       setIsAscendDateCreFilterActive(false);
       if (isAscendFilterActive) {
         setIsAscendFilterActive(false);
-        //SetNotesToDefault();
       }
       else {
         setIsAscendFilterActive(true);
-        // SetNotesToDefault();
         var sortedAscArray = SortAscending(notes.value);
-        
+
         notes.setValue(sortedAscArray);
 
       }
@@ -333,15 +212,20 @@ function Home() {
 
     if (filterName === 'filter-descending') {
       setIsAscendFilterActive(false);
-      setIsFavouriteFilterActive(false);
+      if (isFavouriteFilterActive) {
+        setIsFavouriteFilterActive(false);
+        GetNotesList()
+          .then(note => {
+            notes.setValue(note);
+          })
+      }
+
       setIsAscendDateCreFilterActive(false);
       if (isDescendFilterActive) {
         setIsDescenFilterActive(false);
-        // SetNotesToDefault();
       }
       else {
         setIsDescenFilterActive(true);
-        // SetNotesToDefault();
 
         var sortedDescArray = SortDescending(notes.value);
 
@@ -351,15 +235,21 @@ function Home() {
 
     if (filterName === 'filter-date-ascending') {
       setIsAscendFilterActive(false);
-      setIsDescenFilterActive(false);
+      if (isFavouriteFilterActive) {
+        setIsFavouriteFilterActive(false);
+        GetNotesList()
+          .then(note => {
+            notes.setValue(note);
+          })
+
+      }
       setIsFavouriteFilterActive(false);
       if (isAscendDateCreFilterActive) {
         setIsAscendDateCreFilterActive(false);
-        //SetNotesToDefault();
+
       }
       else {
         setIsAscendDateCreFilterActive(true);
-        //SetNotesToDefault();
 
         var sortedDateCreArray = SortDateCreatedAscending(notes.value);
 
@@ -374,10 +264,9 @@ function Home() {
       setIsAscendDateCreFilterActive(false);
       if (isFavouriteFilterActive) {
         setIsFavouriteFilterActive(false);
-        //SetNotesToDefault();
+
       } else {
         setIsFavouriteFilterActive(true);
-        //SetNotesToDefault();
 
         var sortedFavouriteArray = GetFavourites(notes.value);
 
@@ -385,6 +274,7 @@ function Home() {
 
       }
     }
+
   }
 
   const SetNotesToDefault = () => {

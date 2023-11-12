@@ -1,9 +1,9 @@
 
 const GetFavourites = (notesArray = []) => {
 
-    const getFavouriteNotes = notesArray.filter(a=> a.isFavourite==='True');
+    const newArray = [...notesArray].filter(a=> a.isFavourite==='True');
 
-    return getFavouriteNotes;
+    return newArray;
 
 }
 

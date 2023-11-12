@@ -1,8 +1,9 @@
 
 const SortDescending = (arrayToSort = []) => {
-    var arraySortedDesc =  arrayToSort.sort(({ dateCreated: a }, { dateCreated: b }) => a < b ? -1 : a > b ? 1 : 0).reverse();
 
-    return arraySortedDesc;
+    const newArray = [...arrayToSort].sort(({ noteText: a }, { noteText: b }) => a < b ? -1 : a > b ? 1 : 0).reverse();
+
+    return newArray;
 }
 
 export default SortDescending;
