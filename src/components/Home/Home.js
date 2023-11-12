@@ -33,6 +33,11 @@ function Home() {
   const [isDescendFilterActive, setIsDescenFilterActive] = useState(false);
   const [isAscendDateCreFilterActive, setIsAscendDateCreFilterActive] = useState(false);
   const [isFavouriteFilterActive, setIsFavouriteFilterActive] = useState(false);
+  const [filterFavouritesArray,setFilterFavouritesArray] = useState([]);
+  const [filterAscendingArray,setFilterAscendingArray] = useState([]);
+  const [filterDescendingArray,setFilterDescendingArray] = useState([]);
+  const [filterDateCreAscendingArray,setfilterDateCreAscendingArray] = useState([]);
+
 
   const addNoteToStorage = async (data, favouriteValue) => {
 
@@ -54,6 +59,17 @@ function Home() {
       .then((note) => {
         notes.setValue(note);
         setFilteredNotes(note);
+
+        let retrieveFavourites = GetFavourites();
+        let retrieveAscending  = SortAscending();
+        let retrieveDescending = SortDescending();
+        setFilterFavouritesArray(retrieveFavourites);
+        setFilterAscendingArray(retrieveAscending);
+        setFilterDescendingArray(retrieveDescending);
+        sortNotesAscending();
+        setIsAscendFilterActive(true);
+        
+
       });
 
   }, []);
@@ -85,7 +101,7 @@ function Home() {
   }
 
   const deleteNote = async (id) => {
-    toggleDeleteModal();
+    
     //we are filtering the list and only returing the values in the notes where the id is not equal to the 
     //one passed in parameter, ie we are only returning the ones that don't have the id of the note we clicked
     const newNotes = notes.value.filter(note => note.id != id);
@@ -93,12 +109,14 @@ function Home() {
     //we then set the async storage value of the key note equal to the new array
     await AsyncStorage.setItem('note', JSON.stringify(newNotes));
     notes.setValue(newNotes);
+    toggleDeleteModal();
   }
 
   const searchNotesFilter = (e) => {
     searchQuery.handleChange(e);
 
     if (searchQuery.value.length === 0) {
+      notes.setValue(notes.value);
       setFilteredNotes(notes.value);
     } else {
       setFilteredNotes(filteredNotes.filter((item) =>

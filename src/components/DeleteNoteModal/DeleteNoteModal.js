@@ -4,6 +4,7 @@ import { Button, Text } from "react-native-paper";
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import commonStyles from "../../styles/CommonStyles/CommonStyles";
+import ModalActionButtons from "../ModalActionButtons/ModalActionButtons";
 
 function DeleteNoteModal({ isVisible, toggleModal, deleteNote, noteID }) {
     return (
@@ -17,22 +18,12 @@ function DeleteNoteModal({ isVisible, toggleModal, deleteNote, noteID }) {
                     Are you sure you want to delete this note?
                 </Text>
 
-                <View style={commonStyles.actionButtonContainer}>
-                    <Button mode="contained"
-                        style={commonStyles.btnLeft}
-                        onPress={() => deleteNote(noteID)}
-                        labelStyle={commonStyles.btnLabel}
-                    >
-                        Delete
-                    </Button>
-                    <Button mode="contained" onPress={toggleModal}
-                        buttonColor="red"
-                        style={commonStyles.btnRight}
-                        labelStyle={commonStyles.btnLabel}
-                    >
-                        Cancel
-                    </Button>
-                </View>
+                <ModalActionButtons
+                    leftText={'Delete'}
+                    leftAction={() => deleteNote(noteID)}
+                    rightText={'Close'}
+                    rightAction={toggleModal}
+                />
             </View>
 
 

@@ -10,20 +10,21 @@ function DeleteAllNotesModal({ toggleModal, deleteAll, isVisible }) {
         <Modal
             isVisible={isVisible}
             onDismiss={toggleModal}
-            style={commonStyles.modalContainer}
+        // style={commonStyles.modalContainer}
         >
             <View style={{ height: 250, backgroundColor: 'white' }}>
                 <Text
                     style={commonStyles.headerText}
                 >Are you sure you want to delete all of your notes?</Text>
-            </View>
 
-            <ModalActionButtons
-                leftText={'Delete All Notes'}
-                leftAction={deleteAll}
-                rightText={'Close'}
-                rightAction={toggleModal}
-            />
+
+                <ModalActionButtons
+                    leftText={'Delete All Notes'}
+                    leftAction={deleteAll}
+                    rightText={'Close'}
+                    rightAction={toggleModal}
+                />
+            </View>
 
         </Modal>
     )
