@@ -86,17 +86,12 @@ function Home() {
     toggleDeleteModal();
   }
 
-  const deleteNote  = async (id) => {
-
-    //we are filtering the list and only returing the values in the notes where the id is not equal to the 
-    //one passed in parameter, ie we are only returning the ones that don't have the id of the note we clicked
-
-    //we then set the async storage value of the key note equal to the new array
+  const deleteNote = async (id) => {
 
     const newNotes = await DeleteSingleNote(notes.value, id);
     toggleDeleteModal();
     notes.setValue(newNotes);
-    
+
   }
 
   const searchNotesFilter = (e) => {
@@ -167,116 +162,99 @@ function Home() {
 
   const sortNotesAscending = () => {
 
-    filterNotes('filter-ascending');
+    let determineNotes = determineNotesLengthStatus();
+
+    setFilterStatus('ascending');
+    var sortedAscArray = SortAscending(determineNotes);
+
+    notes.setValue(sortedAscArray);
+
   }
 
   const sortNotesDescending = () => {
 
-    filterNotes('filter-descending');
+    let determineNotes = determineNotesLengthStatus();
+
+    setFilterStatus('descending');
+
+    var sortedDescArray = SortDescending(determineNotes);
+
+    notes.setValue(sortedDescArray);
+
   }
 
   const sortNotesDateCreAscending = () => {
 
-    filterNotes('filter-date-ascending');
+    let determineNotes = determineNotesLengthStatus();
+
+    setFilterStatus('date-created-ascending');
+
+    var sortedDateCreArray = SortDateCreatedAscending(determineNotes);
+
+    notes.setValue(sortedDateCreArray);
   }
 
   const sortNotesFavourite = () => {
 
-    filterNotes('filter-favourite');
+    let origNotes = [...notes.value];
+
+    setFilterStatus('favourite')
+
+    var sortedFavouriteArray = GetFavourites(origNotes);
+
+    notes.setValue(sortedFavouriteArray);
 
   }
 
   //need to pass in the active filter and then falsify all oterhs and 
   //then determine what function to run depending on what filter selected
 
-  const filterNotes = async (filterName) => {
-    //on click of the filter this will run
-    console.log(notes.value);
 
-    if (filterName === 'filter-ascending') {
-      setIsDescenFilterActive(false);
-      if (isFavouriteFilterActive) {
-        setIsFavouriteFilterActive(false);
-      }
+  const setFilterStatus = (currentFilter) => {
 
-      setIsAscendDateCreFilterActive(false);
-      if (isAscendFilterActive) {
-        setIsAscendFilterActive(false);
-      }
-      else {
+    switch (currentFilter) {
+      case 'ascending':
         setIsAscendFilterActive(true);
-        var sortedAscArray = SortAscending(notes.value);
-
-        notes.setValue(sortedAscArray);
-
-      }
-    }
-
-    if (filterName === 'filter-descending') {
-      setIsAscendFilterActive(false);
-      if (isFavouriteFilterActive) {
-        setIsFavouriteFilterActive(false);
-        GetNotesList()
-          .then(note => {
-            notes.setValue(note);
-          })
-      }
-
-      setIsAscendDateCreFilterActive(false);
-      if (isDescendFilterActive) {
         setIsDescenFilterActive(false);
-      }
-      else {
-        setIsDescenFilterActive(true);
-
-        var sortedDescArray = SortDescending(notes.value);
-
-        notes.setValue(sortedDescArray);
-      }
-    }
-
-    if (filterName === 'filter-date-ascending') {
-      setIsAscendFilterActive(false);
-      if (isFavouriteFilterActive) {
-        setIsFavouriteFilterActive(false);
-        GetNotesList()
-          .then(note => {
-            notes.setValue(note);
-          })
-
-      }
-      setIsFavouriteFilterActive(false);
-      if (isAscendDateCreFilterActive) {
         setIsAscendDateCreFilterActive(false);
-
-      }
-      else {
-        setIsAscendDateCreFilterActive(true);
-
-        var sortedDateCreArray = SortDateCreatedAscending(notes.value);
-
-        notes.setValue(sortedDateCreArray);
-
-      }
-    }
-
-    if (filterName === 'filter-favourite') {
-      setIsAscendFilterActive(false);
-      setIsDescenFilterActive(false);
-      setIsAscendDateCreFilterActive(false);
-      if (isFavouriteFilterActive) {
         setIsFavouriteFilterActive(false);
-
-      } else {
+        break;
+      case 'descending':
+        setIsAscendFilterActive(false);
+        setIsDescenFilterActive(true);
+        setIsAscendDateCreFilterActive(false);
+        setIsFavouriteFilterActive(false);
+        break;
+      case 'date-created-ascending':
+        setIsAscendFilterActive(false);
+        setIsDescenFilterActive(false);
+        setIsAscendDateCreFilterActive(true);
+        setIsFavouriteFilterActive(false);
+        break;
+      case 'favourite':
+        setIsAscendFilterActive(false);
+        setIsDescenFilterActive(false);
+        setIsAscendDateCreFilterActive(false);
         setIsFavouriteFilterActive(true);
+        break;
 
-        var sortedFavouriteArray = GetFavourites(notes.value);
-
-        notes.setValue(sortedFavouriteArray);
-
-      }
     }
 
+  }
+
+
+  const determineNotesLengthStatus = () => {
+
+    let origNotes = [];
+
+    if (notes.value.length === backupNotes.value.length) {
+      origNotes = [...notes.value];
+    }
+    else {
+      origNotes = [...backupNotes.value];
+    }
+
+    return origNotes;
   }
 
   return (
