@@ -17,6 +17,7 @@ import {
 import commonStyles from '../../styles/CommonStyles/CommonStyles';
 import NotesList from '../NotesList/NotesList';;
 import SortIcon from '../SortIcon/SortIcon';
+import { DeleteSingleNote } from '../../Helpers/DeleteSingleNote';
 
 function Home() {
   const searchQuery = useInput('');
@@ -85,16 +86,19 @@ function Home() {
     toggleDeleteModal();
   }
 
-  const deleteNote = async (id) => {
+  const deleteNote  = async (id) => {
 
     //we are filtering the list and only returing the values in the notes where the id is not equal to the 
     //one passed in parameter, ie we are only returning the ones that don't have the id of the note we clicked
-    const newNotes = notes.value.filter(note => note.id != id);
 
     //we then set the async storage value of the key note equal to the new array
-    await AsyncStorage.setItem('note', JSON.stringify(newNotes));
+    console.log(id);
+
+    const newNotes = await DeleteSingleNote(notes.value, id);
+
     notes.setValue(newNotes);
     toggleDeleteModal();
+    await GetNotesList();
   }
 
   const searchNotesFilter = (e) => {
@@ -380,6 +384,7 @@ function Home() {
             toggleModal={toggleDeleteModal}
             noteID={chosenNoteID}
             deleteNote={deleteNote}
+            type={'deletesingle'}
           />
 
           : null
@@ -404,6 +409,7 @@ function Home() {
             isVisible={deleteAllNotesOpen}
             toggleModal={toggleDeleteAllNotesModal}
             deleteNote={deleteAllNotes}
+            type={'deleteall'}
           />
 
 
