@@ -92,13 +92,11 @@ function Home() {
     //one passed in parameter, ie we are only returning the ones that don't have the id of the note we clicked
 
     //we then set the async storage value of the key note equal to the new array
-    console.log(id);
 
     const newNotes = await DeleteSingleNote(notes.value, id);
-
-    notes.setValue(newNotes);
     toggleDeleteModal();
-    await GetNotesList();
+    notes.setValue(newNotes);
+    
   }
 
   const searchNotesFilter = (e) => {
@@ -281,15 +279,6 @@ function Home() {
 
   }
 
-  const SetNotesToDefault = () => {
-    GetNotesList()
-      .then(note => {
-        notes.setValue(note);
-      });
-  }
-
-
-
   return (
     <PaperProvider>
       <View style={commonStyles.commonContainer}>
@@ -303,7 +292,6 @@ function Home() {
             />
             : null
         }
-
 
         <AddNoteButton
           toggleModal={toggleModal} />
