@@ -46,6 +46,7 @@ function Home() {
     GetNotesList()
       .then((note) => {
         notes.setValue(note);
+        setFilteredNotes(note);
       });
   }
 
@@ -91,7 +92,7 @@ function Home() {
     const newNotes = await DeleteSingleNote(notes.value, id);
     toggleDeleteModal();
     notes.setValue(newNotes);
-
+    setFilteredNotes(newNotes);
   }
 
   const searchNotesFilter = (e) => {
@@ -115,12 +116,6 @@ function Home() {
 
     setFilteredNotes(notesCopy);
 
-    
-
-    // setFilteredNotes(filterNotesCopy.filter((item) =>
-    //   item.noteText.toUpperCase().includes(e.toUpperCase())
-    // ));
-
   }
 
   const deleteAllNotes = async () => {
@@ -130,6 +125,7 @@ function Home() {
       GetNotesList()
         .then((note) => {
           notes.setValue(note);
+          setFilteredNotes(note);
         })
     }
     catch (error) {
@@ -173,9 +169,10 @@ function Home() {
     let determineNotes = determineNotesLengthStatus();
 
     setFilterStatus('ascending');
+
     var sortedAscArray = SortAscending(determineNotes);
 
-    notes.setValue(sortedAscArray);
+    setFilteredNotes(sortedAscArray);
 
   }
 
@@ -187,7 +184,7 @@ function Home() {
 
     var sortedDescArray = SortDescending(determineNotes);
 
-    notes.setValue(sortedDescArray);
+    setFilteredNotes(sortedDescArray);
 
   }
 
@@ -199,7 +196,8 @@ function Home() {
 
     var sortedDateCreArray = SortDateCreatedAscending(determineNotes);
 
-    notes.setValue(sortedDateCreArray);
+    setFilteredNotes(sortedDateCreArray);
+
   }
 
   const sortNotesFavourite = () => {
@@ -210,13 +208,9 @@ function Home() {
 
     var sortedFavouriteArray = GetFavourites(origNotes);
 
-    notes.setValue(sortedFavouriteArray);
+    setFilteredNotes(sortedFavouriteArray);
 
   }
-
-  //need to pass in the active filter and then falsify all oterhs and 
-  //then determine what function to run depending on what filter selected
-
 
   const setFilterStatus = (currentFilter) => {
 
@@ -331,7 +325,6 @@ function Home() {
             : <View style={{ flex: 1 }}>
 
               <NotesList
-                //noteData={searchQuery.value.length > 0 && notes.value.length > 0 ? filteredNotes : notes.value}
                 noteData={filteredNotes}
                 renderNotes={renderNotes}
               />
