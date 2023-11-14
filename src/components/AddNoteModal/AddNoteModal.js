@@ -11,7 +11,6 @@ import ModalActionButtons from "../ModalActionButtons/ModalActionButtons";
 function AddNoteModal({ isVisible, toggleModal, addNote }) {
 
     const addNoteQuery = useInput('');
-    const maxCharacters = useState(500);
     const [selectedFavouriteValue, setSelectedFavouriteValue] = useState('False');
 
     const add = () => {
@@ -43,14 +42,14 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
                     value={addNoteQuery.value}
                     onChangeText={addNoteQuery.handleChange}
                     maxLength={500}
-                    underlineStyle={{ borderWidth: 0.5, borderColor: 'white' }}
+                    underlineStyle={styles.inputUnderline}
                 />
                 <FavouriteRadioGroup
                     radioValue={selectedFavouriteValue}
                     setRadioValue={setSelectedFavouriteValue}
                 />
 
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <View style={styles.maxCharacterContainer}>
                     <Text>{addNoteQuery.value.length} / 500 characters. </Text>
                 </View>
 

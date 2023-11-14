@@ -2,20 +2,21 @@ import React, { useState } from 'react'
 import {View} from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import PropTypes from 'prop-types';
+import styles from '../../styles/SearchNotesBarStyles/SearchNotesBarStyles';
 
 function SearchNotesBar({ value, handleChange }) {
 
     return (
-        <View style={{ marginTop: 40, marginLeft: 10, marginRight: 10 }}>
+        <View style={styles.container}>
             <Searchbar
-                placeholder='Search...'
+                placeholder='Search all notes...'
                 value={value}
                 onChangeText={handleChange}
                 icon={"magnify"}
-                iconColor={"#fff"}
-                style={{ backgroundColor: '#71909a', fontFamily: 'Roboto-Light' }}
-                inputStyle={{ color: '#fff' }}
-                placeholderTextColor={'white'}
+                iconColor={styles.iconColour}
+                style={styles.searchBarGeneral}
+                inputStyle={styles.searchBarInput}
+                placeholderTextColor={styles.placeholderColour}
             />
         </View>
     )
