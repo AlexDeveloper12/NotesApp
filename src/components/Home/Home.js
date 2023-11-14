@@ -95,7 +95,12 @@ function Home() {
   }
 
   const searchNotesFilter = (e) => {
+
+    let keyword = e.toLowerCase();
+
     searchQuery.handleChange(e);
+
+    let notesCopy = [...notes.value];
 
     if (isAscendFilterActive || isDescendFilterActive || isAscendDateCreFilterActive || isFavouriteFilterActive) {
       setIsAscendFilterActive(false);
@@ -104,14 +109,17 @@ function Home() {
       setIsFavouriteFilterActive(false);
     }
 
-    if (searchQuery.value.length === 0) {
-      notes.setValue(notes.value);
-      setFilteredNotes(notes.value);
-    } else {
-      setFilteredNotes(filteredNotes.filter((item) =>
-        item.noteText.toUpperCase().includes(e.toUpperCase())
-      ));
-    }
+    notesCopy = notesCopy.filter((item) => {
+      return item.noteText.toLowerCase().includes(keyword)
+    });
+
+    setFilteredNotes(notesCopy);
+
+    
+
+    // setFilteredNotes(filterNotesCopy.filter((item) =>
+    //   item.noteText.toUpperCase().includes(e.toUpperCase())
+    // ));
 
   }
 
@@ -323,7 +331,8 @@ function Home() {
             : <View style={{ flex: 1 }}>
 
               <NotesList
-                noteData={searchQuery.value.length > 0 && notes.value.length > 0 ? filteredNotes : notes.value}
+                //noteData={searchQuery.value.length > 0 && notes.value.length > 0 ? filteredNotes : notes.value}
+                noteData={filteredNotes}
                 renderNotes={renderNotes}
               />
             </View>
