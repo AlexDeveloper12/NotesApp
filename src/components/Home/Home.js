@@ -12,6 +12,7 @@ import {
 } from '../IndexHelpers/IndexHelpers';
 import commonStyles from '../../styles/CommonStyles/CommonStyles';
 import { CONSTANTS } from '../../constants/constants';
+import FilterSearch from '../../Helpers/FilterSearch';
 
 function Home() {
   const searchQuery = useInput('');
@@ -105,9 +106,11 @@ function Home() {
       });
     }
 
-    notesCopy = notesCopy.filter((item) => {
-      return item.noteText.toLowerCase().includes(keyword)
-    });
+    // notesCopy = notesCopy.filter((item) => {
+    //   return item.noteText.toLowerCase().includes(keyword)
+    // });
+
+    notesCopy = FilterSearch(notesCopy,keyword);
 
     setFilteredNotes(notesCopy);
 
