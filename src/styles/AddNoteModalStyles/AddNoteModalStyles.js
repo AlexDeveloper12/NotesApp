@@ -1,15 +1,18 @@
 import { StyleSheet } from "react-native";
+import { Dimensions } from "react-native";
 
 const styles = StyleSheet.create({
     modalContainer: {
-        backgroundColor: '#fff',
-        borderWidth: 0,
+        borderWidth: 0
     },
     innerContainer: {
-        flex: 1
+        flex: 4,
+        flexDirection:'column',
+        justifyContent:'center'
+        
     },
     input: {
-        flex: 3,
+        flex: 4,
         textAlignVertical: 'top',
         width: '100%'
     },
@@ -19,6 +22,9 @@ const styles = StyleSheet.create({
     },
     inputUnderline: {
         borderWidth: 0.5, borderColor: 'white'
+    },
+    actionsContainer:{
+        height:Dimensions.get('window').height / 1.5, backgroundColor:'white'
     }
 
 })

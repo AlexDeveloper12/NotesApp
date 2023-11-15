@@ -1,17 +1,25 @@
 import { StyleSheet } from "react-native";
+import { Dimensions } from "react-native";
 
 const styles = StyleSheet.create({
     modalContainer: {
-        height: '80%',
-        backgroundColor: '#fff'
+        borderWidth: 0
     },
     innerContainer: {
-        flex: 1
+        flex: 4,
+        flexDirection:'column',
+        justifyContent:'center'
+    },
+    actionsContainer:{
+        height:Dimensions.get('window').height / 1.5, backgroundColor:'white'
     },
     input: {
         verticalAlign: 'top', 
+        flexWrap:'wrap',
         flex: 3,
-        flexWrap:'wrap'
+        textAlignVertical: 'top',
+        width: '100%'
+
     },
 
 });

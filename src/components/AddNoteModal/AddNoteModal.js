@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, View } from 'react-native';
+import { Alert, Dimensions, View } from 'react-native';
 import { TextInput, Text } from "react-native-paper";
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
@@ -29,36 +29,36 @@ function AddNoteModal({ isVisible, toggleModal, addNote }) {
             visible={isVisible}
             onDismiss={toggleModal}
             style={styles.modalContainer}
-            animationIn={"bounce"}
-            animationOut={"slideInDown"}
-            testID="addNoteModal"
-            accessibilityLabel="add-note-modal"
         >
             <View style={styles.innerContainer}>
-                <TextInput
-                    multiline
-                    style={styles.input}
-                    autoFocus
-                    value={addNoteQuery.value}
-                    onChangeText={addNoteQuery.handleChange}
-                    maxLength={500}
-                    underlineStyle={styles.inputUnderline}
-                />
-                <FavouriteRadioGroup
-                    radioValue={selectedFavouriteValue}
-                    setRadioValue={setSelectedFavouriteValue}
-                />
+                <View
+                    style={styles.actionsContainer}
+                >
+                    <TextInput
+                        multiline
+                        style={styles.input}
+                        autoFocus
+                        value={addNoteQuery.value}
+                        onChangeText={addNoteQuery.handleChange}
+                        maxLength={500}
+                        underlineStyle={styles.inputUnderline}
+                    />
+                    <FavouriteRadioGroup
+                        radioValue={selectedFavouriteValue}
+                        setRadioValue={setSelectedFavouriteValue}
+                    />
 
-                <View style={styles.maxCharacterContainer}>
-                    <Text>{addNoteQuery.value.length} / 500 characters. </Text>
+                    <View style={styles.maxCharacterContainer}>
+                        <Text>{addNoteQuery.value.length} / 500 characters. </Text>
+                    </View>
+
+                    <ModalActionButtons
+                        leftText={'Add'}
+                        leftAction={add}
+                        rightText={'Close'}
+                        rightAction={toggleModal}
+                    />
                 </View>
-
-                <ModalActionButtons
-                    leftText={'Add'}
-                    leftAction={add}
-                    rightText={'Close'}
-                    rightAction={toggleModal}
-                />
             </View>
         </Modal>
     )

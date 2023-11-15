@@ -18,26 +18,29 @@ function UpdateNoteModal({ isVisible, toggleModal, noteData, update }) {
             style={styles.modalContainer}
         >
             <View style={styles.innerContainer}>
-                <TextInput
-                    style={styles.input}
-                    autoFocus
-                    value={updateNoteQuery.value}
-                    onChangeText={updateNoteQuery.handleChange}
-                    underlineStyle={{borderWidth:0.5, borderColor:'white'}}
-                    multiline
-                    maxLength={500}
+                <View style={styles.actionsContainer}>
+
+                    <TextInput
+                        style={styles.input}
+                        autoFocus
+                        value={updateNoteQuery.value}
+                        onChangeText={updateNoteQuery.handleChange}
+                        underlineStyle={{ borderWidth: 0.5, borderColor: 'white' }}
+                        multiline
+                        maxLength={500}
                     />
 
-                    <View style={{justifyContent:'center', alignItems:'center'}}>
-                        <Text>{updateNoteQuery.value.length} / 500 characters. </Text> 
+                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <Text>{updateNoteQuery.value.length} / 500 characters. </Text>
                     </View>
 
-                <ModalActionButtons
-                    leftText={'Update'}
-                    leftAction={()=>update(noteData.id,updateNoteQuery.value)}
-                    rightText={'Close'}
-                    rightAction={toggleModal}
+                    <ModalActionButtons
+                        leftText={'Update'}
+                        leftAction={() => update(noteData.id, updateNoteQuery.value)}
+                        rightText={'Close'}
+                        rightAction={toggleModal}
                     />
+                </View>
             </View>
 
         </Modal>
@@ -47,8 +50,8 @@ function UpdateNoteModal({ isVisible, toggleModal, noteData, update }) {
 export default UpdateNoteModal;
 
 UpdateNoteModal.propTypes = {
-    isVisible:PropTypes.bool,
-    toggleModal:PropTypes.func,
-    noteData:PropTypes.object,
-    update:PropTypes.func
+    isVisible: PropTypes.bool,
+    toggleModal: PropTypes.func,
+    noteData: PropTypes.object,
+    update: PropTypes.func
 }
