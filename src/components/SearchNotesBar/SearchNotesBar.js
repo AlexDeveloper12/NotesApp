@@ -13,10 +13,10 @@ function SearchNotesBar({ value, handleChange }) {
                 value={value}
                 onChangeText={handleChange}
                 icon={"magnify"}
-                iconColor={styles.iconColour}
+                iconColor={'#fff'}
                 style={styles.searchBarGeneral}
-                inputStyle={styles.searchBarInput}
-                placeholderTextColor={styles.placeholderColour}
+                inputStyle={'#fff'}
+                placeholderTextColor={'white'}
             />
         </View>
     )

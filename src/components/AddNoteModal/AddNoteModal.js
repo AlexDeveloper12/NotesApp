@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, Dimensions, View } from 'react-native';
+import { Alert, View } from 'react-native';
 import { TextInput, Text } from "react-native-paper";
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
