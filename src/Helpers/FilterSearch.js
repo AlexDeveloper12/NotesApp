@@ -1,5 +1,5 @@
 
-const FilterSearch = (notesArray = [], keyword) => {
+const FilterSearch = (notesArray, keyword) => {
 
     let filteredArray = notesArray.filter(note => {
         return note.noteText.toLowerCase().includes(keyword)

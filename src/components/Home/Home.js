@@ -8,11 +8,10 @@ import {
 } from '../Index/Index';
 import {
   FindAndUpdateNote, UpdateNoteFavourite, SortDateCreatedAscending, DeleteAllNotes,
-  GetFavourites, AddNote, GetNotesList, SortAscending, SortDescending, DeleteSingleNote
+  GetFavourites, AddNote, GetNotesList, SortAscending, SortDescending, DeleteSingleNote, FilterSearch
 } from '../IndexHelpers/IndexHelpers';
 import commonStyles from '../../styles/CommonStyles/CommonStyles';
 import { CONSTANTS } from '../../constants/constants';
-import FilterSearch from '../../Helpers/FilterSearch';
 
 function Home() {
   const searchQuery = useInput('');
@@ -105,10 +104,6 @@ function Home() {
         favourite: false
       });
     }
-
-    // notesCopy = notesCopy.filter((item) => {
-    //   return item.noteText.toLowerCase().includes(keyword)
-    // });
 
     notesCopy = FilterSearch(notesCopy,keyword);
 

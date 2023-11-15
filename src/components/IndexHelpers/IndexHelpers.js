@@ -8,6 +8,7 @@ import GetNotesList from '../../Helpers/GetNotesList';
 import SortAscending from '../../Helpers/SortAscending';
 import SortDescending from '../../Helpers/SortDescending';
 import { DeleteSingleNote } from '../../Helpers/DeleteSingleNote';
+import FilterSearch from '../../Helpers/FilterSearch';
 
 export {
     FindAndUpdateNote,
@@ -19,5 +20,6 @@ export {
     GetNotesList,
     SortAscending,
     SortDescending,
-    DeleteSingleNote
+    DeleteSingleNote,
+    FilterSearch
 }
