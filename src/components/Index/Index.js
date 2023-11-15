@@ -11,6 +11,8 @@ import AddNoteButton from '../AddNoteButton/AddNoteButton';
 import Favourites from '../Favourites/Favourites';
 import NotesCount from '../NotesCount/NotesCount';
 import Sort from '../Sort/Sort';
+import SortIcon from '../SortIcon/SortIcon';
+import NotesList from '../NotesList/NotesList';
 
 
 export {
@@ -25,5 +27,7 @@ export {
     AddNoteButton,
     Favourites,
     NotesCount,
-    Sort
+    Sort,
+    SortIcon,
+    NotesList
 }

@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-
 import { PaperProvider, Text } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 import {
   SearchNotesBar, useInput, useArray, useModal, AddNoteModal, Note, DeleteModal, UpdateNoteModal,
-  AddNoteButton, NotesCount, Sort,
+  AddNoteButton, NotesCount, Sort, SortIcon, NotesList
 } from '../Index/Index';
-
 import {
   FindAndUpdateNote, UpdateNoteFavourite, SortDateCreatedAscending, DeleteAllNotes,
-  GetFavourites, AddNote, GetNotesList, SortAscending, SortDescending
+  GetFavourites, AddNote, GetNotesList, SortAscending, SortDescending, DeleteSingleNote
 } from '../IndexHelpers/IndexHelpers';
-
 import commonStyles from '../../styles/CommonStyles/CommonStyles';
-import NotesList from '../NotesList/NotesList';;
-import SortIcon from '../SortIcon/SortIcon';
-import { DeleteSingleNote } from '../../Helpers/DeleteSingleNote';
+import { CONSTANTS } from '../../constants/constants';
 
 function Home() {
   const searchQuery = useInput('');
@@ -30,10 +24,9 @@ function Home() {
   const [filteredNotes, setFilteredNotes] = useState([]);
   const [chosenNoteID, setChosenNoteID] = useState(0);
   const [chosenNoteData, setChosenNoteData] = useState({});
-  const [isAscendFilterActive, setIsAscendFilterActive] = useState(false);
-  const [isDescendFilterActive, setIsDescenFilterActive] = useState(false);
-  const [isAscendDateCreFilterActive, setIsAscendDateCreFilterActive] = useState(false);
-  const [isFavouriteFilterActive, setIsFavouriteFilterActive] = useState(false);
+  const [isFilterActive, setIsFilterActive] = useState({
+    ascend: false, descend: false, ascendDateCre: false, favourite: false
+  })
 
   const addNoteToStorage = async (data, favouriteValue) => {
 
@@ -61,7 +54,7 @@ function Home() {
 
   }, []);
 
-  const renderNotes = ({ item, index }) => {
+  const renderNotes = ({ item }) => {
     return (
       <View>
         <Note
@@ -103,11 +96,13 @@ function Home() {
 
     let notesCopy = [...notes.value];
 
-    if (isAscendFilterActive || isDescendFilterActive || isAscendDateCreFilterActive || isFavouriteFilterActive) {
-      setIsAscendFilterActive(false);
-      setIsDescenFilterActive(false);
-      setIsAscendDateCreFilterActive(false);
-      setIsFavouriteFilterActive(false);
+    if (isFilterActive.ascend || isFilterActive.descend || isFilterActive.ascendDateCre || isFilterActive.favourite) {
+      setIsFilterActive({
+        ascend: false,
+        descend: false,
+        ascendDateCre: false,
+        favourite: false
+      });
     }
 
     notesCopy = notesCopy.filter((item) => {
@@ -216,34 +211,41 @@ function Home() {
 
     switch (currentFilter) {
       case 'ascending':
-        setIsAscendFilterActive(true);
-        setIsDescenFilterActive(false);
-        setIsAscendDateCreFilterActive(false);
-        setIsFavouriteFilterActive(false);
+        setIsFilterActive({
+          ascend: true,
+          descend: false,
+          ascendDateCre: false,
+          favourite: false
+        });
         break;
       case 'descending':
-        setIsAscendFilterActive(false);
-        setIsDescenFilterActive(true);
-        setIsAscendDateCreFilterActive(false);
-        setIsFavouriteFilterActive(false);
+        setIsFilterActive({
+          ascend: false,
+          descend: true,
+          ascendDateCre: false,
+          favourite: false
+        });
         break;
       case 'date-created-ascending':
-        setIsAscendFilterActive(false);
-        setIsDescenFilterActive(false);
-        setIsAscendDateCreFilterActive(true);
-        setIsFavouriteFilterActive(false);
+        setIsFilterActive({
+          ascend: false,
+          descend: false,
+          ascendDateCre: true,
+          favourite: false
+        });
         break;
       case 'favourite':
-        setIsAscendFilterActive(false);
-        setIsDescenFilterActive(false);
-        setIsAscendDateCreFilterActive(false);
-        setIsFavouriteFilterActive(true);
+        setIsFilterActive({
+          ascend: false,
+          descend: false,
+          ascendDateCre: false,
+          favourite: true
+        });
         break;
 
     }
 
   }
-
 
   const determineNotesLengthStatus = () => {
 
@@ -282,19 +284,19 @@ function Home() {
 
           <SortIcon
             sortFunction={sortNotesAscending}
-            isActive={isAscendFilterActive}
+            isActive={isFilterActive.ascend}
             icon={'sort-ascending'}
           />
 
           <SortIcon
             sortFunction={sortNotesDescending}
-            isActive={isDescendFilterActive}
+            isActive={isFilterActive.descend}
             icon={'sort-descending'}
           />
 
           <SortIcon
             sortFunction={sortNotesDateCreAscending}
-            isActive={isAscendDateCreFilterActive}
+            isActive={isFilterActive.ascendDateCre}
             icon={'sort-calendar-ascending'}
 
           />
@@ -307,23 +309,19 @@ function Home() {
 
           <SortIcon
             sortFunction={sortNotesFavourite}
-            isActive={isFavouriteFilterActive}
+            isActive={isFilterActive.favourite}
             icon={'star'}
           />
         </Sort>
 
         {
-
-          notes.value === null ||
-            notes.value === undefined || notes.value.length === 0 ||
-            filteredNotes === null ||
+          filteredNotes === null ||
             filteredNotes.length === 0 ||
             filteredNotes === undefined ?
             <View style={commonStyles.centerElement}>
-              <Text variant='headlineSmall' style={commonStyles.noDataExistsText}>There are currently no notes.</Text>
+              <Text variant='headlineSmall' style={commonStyles.noDataExistsText}>{CONSTANTS.EMPTY_NOTES_MESSAGE}</Text>
             </View>
             : <View style={{ flex: 1 }}>
-
               <NotesList
                 noteData={filteredNotes}
                 renderNotes={renderNotes}

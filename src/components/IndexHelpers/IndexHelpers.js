@@ -7,6 +7,7 @@ import AddNote from '../../Helpers/AddNote';
 import GetNotesList from '../../Helpers/GetNotesList';
 import SortAscending from '../../Helpers/SortAscending';
 import SortDescending from '../../Helpers/SortDescending';
+import { DeleteSingleNote } from '../../Helpers/DeleteSingleNote';
 
 export {
     FindAndUpdateNote,
@@ -17,5 +18,6 @@ export {
     AddNote,
     GetNotesList,
     SortAscending,
-    SortDescending
+    SortDescending,
+    DeleteSingleNote
 }
