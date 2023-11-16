@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Home from '../src/components/Home/Home';
 import { SearchNotesBar, useArray, useInput, useModal, AddNoteButton, AddNoteModal, DeleteNoteModal, UpdateNoteModal, Note, NotesCount, Header, Favourites, Sort } from '../src/components/Index/Index';
 import { StyleSheet, PixelRatio } from 'react-native';
-import { symbol } from 'prop-types';
+import CustomFontSize from '../src/Helpers/CustomFontSize';
 
 const Drawer = createDrawerNavigator();
 
@@ -34,7 +34,6 @@ export default function NavigationTabs() {
                         width:200
                     }
                 }}
-
             >
                 <Drawer.Screen name="Home" component={Home} options={{
                     headerTitle: 'My Notes'
@@ -45,9 +44,6 @@ export default function NavigationTabs() {
     )
 }
 
-const fontScale = PixelRatio.getFontScale();
-const getFontSize = size => size / fontScale
-
 const styles = StyleSheet.create({
-    customFont: getFontSize(18)
+    customFont: CustomFontSize(18)
 })

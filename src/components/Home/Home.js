@@ -196,7 +196,7 @@ function Home() {
 
   const sortNotesFavourite = () => {
 
-    let origNotes = [...notes.value];
+    let origNotes = [...filteredNotes];
 
     setFilterStatus('favourite')
 
