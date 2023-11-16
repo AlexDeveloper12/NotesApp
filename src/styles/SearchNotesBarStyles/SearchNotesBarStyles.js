@@ -7,7 +7,9 @@ const styles = StyleSheet.create({
         marginRight: 10
     },
     searchBarGeneral:{
-        backgroundColor: '#71909a', fontFamily: 'Roboto-Light'
+        backgroundColor: '#71909a', 
+        fontFamily: 'Roboto-Light', 
+        color:'white'
     },
     searchBarInput:{
         color: '#fff'

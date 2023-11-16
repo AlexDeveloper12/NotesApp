@@ -19,7 +19,7 @@ function DeleteModal({ isVisible, toggleModal, deleteNote, noteID, headerText, t
             >
                 <ModalActionButtons
                     leftText={'Delete'}
-                    leftAction={type=== CONSTANTS.deletesingle ? () => deleteNote(noteID) : deleteNote}
+                    leftAction={type=== CONSTANTS.DELETE_SINGLE ? () => deleteNote(noteID) : deleteNote}
                     rightText={'Close'}
                     rightAction={toggleModal}
                 />

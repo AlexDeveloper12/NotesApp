@@ -81,8 +81,9 @@ function Home() {
   }
 
   const deleteNote = async (id) => {
+    console.log()
 
-    const newNotes = await DeleteSingleNote(notes.value, id);
+    const newNotes = await DeleteSingleNote(filteredNotes, id);
     toggleDeleteModal();
     notes.setValue(newNotes);
     setFilteredNotes(newNotes);
@@ -130,7 +131,7 @@ function Home() {
   const updateNote = async (id, text) => {
 
     try {
-      const myNotes = notes.value;
+      const myNotes = [...filteredNotes];
 
       await FindAndUpdateNote(myNotes, id, text);
 
@@ -249,8 +250,8 @@ function Home() {
 
     let origNotes = [];
 
-    if (notes.value.length === backupNotes.value.length) {
-      origNotes = [...notes.value];
+    if (filteredNotes.length === backupNotes.value.length) {
+      origNotes = [...filteredNotes];
     }
     else {
       origNotes = [...backupNotes.value];
@@ -264,7 +265,7 @@ function Home() {
       <View style={commonStyles.commonContainer}>
 
         {
-          notes.value.length > 0 ?
+          filteredNotes.length > 0 ?
 
             <SearchNotesBar
               value={searchQuery.value}
@@ -276,7 +277,7 @@ function Home() {
         <AddNoteButton
           toggleModal={toggleModal} />
 
-        <NotesCount count={notes.value.length} />
+        <NotesCount count={filteredNotes.length} />
 
         <Sort>
 

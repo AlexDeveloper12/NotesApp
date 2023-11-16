@@ -35,7 +35,7 @@ const commonStyles = StyleSheet.create({
     },
 
     commonSize: {
-        fontSize: getFontSize(16)
+        fontSize: getFontSize(18)
     },
     commonContainer: {
         backgroundColor: '#1f454d',

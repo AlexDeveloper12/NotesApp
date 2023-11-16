@@ -15,8 +15,8 @@ function SearchNotesBar({ value, handleChange }) {
                 icon={"magnify"}
                 iconColor={'#fff'}
                 style={styles.searchBarGeneral}
-                inputStyle={'#fff'}
-                placeholderTextColor={'white'}
+                inputStyle={styles.searchBarInput}
+                placeholderTextColor={'#fff'}
             />
         </View>
     )
