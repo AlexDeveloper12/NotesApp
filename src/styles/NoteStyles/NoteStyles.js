@@ -1,4 +1,7 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
+
+const fontScale = PixelRatio.getFontScale();
+const getFontSize = size => size / fontScale
 
 const styles = StyleSheet.create({
     container: {
@@ -9,11 +12,11 @@ const styles = StyleSheet.create({
     },
     text: {
         fontFamily: 'Roboto-Light',
-        fontSize: 15
+        fontSize: getFontSize(15)
     },
     noteTitle: {
         fontFamily: 'Roboto-Bold',
-        fontSize: 18
+        fontSize: getFontSize(18)
     }
 
 });

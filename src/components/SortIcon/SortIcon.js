@@ -1,5 +1,5 @@
 import React from "react";
-import {View} from 'react-native';
+import {View, PixelRatio} from 'react-native';
 import { IconButton } from "react-native-paper";
 
 function SortIcon({sortFunction,isActive,icon}){
@@ -7,13 +7,15 @@ function SortIcon({sortFunction,isActive,icon}){
         <View style={isActive ? { borderBottomColor: 'white', borderBottomWidth: 1 } : null}>
             <IconButton
                     icon={icon}
-                    size={25}
+                    size={getFontSize(35)}
                     iconColor='white'
                     onPress={sortFunction}
                 />
         </View>
     )
-
 }
 
 export default SortIcon;
+
+const fontScale = PixelRatio.getFontScale();
+const getFontSize = size => size / fontScale

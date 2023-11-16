@@ -1,4 +1,7 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
+
+const fontScale = PixelRatio.getFontScale();
+const getFontSize = size => size / fontScale
 
 const commonStyles = StyleSheet.create({
     btnLeft: {
@@ -19,7 +22,7 @@ const commonStyles = StyleSheet.create({
         flexDirection: 'row'
     },
     btnLabel: {
-        fontFamily: 'Roboto-Light', fontSize: 17
+        fontFamily: 'Roboto-Light', fontSize: getFontSize(17)
     },
     white: {
         color: 'white'
@@ -32,7 +35,7 @@ const commonStyles = StyleSheet.create({
     },
 
     commonSize: {
-        fontSize: 16
+        fontSize: getFontSize(16)
     },
     commonContainer: {
         backgroundColor: '#1f454d',
@@ -64,7 +67,7 @@ const commonStyles = StyleSheet.create({
         textAlign:'center', 
         fontFamily:'Roboto-Light',
         verticalAlign:'middle',
-        fontSize:16,
+        fontSize:getFontSize(16),
         marginTop:100
     },
 
