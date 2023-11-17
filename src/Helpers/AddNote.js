@@ -10,11 +10,15 @@ const AddNote = async (notes, data, favouriteValue, dateCreated) => {
     const noteToBeSaved = { id: nextID, noteText: data, isFavourite: favouriteValue, dateCreated: dateCreated };
 
     noteItems.push(noteToBeSaved);
+    console.log('noteItems');
+    console.log(noteItems);
 
     await AsyncStorage.setItem(
         "note",
         JSON.stringify(noteItems)
     )
+
+    return noteToBeSaved;
 
 }
 

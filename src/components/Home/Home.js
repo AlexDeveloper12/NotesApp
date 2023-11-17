@@ -32,15 +32,18 @@ function Home() {
 
     var dateCreated = moment().format("DD-MM-YYYY HH:mm:ss");
 
-    await AddNote(filteredNotes, data, favouriteValue, dateCreated);
+    let noteAdded = await AddNote(filteredNotes, data, favouriteValue, dateCreated);
 
     toggleModal();
 
-    GetNotesList()
-      .then((note) => {
-        notes.setValue(note);
-        setFilteredNotes(note);
-      });
+    if (noteAdded.isFavourite === "True") {
+      GetNotesList()
+        .then((note) => {
+          notes.setValue(note);
+          setFilteredNotes(note);
+          sortNotesFavourite();
+        });
+    }
   }
 
   useEffect(() => {
@@ -90,26 +93,25 @@ function Home() {
 
   const searchNotesFilter = (e) => {
 
-    if (notes.value.length > 0) {
-      let keyword = e.toLowerCase();
+    let keyword = e.toLowerCase();
 
-      searchQuery.handleChange(e);
+    searchQuery.handleChange(e);
 
-      let notesCopy = [...notes.value];
+    let notesCopy = [...notes.value];
 
-      if (isFilterActive.ascend || isFilterActive.descend || isFilterActive.ascendDateCre || isFilterActive.favourite) {
-        setIsFilterActive({
-          ascend: false,
-          descend: false,
-          ascendDateCre: false,
-          favourite: false
-        });
-      }
-
-      notesCopy = FilterSearch(notesCopy, keyword);
-
-      setFilteredNotes(notesCopy);
+    if (isFilterActive.ascend || isFilterActive.descend || isFilterActive.ascendDateCre || isFilterActive.favourite) {
+      setIsFilterActive({
+        ascend: false,
+        descend: false,
+        ascendDateCre: false,
+        favourite: false
+      });
     }
+
+    notesCopy = FilterSearch(notesCopy, keyword);
+
+    setFilteredNotes(notesCopy);
+
   }
 
   const deleteAllNotes = async () => {
@@ -129,11 +131,6 @@ function Home() {
   }
 
   const updateNote = async (id, text) => {
-    console.log('id')
-    console.log(id);
-    console.log('text');
-    console.log(text);
-
     try {
       const myNotes = [...filteredNotes];
 
