@@ -32,17 +32,25 @@ function Home() {
 
     var dateCreated = moment().format("DD-MM-YYYY HH:mm:ss");
 
-    let noteAdded = await AddNote(filteredNotes, data, favouriteValue, dateCreated);
+    //it is going back to 1/2 because when you click on the filter tab it resets the filter list
+    //to the favourites only, so when i pass in the filtered notes the length is only 1 or 2 because
+    //it has been filtered, so when i set the state again and the last max id is 1/2 it combines
+    //it with the other notes and one already has a 1 or 2
+
+    let noteAdded = await AddNote(backupNotes.value, data, favouriteValue, dateCreated);
+    var favouriteArray = [];
 
     toggleModal();
 
-    if (noteAdded.isFavourite === "True") {
+    if (noteAdded.isFavourite === "True" && isFilterActive.favourite) {
       GetNotesList()
         .then((note) => {
           notes.setValue(note);
-          setFilteredNotes(note);
-          sortNotesFavourite();
+          setFilteredNotes(GetFavourites(note));
+
         });
+
+
     }
   }
 

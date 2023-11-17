@@ -9,6 +9,8 @@ const AddNote = async (notes, data, favouriteValue, dateCreated) => {
 
     const noteToBeSaved = { id: nextID, noteText: data, isFavourite: favouriteValue, dateCreated: dateCreated };
 
+    console.log('notes');
+    console.log(notes);
     noteItems.push(noteToBeSaved);
     console.log('noteItems');
     console.log(noteItems);
