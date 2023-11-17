@@ -1,5 +1,6 @@
 import React from "react";
 import {FlatList} from 'react-native';
+import PropTypes from 'prop-types';
 
 function NotesList({noteData,renderNotes}){
     return(
@@ -13,3 +14,8 @@ function NotesList({noteData,renderNotes}){
 }
 
 export default NotesList;
+
+NotesList.propTypes = {
+    noteData:PropTypes.array,
+    renderNotes:PropTypes.func
+};

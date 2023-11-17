@@ -54,4 +54,4 @@ UpdateNoteModal.propTypes = {
     toggleModal: PropTypes.func,
     noteData: PropTypes.object,
     update: PropTypes.func
-}
+};

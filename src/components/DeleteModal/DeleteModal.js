@@ -31,3 +31,12 @@ function DeleteModal({ isVisible, toggleModal, deleteNote, noteID, headerText, t
 }
 
 export default DeleteModal;
+
+DeleteModal.propTypes = {
+    isVisible:PropTypes.bool,
+    toggleModal:PropTypes.func,
+    deleteNote:PropTypes.func,
+    noteID:PropTypes.number,
+    headerText:PropTypes.string,
+    type:PropTypes.string
+};

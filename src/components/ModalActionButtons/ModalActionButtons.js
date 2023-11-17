@@ -1,6 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import { Button } from 'react-native-paper';
+import PropTypes from 'prop-types';
 import commonStyles from '../../styles/CommonStyles/CommonStyles';
 
 function ModalActionButtons({ leftText, rightText, leftAction, rightAction }) {
@@ -27,3 +28,11 @@ function ModalActionButtons({ leftText, rightText, leftAction, rightAction }) {
 }
 
 export default ModalActionButtons;
+
+ModalActionButtons.propTypes = {
+    leftText:PropTypes.string,
+    rightText:PropTypes.string,
+    leftAction:PropTypes.func,
+    rightAction:PropTypes.func
+
+}

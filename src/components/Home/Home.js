@@ -32,7 +32,7 @@ function Home() {
 
     var dateCreated = moment().format("DD-MM-YYYY HH:mm:ss");
 
-    await AddNote(notes.value, data, favouriteValue, dateCreated);
+    await AddNote(filteredNotes, data, favouriteValue, dateCreated);
 
     toggleModal();
 
@@ -81,7 +81,6 @@ function Home() {
   }
 
   const deleteNote = async (id) => {
-    console.log()
 
     const newNotes = await DeleteSingleNote(filteredNotes, id);
     toggleDeleteModal();
@@ -91,25 +90,26 @@ function Home() {
 
   const searchNotesFilter = (e) => {
 
-    let keyword = e.toLowerCase();
+    if (notes.value.length > 0) {
+      let keyword = e.toLowerCase();
 
-    searchQuery.handleChange(e);
+      searchQuery.handleChange(e);
 
-    let notesCopy = [...notes.value];
+      let notesCopy = [...notes.value];
 
-    if (isFilterActive.ascend || isFilterActive.descend || isFilterActive.ascendDateCre || isFilterActive.favourite) {
-      setIsFilterActive({
-        ascend: false,
-        descend: false,
-        ascendDateCre: false,
-        favourite: false
-      });
+      if (isFilterActive.ascend || isFilterActive.descend || isFilterActive.ascendDateCre || isFilterActive.favourite) {
+        setIsFilterActive({
+          ascend: false,
+          descend: false,
+          ascendDateCre: false,
+          favourite: false
+        });
+      }
+
+      notesCopy = FilterSearch(notesCopy, keyword);
+
+      setFilteredNotes(notesCopy);
     }
-
-    notesCopy = FilterSearch(notesCopy,keyword);
-
-    setFilteredNotes(notesCopy);
-
   }
 
   const deleteAllNotes = async () => {
@@ -129,6 +129,10 @@ function Home() {
   }
 
   const updateNote = async (id, text) => {
+    console.log('id')
+    console.log(id);
+    console.log('text');
+    console.log(text);
 
     try {
       const myNotes = [...filteredNotes];
@@ -264,15 +268,10 @@ function Home() {
     <PaperProvider>
       <View style={commonStyles.commonContainer}>
 
-        {
-          filteredNotes.length > 0 ?
-
-            <SearchNotesBar
-              value={searchQuery.value}
-              handleChange={searchNotesFilter}
-            />
-            : null
-        }
+        <SearchNotesBar
+          value={searchQuery.value}
+          handleChange={searchNotesFilter}
+        />
 
         <AddNoteButton
           toggleModal={toggleModal} />
@@ -300,11 +299,16 @@ function Home() {
 
           />
 
-          <SortIcon
-            sortFunction={toggleDeleteAllNotesModal}
-            icon={'trash-can'}
+          {
+            filteredNotes.length > 0 ?
+              <SortIcon
+                sortFunction={toggleDeleteAllNotesModal}
+                icon={'trash-can'}
+              />
+              : null
+          }
 
-          />
+
 
           <SortIcon
             sortFunction={sortNotesFavourite}

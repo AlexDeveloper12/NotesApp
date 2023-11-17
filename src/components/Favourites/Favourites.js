@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import { FlatList, View } from 'react-native';
 import { Card, Text } from "react-native-paper";
+import PropTypes from 'prop-types';
 import GetFavourites from "../../Helpers/GetFavourites";
 import commonStyles from "../../styles/CommonStyles/CommonStyles";
 
