@@ -20,7 +20,6 @@ function Home() {
   const [updateModalOpen, setUpdateModalOpen, toggleUpdateModal] = useModal();
   const [deleteAllNotesOpen, setDeleteAllNotesOpen, toggleDeleteAllNotesModal] = useModal();
   const notes = useArray([]);
-  const backupNotes = useArray([]);
   const [filteredNotes, setFilteredNotes] = useState([]);
   const [chosenNoteID, setChosenNoteID] = useState(0);
   const [chosenNoteData, setChosenNoteData] = useState({});
@@ -37,21 +36,23 @@ function Home() {
     //it has been filtered, so when i set the state again and the last max id is 1/2 it combines
     //it with the other notes and one already has a 1 or 2
 
-    let noteAdded = await AddNote(backupNotes.value, data, favouriteValue, dateCreated);
-    var favouriteArray = [];
+    let noteAdded = await AddNote(notes.value, data, favouriteValue, dateCreated);
 
     toggleModal();
+    let latestNotes = await GetNotesList();
 
     if (noteAdded.isFavourite === "True" && isFilterActive.favourite) {
-      GetNotesList()
-        .then((note) => {
-          notes.setValue(note);
-          setFilteredNotes(GetFavourites(note));
 
-        });
+      const favouriteNotes = GetFavourites(latestNotes)
 
+      setFilteredNotes(favouriteNotes);
 
     }
+    else {
+      notes.setValue(latestNotes);
+      setFilteredNotes(latestNotes);
+    }
+
   }
 
   useEffect(() => {
@@ -60,7 +61,6 @@ function Home() {
       .then((note) => {
         notes.setValue(note);
         setFilteredNotes(note);
-        backupNotes.setValue(note);
       });
 
   }, []);
@@ -169,11 +169,17 @@ function Home() {
 
   const sortNotesAscending = () => {
 
-    let determineNotes = determineNotesLengthStatus();
+    //when i click on sort ascending i need to get an example of the whole array of data
+    //including the favourites, if i use filtered notes it will only bring back the 
+    //favourites if i am clicking from there
+    console.log('notes.value');
+    console.log(notes.value);
+    console.log('filteredNotes');
+    console.log(filteredNotes);
 
     setFilterStatus('ascending');
 
-    var sortedAscArray = SortAscending(determineNotes);
+    var sortedAscArray = SortAscending(notes.value);
 
     setFilteredNotes(sortedAscArray);
 
@@ -181,11 +187,9 @@ function Home() {
 
   const sortNotesDescending = () => {
 
-    let determineNotes = determineNotesLengthStatus();
-
     setFilterStatus('descending');
 
-    var sortedDescArray = SortDescending(determineNotes);
+    var sortedDescArray = SortDescending(notes.value);
 
     setFilteredNotes(sortedDescArray);
 
@@ -193,11 +197,9 @@ function Home() {
 
   const sortNotesDateCreAscending = () => {
 
-    let determineNotes = determineNotesLengthStatus();
-
     setFilterStatus('date-created-ascending');
 
-    var sortedDateCreArray = SortDateCreatedAscending(determineNotes);
+    var sortedDateCreArray = SortDateCreatedAscending(notes.value);
 
     setFilteredNotes(sortedDateCreArray);
 
@@ -205,11 +207,9 @@ function Home() {
 
   const sortNotesFavourite = () => {
 
-    let origNotes = [...filteredNotes];
-
     setFilterStatus('favourite')
 
-    var sortedFavouriteArray = GetFavourites(origNotes);
+    var sortedFavouriteArray = GetFavourites(notes.value);
 
     setFilteredNotes(sortedFavouriteArray);
 
@@ -259,14 +259,16 @@ function Home() {
 
     let origNotes = [];
 
-    if (filteredNotes.length === backupNotes.value.length) {
-      origNotes = [...filteredNotes];
-    }
-    else {
-      origNotes = [...backupNotes.value];
-    }
+    // if (filteredNotes.length === backupNotes.value.length) {
+    //   console.log('use filtered notes');
+    //   origNotes = [...filteredNotes];
+    // }
+    // else {
+    //   console.log('use backup notes');
+    //   origNotes = [...backupNotes.value];
+    // }
 
-    return origNotes;
+    return filteredNotes;
   }
 
   return (
