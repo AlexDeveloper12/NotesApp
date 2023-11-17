@@ -59,13 +59,11 @@ function Home() {
     }
 
     //notes.setValue(notesArrayInOrder);
+    setFilteredNotes(notesArrayInOrder);
 
     toggleModal();
 
-    setFilteredNotes(notesArrayInOrder);
-
-
-
+  
   }
 
   useEffect(() => {
