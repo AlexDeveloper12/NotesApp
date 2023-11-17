@@ -38,20 +38,33 @@ function Home() {
 
     let noteAdded = await AddNote(notes.value, data, favouriteValue, dateCreated);
 
-    toggleModal();
+    
     let latestNotes = await GetNotesList();
+    let notesArrayInOrder = [];
 
-    if (noteAdded.isFavourite === "True" && isFilterActive.favourite) {
+    if (noteAdded.isFavourite === "True" && isFilterActive.favourite || noteAdded.isFavourite==="False" && isFilterActive.favourite) {
 
-      const favouriteNotes = GetFavourites(latestNotes)
-
-      setFilteredNotes(favouriteNotes);
+      notesArrayInOrder = GetFavourites(latestNotes)
 
     }
-    else {
-      notes.setValue(latestNotes);
-      setFilteredNotes(latestNotes);
+    else if(isFilterActive.ascend) {
+
+      notesArrayInOrder = SortAscending(latestNotes);
     }
+    else if(isFilterActive.descend){
+      notesArrayInOrder = SortDescending(latestNotes);
+    }
+    else if(isFilterActive.ascendDateCre){
+      notesArrayInOrder = SortDateCreatedAscending(latestNotes);
+    }
+
+    //notes.setValue(notesArrayInOrder);
+
+    toggleModal();
+
+    setFilteredNotes(notesArrayInOrder);
+
+
 
   }
 
@@ -172,10 +185,6 @@ function Home() {
     //when i click on sort ascending i need to get an example of the whole array of data
     //including the favourites, if i use filtered notes it will only bring back the 
     //favourites if i am clicking from there
-    console.log('notes.value');
-    console.log(notes.value);
-    console.log('filteredNotes');
-    console.log(filteredNotes);
 
     setFilterStatus('ascending');
 
@@ -253,22 +262,6 @@ function Home() {
 
     }
 
-  }
-
-  const determineNotesLengthStatus = () => {
-
-    let origNotes = [];
-
-    // if (filteredNotes.length === backupNotes.value.length) {
-    //   console.log('use filtered notes');
-    //   origNotes = [...filteredNotes];
-    // }
-    // else {
-    //   console.log('use backup notes');
-    //   origNotes = [...backupNotes.value];
-    // }
-
-    return filteredNotes;
   }
 
   return (
