@@ -12,6 +12,7 @@ import {
 } from '../IndexHelpers/IndexHelpers';
 import commonStyles from '../../styles/CommonStyles/CommonStyles';
 import { CONSTANTS } from '../../constants/constants';
+import Loading from '../Loading/Loading';
 
 function Home() {
   const searchQuery = useInput('');
@@ -25,7 +26,8 @@ function Home() {
   const [chosenNoteData, setChosenNoteData] = useState({});
   const [isFilterActive, setIsFilterActive] = useState({
     ascend: false, descend: false, ascendDateCre: false, favourite: false
-  })
+  });
+  const [isLoading,setIsLoading] = useState(true);
 
   const addNoteToStorage = async (data, favouriteValue) => {
 
@@ -35,6 +37,8 @@ function Home() {
     //to the favourites only, so when i pass in the filtered notes the length is only 1 or 2 because
     //it has been filtered, so when i set the state again and the last max id is 1/2 it combines
     //it with the other notes and one already has a 1 or 2
+
+    setIsLoading(true);
 
     let latestNotes = await GetNotesList();
 
@@ -70,8 +74,8 @@ function Home() {
 
     notes.setValue(notesArrayInOrder);
     setFilteredNotes(notesArrayInOrder);
-
     toggleModal();
+    setIsLoading(false);
 
   }
 
@@ -81,6 +85,7 @@ function Home() {
       .then((note) => {
         notes.setValue(note);
         setFilteredNotes(note);
+        setIsLoading(false);
       });
 
   }, []);
@@ -350,6 +355,8 @@ function Home() {
               <Text variant='headlineSmall' style={commonStyles.noDataExistsText}>{CONSTANTS.EMPTY_NOTES_MESSAGE}</Text>
             </View>
             : <View style={{ flex: 1 }}>
+              
+
               <NotesList
                 noteData={filteredNotes}
                 renderNotes={renderNotes}
