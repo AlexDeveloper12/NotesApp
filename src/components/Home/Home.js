@@ -33,11 +33,6 @@ function Home() {
 
     var dateCreated = moment().format("DD-MM-YYYY HH:mm:ss");
 
-    //it is going back to 1 or 2 because when you click on the filter tab it resets the filter list
-    //to the favourites only, so when i pass in the filtered notes the length is only 1 or 2 because
-    //it has been filtered, so when i set the state again and the last max id is 1/2 it combines
-    //it with the other notes and one already has a 1 or 2
-
     setIsLoading(true);
 
     let latestNotes = await GetNotesList();
@@ -194,10 +189,6 @@ function Home() {
 
   const sortNotesAscending = async () => {
 
-    //when i click on sort ascending i need to get an example of the whole array of data
-    //including the favourites, if i use filtered notes it will only bring back the 
-    //favourites if i am clicking from there
-
     setFilterStatus('ascending');
 
     var sortedAscArray = [];
@@ -308,8 +299,6 @@ function Home() {
             <Loading />
             : null
         }
-
-
 
         <Sort>
 
