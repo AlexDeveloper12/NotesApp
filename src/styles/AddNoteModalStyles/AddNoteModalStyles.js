@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.5, borderColor: 'white'
     },
     actionsContainer:{
-        height:Dimensions.get('window').height / 1.5, backgroundColor:'white'
+        height:Dimensions.get('window').height / 1.2, backgroundColor:'white'
     }
 
 })
