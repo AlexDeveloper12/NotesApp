@@ -48,26 +48,30 @@ function Home() {
       notesArrayInOrder.concat(latestNotes);
       notesArrayInOrder.push(noteAdded);
     }
-    else if(isFilterActive.favourite && noteAdded.isFavourite === "False"){
+    else if (isFilterActive.favourite && noteAdded.isFavourite === "False") {
       notesArrayInOrder = GetFavourites(latestNotes)
       notesArrayInOrder.concat(latestNotes);
     }
     else if (isFilterActive.ascend) {
-
+      latestNotes.push(noteAdded);
       notesArrayInOrder = SortAscending(latestNotes);
+
     }
     else if (isFilterActive.descend) {
+      latestNotes.push(noteAdded);
       notesArrayInOrder = SortDescending(latestNotes);
+
     }
     else if (isFilterActive.ascendDateCre) {
+      latestNotes.push(noteAdded);
       notesArrayInOrder = SortDateCreatedAscending(latestNotes);
+
     }
 
     notes.setValue(notesArrayInOrder);
     setFilteredNotes(notesArrayInOrder);
 
     toggleModal();
-
 
   }
 
