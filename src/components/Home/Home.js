@@ -51,6 +51,7 @@ function Home() {
       notesArrayInOrder = GetFavourites(latestNotes)
       notesArrayInOrder.concat(latestNotes);
       notesArrayInOrder.push(noteAdded);
+      
     }
     else if (isFilterActive.favourite && noteAdded.isFavourite === "False") {
       notesArrayInOrder = GetFavourites(latestNotes)
@@ -69,7 +70,6 @@ function Home() {
     else if (isFilterActive.ascendDateCre) {
       latestNotes.push(noteAdded);
       notesArrayInOrder = SortDateCreatedAscending(latestNotes);
-
     }
 
     notes.setValue(notesArrayInOrder);
@@ -106,7 +106,6 @@ function Home() {
   };
 
   const toggleUpdate = (updateData) => {
-    console.log(updateData);
     setChosenNoteData(updateData);
     toggleUpdateModal();
     sortNotesAscending();
@@ -206,10 +205,6 @@ function Home() {
     const latestNotes = await GetNotesList();
 
     sortedAscArray = SortAscending(latestNotes);
-
-    console.log('sortedAscArray');
-
-    console.log(sortedAscArray);
 
     setFilteredNotes(sortedAscArray);
 

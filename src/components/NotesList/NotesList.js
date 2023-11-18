@@ -9,6 +9,8 @@ function NotesList({noteData,renderNotes}){
                 data={noteData}
                 renderItem={renderNotes}
                 contentContainerStyle={{ width: '100%' }}
+                maxToRenderPerBatch={10}
+                initialNumToRender={8}
               />
     )
 }
