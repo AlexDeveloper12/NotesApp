@@ -27,7 +27,7 @@ function Home() {
   const [isFilterActive, setIsFilterActive] = useState({
     ascend: false, descend: false, ascendDateCre: false, favourite: false
   });
-  const [isLoading,setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const addNoteToStorage = async (data, favouriteValue) => {
 
@@ -75,6 +75,7 @@ function Home() {
     notes.setValue(notesArrayInOrder);
     setFilteredNotes(notesArrayInOrder);
     toggleModal();
+
     setIsLoading(false);
 
   }
@@ -246,7 +247,6 @@ function Home() {
 
     setFilterStatus('favourite');
 
-    //const notesValueCopy = [...notes.value];
     const latestNotes = await GetNotesList();
 
     var sortedFavouriteArray = GetFavourites(latestNotes);
@@ -308,6 +308,14 @@ function Home() {
 
         <NotesCount count={filteredNotes.length} />
 
+        {
+          isLoading ?
+            <Loading />
+            : null
+        }
+
+
+
         <Sort>
 
           <SortIcon
@@ -338,8 +346,6 @@ function Home() {
               : null
           }
 
-
-
           <SortIcon
             sortFunction={sortNotesFavourite}
             isActive={isFilterActive.favourite}
@@ -355,7 +361,8 @@ function Home() {
               <Text variant='headlineSmall' style={commonStyles.noDataExistsText}>{CONSTANTS.EMPTY_NOTES_MESSAGE}</Text>
             </View>
             : <View style={{ flex: 1 }}>
-              
+
+
 
               <NotesList
                 noteData={filteredNotes}
