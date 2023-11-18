@@ -31,39 +31,44 @@ function Home() {
 
     var dateCreated = moment().format("DD-MM-YYYY HH:mm:ss");
 
-    //it is going back to 1/2 because when you click on the filter tab it resets the filter list
+    //it is going back to 1 or 2 because when you click on the filter tab it resets the filter list
     //to the favourites only, so when i pass in the filtered notes the length is only 1 or 2 because
     //it has been filtered, so when i set the state again and the last max id is 1/2 it combines
     //it with the other notes and one already has a 1 or 2
 
+    let latestNotes = await GetNotesList();
+
     let noteAdded = await AddNote(notes.value, data, favouriteValue, dateCreated);
 
-    
-    let latestNotes = await GetNotesList();
     let notesArrayInOrder = [];
 
-    if (noteAdded.isFavourite === "True" && isFilterActive.favourite || noteAdded.isFavourite==="False" && isFilterActive.favourite) {
+    if (isFilterActive.favourite && noteAdded.isFavourite === "True") {
 
       notesArrayInOrder = GetFavourites(latestNotes)
-
+      notesArrayInOrder.concat(latestNotes);
+      notesArrayInOrder.push(noteAdded);
     }
-    else if(isFilterActive.ascend) {
+    else if(isFilterActive.favourite && noteAdded.isFavourite === "False"){
+      notesArrayInOrder = GetFavourites(latestNotes)
+      notesArrayInOrder.concat(latestNotes);
+    }
+    else if (isFilterActive.ascend) {
 
       notesArrayInOrder = SortAscending(latestNotes);
     }
-    else if(isFilterActive.descend){
+    else if (isFilterActive.descend) {
       notesArrayInOrder = SortDescending(latestNotes);
     }
-    else if(isFilterActive.ascendDateCre){
+    else if (isFilterActive.ascendDateCre) {
       notesArrayInOrder = SortDateCreatedAscending(latestNotes);
     }
 
-    //notes.setValue(notesArrayInOrder);
+    notes.setValue(notesArrayInOrder);
     setFilteredNotes(notesArrayInOrder);
 
     toggleModal();
 
-  
+
   }
 
   useEffect(() => {
@@ -178,7 +183,7 @@ function Home() {
 
   }
 
-  const sortNotesAscending = () => {
+  const sortNotesAscending = async () => {
 
     //when i click on sort ascending i need to get an example of the whole array of data
     //including the favourites, if i use filtered notes it will only bring back the 
@@ -186,40 +191,58 @@ function Home() {
 
     setFilterStatus('ascending');
 
-    var sortedAscArray = SortAscending(notes.value);
+    var sortedAscArray = [];
+
+    const latestNotes = await GetNotesList();
+
+    sortedAscArray = SortAscending(latestNotes);
+
+    console.log('sortedAscArray');
+
+    console.log(sortedAscArray);
 
     setFilteredNotes(sortedAscArray);
 
   }
 
-  const sortNotesDescending = () => {
+  const sortNotesDescending = async () => {
+
+    var sortedDescArray = [];
+
+    const latestNotes = await GetNotesList();
 
     setFilterStatus('descending');
 
-    var sortedDescArray = SortDescending(notes.value);
+    var sortedDescArray = SortDescending(latestNotes);
 
     setFilteredNotes(sortedDescArray);
 
   }
 
-  const sortNotesDateCreAscending = () => {
+  const sortNotesDateCreAscending = async () => {
+
+    var sortedDateAscArray = [];
+
+    const latestNotes = await GetNotesList();
 
     setFilterStatus('date-created-ascending');
 
-    var sortedDateCreArray = SortDateCreatedAscending(notes.value);
+    sortedDateAscArray = SortDateCreatedAscending(latestNotes);
 
-    setFilteredNotes(sortedDateCreArray);
+    setFilteredNotes(sortedDateAscArray);
 
   }
 
-  const sortNotesFavourite = () => {
+  const sortNotesFavourite = async () => {
 
-    setFilterStatus('favourite')
+    setFilterStatus('favourite');
 
-    var sortedFavouriteArray = GetFavourites(notes.value);
+    //const notesValueCopy = [...notes.value];
+    const latestNotes = await GetNotesList();
+
+    var sortedFavouriteArray = GetFavourites(latestNotes);
 
     setFilteredNotes(sortedFavouriteArray);
-
   }
 
   const setFilterStatus = (currentFilter) => {
