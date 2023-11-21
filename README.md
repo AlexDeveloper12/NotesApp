@@ -27,3 +27,7 @@ In addition, there is a drawer icon on the left hand side that for the time bein
 - react-native-screens
 - react-native-vector-icons
 - jest
+
+#GIF of Notes application in action
+
+(![2023-11-21 20 01 49](https://github.com/AlexDeveloper12/NotesApp/assets/75578044/0029340a-b828-4545-b384-e0757ee41351)
