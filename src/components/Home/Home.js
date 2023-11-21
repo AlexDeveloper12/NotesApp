@@ -12,7 +12,6 @@ import {
 } from '../IndexHelpers/IndexHelpers';
 import commonStyles from '../../styles/CommonStyles/CommonStyles';
 import { CONSTANTS } from '../../constants/constants';
-import Loading from '../Loading/Loading';
 
 function Home() {
   const searchQuery = useInput('');
@@ -82,6 +81,7 @@ function Home() {
         notes.setValue(note);
         setFilteredNotes(note);
         setIsLoading(false);
+        setFilterStatus('ascending');
       });
 
   }, []);
@@ -294,11 +294,6 @@ function Home() {
 
         <NotesCount count={filteredNotes.length} />
 
-        {
-          isLoading ?
-            <Loading />
-            : null
-        }
 
         <Sort>
 
